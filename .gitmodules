@@ -1,0 +1,3 @@
+[submodule "src/dependencies/msl"]
+	path = src/dependencies/msl
+	url = git@github.com:Neodivert/msl
