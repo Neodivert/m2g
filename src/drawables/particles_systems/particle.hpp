@@ -27,44 +27,9 @@ namespace m2g {
 
 struct Particle
 {
-    glm::vec4 dColor;
     unsigned int t;
     unsigned int life;
 };
-
-
-/*
-- VBO con los vertices originales de todas las partículas.
-- A las partículas les aplicaré solo traslaciones, crear un vector uniform vec2 translate y pasarlo por cada partícula.
-    - Así no puedo dibujar todo de una sentada.
-- ¿Usar pointsprites?
-- ¿Cómo paso los colores?
-- Renderizar a framebuffer.
--
-
-- Puedo guardar en un buffer VBO todos los valores: pos, vec, minRGBA, maxRGBA.
-- En un buffer especial donde pueda escribir puedo poner la vida restante de cada partícula.
-- Dibujo todo de una sentada, y en el propio shader hago pos = orig + vel * life, color = color0 + vel * life, etc y actualizo life en su buffer.
-- ¿O guardo en las memorias "escribibles" todos los campos actualizables como pos, color, etc y en VBO meto vel, etc.
-
-- OLVIDAR LAS OPTIMIZACIONES.
-    - VBO estático
-        - con las posiciones originales de todas las partículas.
-        - con la velocidad original de cada particula.
-        - Colores originales de todas las partículas.
-
-    - Uniform
-        - El dColor se le pasa en un vec4.
-        - La vida se le pasa en un uint. -> Hay que hacer un t.
-
-    - El vertex shader hace pos = pos + vel * t;
-    - El fragment shader hace color = color + dColor * t;
-
-
-    - Cada generacion de particulas:
-        - Conjunto de particulas que nacen en el mismo fotograma.
-        -
-*/
 
 } // namespace m2g
 

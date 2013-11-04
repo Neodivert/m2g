@@ -24,7 +24,6 @@ namespace m2g {
 
 GLint ParticleSystem::mvpMatrixLocation = -1;
 GLint ParticleSystem::tLocation = -1;
-GLint ParticleSystem::dColorLocation = -1;
 
 
 /***
@@ -75,6 +74,10 @@ ParticleSystem::ParticleSystem( const unsigned int& nGenerations, const unsigned
     glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, N_ATTRIBUTES_PER_VERTEX * sizeof(GLfloat), (GLvoid*)(4*sizeof(GLfloat)) );
     glEnableVertexAttribArray( 2 );
 
+    // We are sending RGBA color variations to the shader.
+    glVertexAttribPointer( 3, 4, GL_FLOAT, GL_FALSE, N_ATTRIBUTES_PER_VERTEX * sizeof(GLfloat), (GLvoid*)(8*sizeof(GLfloat)) );
+    glEnableVertexAttribArray( 3 );
+
     // Map the VBO memory for writting.
     vertexData = reinterpret_cast< GLfloat* >( glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY ) );
 
@@ -93,7 +96,12 @@ ParticleSystem::ParticleSystem( const unsigned int& nGenerations, const unsigned
         vertexData[i+5] = 0.0f; //( ( rand() % 255 ) / 255.0f );
         vertexData[i+6] = 0.0f; //( ( rand() % 255 ) / 255.0f );
         vertexData[i+7] = ( ( rand() % (255 - 150) + 150 ) / 255.0f );
-        //std::cout << "i: " << i << std::endl;
+
+        // DColor.
+        vertexData[i+8] = 0.0f;
+        vertexData[i+9] = 0.0f;
+        vertexData[i+10] = 0.0f;
+        vertexData[i+11] = -( 1.0f / (float)nGenerations );
     }
 
     // Unmap the VBO memory.
@@ -105,7 +113,6 @@ ParticleSystem::ParticleSystem( const unsigned int& nGenerations, const unsigned
 
         mvpMatrixLocation = glGetUniformLocation( currentProgram, "mvpMatrix" );
         tLocation = glGetUniformLocation( currentProgram, "t" );
-        dColorLocation = glGetUniformLocation( currentProgram, "dColor" );
 
         checkOpenGL( "Particles system () - Setting uniform locations" );
     }
@@ -169,7 +176,6 @@ void ParticleSystem::draw( const glm::mat4& projectionMatrix ) const
 void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
 {
     unsigned int i = 0, j = 0;
-    glm::vec4 dColor = glm::vec4( 0.0f, 0.0f, 0.0f, -(1.0f / (float)particlesGenerations_.size()) );
 
     glPointSize( 5 );
 
@@ -179,7 +185,6 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
 
     // Send the MVP matrix to the shader.
     glUniformMatrix4fv( mvpMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0] );
-    glUniform4fv( dColorLocation, 1, &dColor[0] );
 
     for( i = 0; i < particlesGenerations_.size(); i++ ){
         if( particlesGenerations_[i].t >= 0 ){
@@ -189,14 +194,11 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
             glUniform1i( tLocation, particlesGenerations_[i].t );
 
             for( j = 0; j < particlesGenerations_[i].particles.size(); j++ ){
-
-                // Send the currents particle's t and dColor to the shader.
-                //glUniform4fv( dColorLocation, 1, &(particlesGenerations_[i].particles[j].dColor[0]) );
-
                 // Draw every particle as a point.
                 glDrawArrays( GL_POINTS, i * particlesGenerations_[0].particles.size() + j, 1 );
             }
         }
+
         particlesGenerations_[i].t++;
         if( particlesGenerations_[i].t > (int)( particlesGenerations_.size() ) ){
             particlesGenerations_[i].t = 0;

@@ -2,11 +2,11 @@
 
 uniform mat4 mvpMatrix;
 uniform int t;
-uniform vec4 dColor;
 
 layout(location = 0) in vec2 pos0;
 layout(location = 1) in vec2 vel0;
 layout(location = 2) in vec4 color0;
+layout(location = 3) in vec4 dColor;
 
 out vec4 color;
 

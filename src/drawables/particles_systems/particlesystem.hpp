@@ -27,8 +27,8 @@
 
 namespace m2g {
 
-// Attributes per vertex = 8 = 2D pos + 2D vel + 4D color.
-const unsigned int N_ATTRIBUTES_PER_VERTEX = 2 + 2 + 4;
+// Attributes per vertex = 12 = 2D pos + 2D vel + 4D color + 4D color variation.
+const unsigned int N_ATTRIBUTES_PER_VERTEX = 2 + 2 + 4 + 4;
 
 /*
     - VBO estático
@@ -51,7 +51,6 @@ class ParticleSystem : public Drawable
 
         static GLint mvpMatrixLocation;
         static GLint tLocation;
-        static GLint dColorLocation;
 
     public:
         /***
