@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "particlesystem.hpp"
+#include "particle_system.hpp"
 
 namespace m2g {
 
@@ -63,9 +63,9 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     }
 
     // Try to find the requested particle system configuration.
-    rootNode = xmlFile.RootElement()->FirstChildElement();
+    rootNode = xmlFile.RootElement()->FirstChildElement( "particle_system" );
     while( rootNode && strcmp( name, rootNode->Attribute( "name" ) ) ){
-        rootNode = rootNode->NextSiblingElement();
+        rootNode = rootNode->NextSiblingElement( "particle_system" );
     }
     if( !rootNode ){
         throw std::runtime_error( std::string( "ERROR: Couldn't find particle system [" ) + name + "]" );
@@ -83,10 +83,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     baseLine_[1].x = xmlNode->FloatAttribute( "x1" );
     baseLine_[1].y = xmlNode->FloatAttribute( "y1" );
 
-    std::cout << "Generations: " << nGenerations_ << std::endl
-              << "Particles per generation: " << nParticlesPerGeneration_ << std::endl
-              << "Base line (" << baseLine_[0].x << ", " << baseLine_[0].y << ") - (" << baseLine_[1].x << ", " << baseLine_[1].y << ")" << std::endl;
-
     // Initialize the angle range.
     xmlNode = rootNode->FirstChildElement( "angle" );
     minAngle_ = xmlNode->FloatAttribute( "min" );
@@ -103,8 +99,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
             minBaseColor_[i] = atoi( str.c_str() );
             maxBaseColor_[i] = atoi( str.c_str() );
         }
-
-        std::cout << "Base color [" << i << "]: (" << minBaseColor_[i] << ", " << maxBaseColor_[i] << ")" << std::endl;
     }
 
 

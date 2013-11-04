@@ -27,4 +27,10 @@
 		<base_color r="200-255" g="0" b="0" a="50" />
 		<delta_color r="0" g="0" b="0" a="-2" />
 	</particle_system>
+
+	<particle_systems_group name="fire">
+		<particle_system name="smoke" />
+		<particle_system name="fire" />
+		<particle_system name="fire_core" />
+	</particle_systems_group>
 </particle_systems>
