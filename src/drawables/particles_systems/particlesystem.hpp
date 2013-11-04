@@ -30,13 +30,6 @@ namespace m2g {
 // Attributes per vertex = 12 = 2D pos + 2D vel + 4D color + 4D color variation.
 const unsigned int N_ATTRIBUTES_PER_VERTEX = 2 + 2 + 4 + 4;
 
-/*
-    - VBO estático
-        - con las posiciones originales de todas las partículas.
-        - con la velocidad original de cada particula.
-        - Colores originales de todas las partículas.
-*/
-
 class ParticleSystem : public Drawable
 {
     private:
@@ -44,10 +37,16 @@ class ParticleSystem : public Drawable
 
         glm::vec2 baseLine_[2];
 
+        unsigned int nGenerations_;
+        unsigned int nParticlesPerGeneration_;
+        float minAngle_, maxAngle_;
+        glm::ivec4 minBaseColor_, maxBaseColor_;
+        glm::vec4 deltaColor_;
+
         GLuint vao_;
         GLuint vbo_;
 
-        const unsigned int VBO_SIZE_;
+        unsigned int VBO_SIZE_;
 
         static GLint mvpMatrixLocation;
         static GLint tLocation;
@@ -56,7 +55,8 @@ class ParticleSystem : public Drawable
         /***
          * 1. Initialization
          ***/
-        ParticleSystem( const unsigned int& nGenerations, const unsigned int &nParticlesPerGeneration );
+        ParticleSystem( const char* file, const char*name );
+        void loadXML( const char* file, const char*name );
 
 
         /***

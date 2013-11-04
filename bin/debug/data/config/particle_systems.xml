@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<particle_systems>
+	<!-- Fire -->
+	<particle_system name="fire">
+		<particles generations="50" particles_per_generation="150" />
+		<base_line x0="100.0" y0="300.0" x1="300.0" y1="300.0" />
+		<angle min="85.0" max="95.0" />
+		<base_color r="230" g="95" b="0" a="50" />
+		<delta_color r="0" g="0" b="0" a="-1" />
+	</particle_system>
+
+	<!-- Smoke -->
+	<particle_system name="smoke">
+		<particles generations="70" particles_per_generation="150" />
+		<base_line x0="100.0" y0="300.0" x1="300.0" y1="300.0" />
+		<angle min="85.0" max="95.0" />
+		<base_color r="0" g="0" b="0" a="50" />
+		<delta_color r="0" g="0" b="0" a="-0.71" />
+	</particle_system>
+
+	<!-- Fire core -->
+	<particle_system name="fire_core">
+		<particles generations="25" particles_per_generation="150" />
+		<base_line x0="100.0" y0="300.0" x1="300.0" y1="300.0" />
+		<angle min="85.0" max="95.0" />
+		<base_color r="200-255" g="0" b="0" a="50" />
+		<delta_color r="0" g="0" b="0" a="-2" />
+	</particle_system>
+</particle_systems>

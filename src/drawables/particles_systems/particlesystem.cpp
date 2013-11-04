@@ -25,29 +25,103 @@ namespace m2g {
 GLint ParticleSystem::mvpMatrixLocation = -1;
 GLint ParticleSystem::tLocation = -1;
 
+const float PI = 3.14159265;
+
 
 /***
  * 1. Initialization
  ***/
 
-ParticleSystem::ParticleSystem( const unsigned int& nGenerations, const unsigned int &nParticlesPerGeneration ) :
-    VBO_SIZE_( N_ATTRIBUTES_PER_VERTEX * nGenerations * nParticlesPerGeneration * sizeof( GLfloat ) )
+
+ParticleSystem::ParticleSystem( const char* file, const char*name )
 {
+    loadXML( file, name );
+}
+
+
+void ParticleSystem::loadXML( const char* file, const char*name )
+{
+    tinyxml2::XMLDocument xmlFile;
+    tinyxml2::XMLElement* rootNode = nullptr;
+    tinyxml2::XMLElement* xmlNode = nullptr;
+    const char colorComponents[][2] =
+    {
+        "r", "g", "b", "a"
+    };
+    float angle;
+    std::string str;
+
     GLint currentProgram = 0;
 
     GLfloat* vertexData = nullptr;
     unsigned int i = 0;
 
+    // Try to open the requested XML file.
+    xmlFile.LoadFile( file );
+    if( !xmlFile.RootElement() ){
+        throw std::runtime_error( std::string( "ERROR: Couldn't open file [" ) + file + "]" );
+    }
+
+    // Try to find the requested particle system configuration.
+    rootNode = xmlFile.RootElement()->FirstChildElement();
+    while( rootNode && strcmp( name, rootNode->Attribute( "name" ) ) ){
+        rootNode = rootNode->NextSiblingElement();
+    }
+    if( !rootNode ){
+        throw std::runtime_error( std::string( "ERROR: Couldn't find particle system [" ) + name + "]" );
+    }
+
+    // Get the generations info.
+    xmlNode = rootNode->FirstChildElement( "particles" );
+    nGenerations_ = xmlNode->IntAttribute( "generations" );
+    nParticlesPerGeneration_ = xmlNode->IntAttribute( "particles_per_generation" );
+
+    // Initialize the base line.
+    xmlNode = rootNode->FirstChildElement( "base_line" );
+    baseLine_[0].x = xmlNode->FloatAttribute( "x0" );
+    baseLine_[0].y = xmlNode->FloatAttribute( "y0" );
+    baseLine_[1].x = xmlNode->FloatAttribute( "x1" );
+    baseLine_[1].y = xmlNode->FloatAttribute( "y1" );
+
+    std::cout << "Generations: " << nGenerations_ << std::endl
+              << "Particles per generation: " << nParticlesPerGeneration_ << std::endl
+              << "Base line (" << baseLine_[0].x << ", " << baseLine_[0].y << ") - (" << baseLine_[1].x << ", " << baseLine_[1].y << ")" << std::endl;
+
+    // Initialize the angle range.
+    xmlNode = rootNode->FirstChildElement( "angle" );
+    minAngle_ = xmlNode->FloatAttribute( "min" );
+    maxAngle_ = xmlNode->FloatAttribute( "max" );
+
+    // Initialize the base color range.
+    xmlNode = rootNode->FirstChildElement( "base_color" );
+    for( i=0; i<4; i++ ){
+        str = xmlNode->Attribute( colorComponents[i] );
+        if( str.find( '-' ) != std::string::npos ){
+            minBaseColor_[i] = atoi( ( str.substr( 0, str.find( '-' ) ) ).c_str() );
+            maxBaseColor_[i] = atoi( ( str.substr( str.find( '-' ) + 1 ) ).c_str() );
+        }else{
+            minBaseColor_[i] = atoi( str.c_str() );
+            maxBaseColor_[i] = atoi( str.c_str() );
+        }
+
+        std::cout << "Base color [" << i << "]: (" << minBaseColor_[i] << ", " << maxBaseColor_[i] << ")" << std::endl;
+    }
+
+
+    // Initialize the color delta.
+    xmlNode = rootNode->FirstChildElement( "delta_color" );
+    for( i=0; i<4; i++ ){
+        deltaColor_[i] = xmlNode->FloatAttribute( colorComponents[i] ) / 255.0f;
+    }
+
     // Initializa the particles vector.
-    ParticlesGeneration particlesGeneration( nParticlesPerGeneration, 0 );
-    for( i = 0; i < nGenerations; i++ ){
+    ParticlesGeneration particlesGeneration( nParticlesPerGeneration_, 0 );
+    for( i = 0; i < nGenerations_; i++ ){
         particlesGeneration.t = -i;
         particlesGenerations_.push_back( particlesGeneration );
     }
 
-    // Initialize the base line.
-    baseLine_[0] = glm::vec2( 100.0f, 300.0f );
-    baseLine_[1] = glm::vec2( 300.0f, 300.0f );
+    VBO_SIZE_ = N_ATTRIBUTES_PER_VERTEX * nGenerations_ * nParticlesPerGeneration_ * sizeof( GLfloat );
 
     // Generate the VAO associated with this particles system and bind it as
     // the active one.
@@ -82,26 +156,29 @@ ParticleSystem::ParticleSystem( const unsigned int& nGenerations, const unsigned
     vertexData = reinterpret_cast< GLfloat* >( glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY ) );
 
     // Set the vertex data for every particle in the system.
-    for( i = 0; i < N_ATTRIBUTES_PER_VERTEX * nGenerations * nParticlesPerGeneration; i += N_ATTRIBUTES_PER_VERTEX ){
+    for( i = 0; i < N_ATTRIBUTES_PER_VERTEX * nGenerations_ * nParticlesPerGeneration_; i += N_ATTRIBUTES_PER_VERTEX ){
         // Position.
         vertexData[i] = rand() % (int)( baseLine_[1].x - baseLine_[0].x ) + baseLine_[0].x;
         vertexData[i+1] = baseLine_[0].y;
 
         // Velocity.
-        vertexData[i+2] = 0.0f;
-        vertexData[i+3] = -1.0f;
+        angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 ) + ( (int)minAngle_ * 10 ) ) * 0.1;
+        //std::cout << "(" << minAngle_ << ", " << maxAngle_ << "): " << angle << std::endl;
+        vertexData[i+2] = cos( angle * PI / 180.0f );
+        vertexData[i+3] = -sin( angle * PI / 180.0f );
 
         // Color.
-        vertexData[i+4] = ( ( rand() % (255 - 150 ) + 150 ) / 255.0f );
-        vertexData[i+5] = 0.0f; //( ( rand() % 255 ) / 255.0f );
-        vertexData[i+6] = 0.0f; //( ( rand() % 255 ) / 255.0f );
-        vertexData[i+7] = ( ( rand() % (255 - 150) + 150 ) / 255.0f );
+        vertexData[i+4] = ( ( rand() % (maxBaseColor_.r - minBaseColor_.r + 1) + minBaseColor_.r ) / 255.0f );
+        vertexData[i+5] = ( ( rand() % (maxBaseColor_.g - minBaseColor_.g + 1) + minBaseColor_.g ) / 255.0f );
+        vertexData[i+6] = ( ( rand() % (maxBaseColor_.b - minBaseColor_.b + 1) + minBaseColor_.b ) / 255.0f );
+        vertexData[i+7] = ( ( rand() % (maxBaseColor_.a - minBaseColor_.a + 1) + minBaseColor_.a ) / 255.0f );
+        std::cout << "alfa: " << vertexData[i+7] << std::endl;
 
         // DColor.
-        vertexData[i+8] = 0.0f;
-        vertexData[i+9] = 0.0f;
-        vertexData[i+10] = 0.0f;
-        vertexData[i+11] = -( 1.0f / (float)nGenerations );
+        vertexData[i+8] = deltaColor_[0];
+        vertexData[i+9] = deltaColor_[1];
+        vertexData[i+10] = deltaColor_[2];
+        vertexData[i+11] = deltaColor_[3];
     }
 
     // Unmap the VBO memory.
@@ -175,7 +252,7 @@ void ParticleSystem::draw( const glm::mat4& projectionMatrix ) const
 
 void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
 {
-    unsigned int i = 0, j = 0;
+    unsigned int i = 0;
 
     glPointSize( 5 );
 
@@ -193,16 +270,13 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
             //std::cout << "Generation (" << i << ") sending t: " << particlesGenerations_[i].t << " to shader (" << glGetError() << ")" << std::endl;
             glUniform1i( tLocation, particlesGenerations_[i].t );
 
-            for( j = 0; j < particlesGenerations_[i].particles.size(); j++ ){
-                // Draw every particle as a point.
-                glDrawArrays( GL_POINTS, i * particlesGenerations_[0].particles.size() + j, 1 );
-            }
+            // Draw all the particles in the current generation.
+            glDrawArrays( GL_POINTS, i * particlesGenerations_[0].particles.size(), particlesGenerations_[0].particles.size() );
         }
 
         particlesGenerations_[i].t++;
         if( particlesGenerations_[i].t > (int)( particlesGenerations_.size() ) ){
             particlesGenerations_[i].t = 0;
-            //std::cout << "TO THE GROOUNND!" << std::endl;
         }
     }
 

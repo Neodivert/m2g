@@ -117,7 +117,9 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     // Set projection mode.
     glm::mat4 projectionMatrix = glm::ortho( 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f, -1.0f );
 
-    m2g::ParticleSystem particleSystem( 100, 100 );
+    m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
+    m2g::ParticleSystem fire( "data/config/particle_systems.xml", "fire" );
+    m2g::ParticleSystem fireCore( "data/config/particle_systems.xml", "fire_core" );
 
     while( !quit ){
         t0 = SDL_GetTicks();
@@ -139,7 +141,9 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
         glClear ( GL_COLOR_BUFFER_BIT );
 
         // Draw the particles system.
-        particleSystem.drawAndUpdate( projectionMatrix );
+        smoke.drawAndUpdate( projectionMatrix );
+        fire.drawAndUpdate( projectionMatrix );
+        fireCore.drawAndUpdate( projectionMatrix );
 
         // Refresh screen.
         SDL_GL_SwapWindow( window );
