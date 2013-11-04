@@ -12,7 +12,6 @@ SOURCES += \
     ../src/drawables/animation.cpp \
     ../src/drawables/animation_data.cpp \
     ../src/drawables/particles_systems/particlesystem.cpp \
-    ../src/drawables/particles_systems/particles_generation.cpp \
     ../src/text/text_renderer.cpp \
     ../src/text/bitmap_font.cpp \
     ../src/utilities/tilesets_buffer.cpp \
@@ -29,8 +28,6 @@ HEADERS += \
     ../src/drawables/animation.hpp \
     ../src/drawables/animation_data.hpp \
     ../src/drawables/particles_systems/particlesystem.hpp \
-    ../src/drawables/particles_systems/particles_generation.hpp \
-    ../src/drawables/particles_systems/particle.hpp \
     ../src/text/text_renderer.hpp \
     ../src/text/bitmap_font.hpp \
     ../src/utilities/tilesets_buffer.hpp \

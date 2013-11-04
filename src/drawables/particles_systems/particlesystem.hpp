@@ -22,7 +22,6 @@
 
 #include "../drawable.hpp"
 #include "../../dependencies/dependencies.hpp"
-#include "particles_generation.hpp"
 #include <vector>
 
 namespace m2g {
@@ -33,7 +32,7 @@ const unsigned int N_ATTRIBUTES_PER_VERTEX = 2 + 2 + 4 + 4;
 class ParticleSystem : public Drawable
 {
     private:
-        std::vector< ParticlesGeneration > particlesGenerations_;
+        std::vector< int > generationLife_;
 
         glm::vec2 baseLine_[2];
 

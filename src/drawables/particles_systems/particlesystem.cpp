@@ -114,11 +114,10 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         deltaColor_[i] = xmlNode->FloatAttribute( colorComponents[i] ) / 255.0f;
     }
 
-    // Initializa the particles vector.
-    ParticlesGeneration particlesGeneration( nParticlesPerGeneration_, 0 );
+    // Initializa the vector with the current life of every generation.
+    generationLife_.reserve( nGenerations_ ) ;
     for( i = 0; i < nGenerations_; i++ ){
-        particlesGeneration.t = -i;
-        particlesGenerations_.push_back( particlesGeneration );
+        generationLife_.push_back( i );
     }
 
     VBO_SIZE_ = N_ATTRIBUTES_PER_VERTEX * nGenerations_ * nParticlesPerGeneration_ * sizeof( GLfloat );
@@ -172,7 +171,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         vertexData[i+5] = ( ( rand() % (maxBaseColor_.g - minBaseColor_.g + 1) + minBaseColor_.g ) / 255.0f );
         vertexData[i+6] = ( ( rand() % (maxBaseColor_.b - minBaseColor_.b + 1) + minBaseColor_.b ) / 255.0f );
         vertexData[i+7] = ( ( rand() % (maxBaseColor_.a - minBaseColor_.a + 1) + minBaseColor_.a ) / 255.0f );
-        std::cout << "alfa: " << vertexData[i+7] << std::endl;
 
         // DColor.
         vertexData[i+8] = deltaColor_[0];
@@ -221,6 +219,7 @@ const std::vector<Rect>* ParticleSystem::getCollisionRects() const
 
 void ParticleSystem::draw( const glm::mat4& projectionMatrix ) const
 {
+    /*
     unsigned int i = 0, j = 0;
 
     // Bind the VAO and VBO of this particle system as the active ones.
@@ -240,13 +239,14 @@ void ParticleSystem::draw( const glm::mat4& projectionMatrix ) const
 
             for( j = 0; j < particlesGenerations_[i].particles.size(); j++ ){
                 // Send the currents particle's t and dColor to the shader.
-                //glUniform4fv( dColorLocation, 1, &dColor[0] /*&(particlesGenerations_[i].particles[j].dColor[0])*/ );
+                //glUniform4fv( dColorLocation, 1, &dColor[0] /*&(particlesGenerations_[i].particles[j].dColor[0])* );
 
                 // Draw every particle as a point.
                 glDrawArrays( GL_POINTS, i * particlesGenerations_[0].particles.size() + j, 1 );
             }
         }
     }
+    */
 }
 
 
@@ -263,20 +263,18 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
     // Send the MVP matrix to the shader.
     glUniformMatrix4fv( mvpMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0] );
 
-    for( i = 0; i < particlesGenerations_.size(); i++ ){
-        if( particlesGenerations_[i].t >= 0 ){
-            //std::cout << "Passing t = " << particlesGenerations_[i].t << " to shader" << std::endl;
-            // Send the current generation's t to the shader.
-            //std::cout << "Generation (" << i << ") sending t: " << particlesGenerations_[i].t << " to shader (" << glGetError() << ")" << std::endl;
-            glUniform1i( tLocation, particlesGenerations_[i].t );
+    for( i = 0; i < nGenerations_; i++ ){
+        if( generationLife_[i] >= 0 ){
+            // Send the current generation's life to the shader.
+            glUniform1i( tLocation, generationLife_[i] );
 
             // Draw all the particles in the current generation.
-            glDrawArrays( GL_POINTS, i * particlesGenerations_[0].particles.size(), particlesGenerations_[0].particles.size() );
+            glDrawArrays( GL_POINTS, i * nParticlesPerGeneration_, nParticlesPerGeneration_ );
         }
 
-        particlesGenerations_[i].t++;
-        if( particlesGenerations_[i].t > (int)( particlesGenerations_.size() ) ){
-            particlesGenerations_[i].t = 0;
+        generationLife_[i]++;
+        if( generationLife_[i] > nGenerations_){
+            generationLife_[i] = 0;
         }
     }
 
