@@ -118,6 +118,7 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     glm::mat4 projectionMatrix = glm::ortho( 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f, -1.0f );
 
     m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
+
     //m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
     //m2g::ParticleSystem fire( "data/config/particle_systems.xml", "fire" );
     //m2g::ParticleSystem fireCore( "data/config/particle_systems.xml", "fire_core" );

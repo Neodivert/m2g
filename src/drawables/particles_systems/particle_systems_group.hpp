@@ -29,6 +29,7 @@ class ParticleSystemsGroup : public Drawable
 {
     private:
         std::vector< ParticleSystem > particleSystems_;
+        ParticleSystem* refParticleSystem;
 
     public:
         /***
@@ -36,6 +37,14 @@ class ParticleSystemsGroup : public Drawable
          ***/
         ParticleSystemsGroup( const char* file, const char* name );
         void loadXML( const char* file, const char* name );
+
+
+        /***
+         * 2. Transformations
+         ***/
+        virtual void translate( const float& tx, const float& ty );
+        virtual void moveTo( const float& x, const float& y );
+
 
         /***
          * 3. Collision test

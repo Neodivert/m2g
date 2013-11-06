@@ -36,6 +36,9 @@ void ParticleSystemsGroup::loadXML( const char* file, const char* name )
     tinyxml2::XMLDocument xmlFile;
     tinyxml2::XMLElement* rootNode = nullptr;
     tinyxml2::XMLElement* xmlNode = nullptr;
+    glm::vec2 refBaseLineOrigin;
+    glm::vec2 currentBaseLineOrigin;
+    unsigned int i;
 
     // Try to open the requested XML file.
     xmlFile.LoadFile( file );
@@ -52,12 +55,54 @@ void ParticleSystemsGroup::loadXML( const char* file, const char* name )
         throw std::runtime_error( std::string( "ERROR: Couldn't find particle systems group [" ) + name + "]" );
     }
 
+    // Load every particle system in the group.
     xmlNode = rootNode->FirstChildElement( "particle_system" );
     while( xmlNode ){
         std::cout << "Loading [" << xmlNode->Attribute( "name" ) << "]" << std::endl;
         particleSystems_.emplace_back( file, xmlNode->Attribute( "name" ) );
 
         xmlNode = xmlNode->NextSiblingElement( "particle_system" );
+    }
+
+    // Make the origins of the different particle system's base lines match
+    // each other.
+    if( particleSystems_.size() ){
+        // TODO: Change this so the reference particle system is defined in
+        // the XML config file.
+        refParticleSystem = &particleSystems_[0];
+        refBaseLineOrigin = refParticleSystem->getBaseLineOrigin();
+
+        for( i=1; i<particleSystems_.size(); i++ ){
+            currentBaseLineOrigin = particleSystems_[i].getBaseLineOrigin();
+
+            particleSystems_[i].moveBaseLine( refBaseLineOrigin.x - currentBaseLineOrigin.x, refBaseLineOrigin.y - currentBaseLineOrigin.y );
+        }
+    }
+}
+
+
+/***
+ * 2. Transformations
+ ***/
+
+void ParticleSystemsGroup::translate( const float& tx, const float& ty )
+{
+    std::vector< ParticleSystem >::iterator it = particleSystems_.begin();
+
+    for( ; it != particleSystems_.end(); it++ )
+    {
+        it->translate( tx, ty );
+    }
+}
+
+
+void ParticleSystemsGroup::moveTo( const float& x, const float& y )
+{
+    std::vector< ParticleSystem >::iterator it = particleSystems_.begin();
+
+    for( ; it != particleSystems_.end(); it++ )
+    {
+        it->moveTo( x, y );
     }
 }
 
