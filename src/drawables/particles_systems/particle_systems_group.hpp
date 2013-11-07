@@ -22,6 +22,8 @@
 
 #include "particle_system.hpp"
 #include "../drawable.hpp"
+#include "../../dependencies/SDL_SavePNG/savepng.hpp"
+//#include "../../dependencies/SDL_SavePNG/savepng.h"
 
 namespace m2g {
 
@@ -58,6 +60,7 @@ class ParticleSystemsGroup : public Drawable
          ***/
         virtual void draw( const glm::mat4& projectionMatrix ) const ;
         virtual void drawAndUpdate( const glm::mat4& projectionMatrix );
+        void generateTileset( const char* file, const glm::vec4& currentViewport );
 };
 
 } // namespace m2g

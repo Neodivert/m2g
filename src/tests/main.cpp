@@ -119,6 +119,8 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
 
     m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
 
+    fire.generateTileset( "data/img/fire.bmp", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
+
     //m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
     //m2g::ParticleSystem fire( "data/config/particle_systems.xml", "fire" );
     //m2g::ParticleSystem fireCore( "data/config/particle_systems.xml", "fire_core" );

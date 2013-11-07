@@ -18,7 +18,8 @@ SOURCES += \
     ../src/dependencies/GL3W/gl3w.c \
     ../src/dependencies/msl/src/shader_loader.cpp \
     ../src/drawables/particles_systems/particle_systems_group.cpp \
-    ../src/drawables/particles_systems/particle_system.cpp
+    ../src/drawables/particles_systems/particle_system.cpp \
+    ../src/dependencies/SDL_SavePNG/savepng.cpp
 
 HEADERS += \
     ../src/dependencies/tinyxml2/tinyxml2.h \
@@ -36,11 +37,22 @@ HEADERS += \
     ../src/dependencies/GL3W/gl3.h \
     ../src/dependencies/msl/src/shader_loader.hpp \
     ../src/drawables/particles_systems/particle_systems_group.hpp \
-    ../src/drawables/particles_systems/particle_system.hpp
+    ../src/drawables/particles_systems/particle_system.hpp \
+    ../src/dependencies/SDL_SavePNG/savepng.hpp
 
-LIBS += -lGL -lGLU -lSDL2 -lSDL2_image -lSDL2_ttf
+LIBS += -lGL -lGLU -lpng -lSDL2 -lSDL2_image -lSDL2_ttf `sdl-config --libs`
 
-CXXFLAGS += -Wall -Werrors -pedantic-errors
+#LDFLAGS += `sdl-config --libs`
+
+#QMAKE_CFLAGS += $$system(sdl-config --cflags)
+#QMAKE_CXXFLAGS += $$system(sdl-config --cflags)
+
+#CXXFLAGS += -Wall -Werrors -pedantic-errors
+
+INCLUDEPATH += /usr/local/include/SDL2
+
+#CFLAGS += -g `sdl-config --cflags`
+#LDFLAGS += `sdl-config --libs` -lpng
 
 # http://qt-project.org/forums/viewthread/19989
 CONFIG += c++11

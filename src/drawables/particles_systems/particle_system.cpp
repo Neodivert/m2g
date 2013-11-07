@@ -166,7 +166,8 @@ void ParticleSystem::loadXML( const char* file, const char*name )
 
         // Compute the final position of this particle and use it to update
         // the particle system's boundary box.
-        updateBoundaryBox( vertexData[i] + vertexData[i+2] * nGenerations_, ( vertexData[i+1] + vertexData[i+3] * nGenerations_ ) );
+        //std::cout << "y: " << -( vertexData[i+1] + vertexData[i+3] * nGenerations_ ) << ", ";
+        updateBoundaryBox( vertexData[i] + vertexData[i+2] * nGenerations_, -( vertexData[i+1] + vertexData[i+3] * nGenerations_ ) );
 
         // Color.
         vertexData[i+4] = ( ( rand() % (maxBaseColor_.r - minBaseColor_.r + 1) + minBaseColor_.r ) / 255.0f );
@@ -296,7 +297,7 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
 {
     unsigned int i = 0;
 
-    glm::mat4 transformationMatrix = projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( boundaryBox.x + baseLine_[0].x, boundaryBox.y + baseLine_[0].y, 0.0f ) );
+    glm::mat4 transformationMatrix = projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( boundaryBox.x + baseLine_[0].x, boundaryBox.height + boundaryBox.y + baseLine_[0].y, 0.0f ) );
 
     glPointSize( particleSize_ );
 
@@ -340,8 +341,9 @@ void ParticleSystem::updateBoundaryBox( const float& x, const float& y )
 
     if( y < boundaryBox.y ){
         boundaryBox.y = y;
-    }else if( y > (boundaryBox.y + boundaryBox.height) ){
+    }else if( y > (boundaryBox.y + boundaryBox.height) ){  
         boundaryBox.height = y - boundaryBox.y;
+        std::cout << "new Height: " << boundaryBox.height << std::endl;
     }
 }
 
