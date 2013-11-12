@@ -81,6 +81,7 @@ class ParticleSystem : public Drawable
          * 2. Getters and setters
          ***/
         glm::vec2 getBaseLineOrigin() const ;
+        unsigned int getNGenerations() const ;
 
 
         /***

@@ -159,7 +159,7 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         vertexData[i+1] = rand() % ((int)(baseLine_[1].y) + 1);
 
         // Velocity.
-        angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 ) + ( (int)minAngle_ * 10 ) ) * 0.1;
+        angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 + 1 ) + ( (int)minAngle_ * 10 ) ) * 0.1;
         //std::cout << "(" << minAngle_ << ", " << maxAngle_ << "): " << angle << std::endl;
         vertexData[i+2] = cos( angle * PI / 180.0f );
         vertexData[i+3] = -sin( angle * PI / 180.0f );
@@ -224,6 +224,11 @@ glm::vec2 ParticleSystem::getBaseLineOrigin() const
     return baseLine_[0];
 }
 
+
+unsigned int ParticleSystem::getNGenerations() const
+{
+    return nGenerations_;
+}
 
 /***
  * 3. Transformations

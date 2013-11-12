@@ -18,6 +18,7 @@
 ***/
 
 #include "particle_systems_group.hpp"
+#include <boost/math/common_factor_rt.hpp>
 
 namespace m2g {
 
@@ -39,6 +40,8 @@ void ParticleSystemsGroup::loadXML( const char* file, const char* name )
     glm::vec2 refBaseLineOrigin;
     glm::vec2 currentBaseLineOrigin;
     unsigned int i;
+    const Rect* refBoundaryBox;
+    const Rect* currentBoundaryBox;
 
     // Try to open the requested XML file.
     xmlFile.LoadFile( file );
@@ -72,11 +75,14 @@ void ParticleSystemsGroup::loadXML( const char* file, const char* name )
         refParticleSystem = &particleSystems_[0];
         refBaseLineOrigin = refParticleSystem->getBaseLineOrigin();
         boundaryBox = *refParticleSystem->getBoundaryBox();
+        refBoundaryBox = refParticleSystem->getBoundaryBox();
 
         for( i=1; i<particleSystems_.size(); i++ ){
             currentBaseLineOrigin = particleSystems_[i].getBaseLineOrigin();
+            currentBoundaryBox = particleSystems_[i].getBoundaryBox();
 
-            particleSystems_[i].moveBaseLine( refBaseLineOrigin.x - currentBaseLineOrigin.x, refBaseLineOrigin.y - currentBaseLineOrigin.y );
+            std::cout << "refH: " << refBoundaryBox->height << ", currentY: " << currentBoundaryBox->height << std::endl;
+            particleSystems_[i].moveBaseLine( refBaseLineOrigin.x - currentBaseLineOrigin.x, refBoundaryBox->height - currentBoundaryBox->height );
         }
     }
 }
@@ -156,6 +162,12 @@ void ParticleSystemsGroup::generateTileset( const char* file, const glm::vec4& c
     GLsizei tileWidth, tileHeight;
     GLint maxRenderbufferSize;
     SDL_Surface* tileSurface = nullptr;
+    SDL_Surface* tilesetSurface = nullptr;
+    SDL_Rect dstRect = { 0, 0, 0, 0 };
+    unsigned int i;
+    unsigned int nTiles = 0;
+    unsigned int nRows, nColumns;
+    unsigned int row, column;
 
     // Round off the tile width to its nearest upper pow of two.
     tileWidth = 1;
@@ -169,6 +181,31 @@ void ParticleSystemsGroup::generateTileset( const char* file, const glm::vec4& c
         tileHeight <<= 1;
     }
 
+    // Compute the least common multiple of all the particle system's numbers
+    // of generations. This will be the number of tiles in the tileset.
+    switch( particleSystems_.size() ){
+        case 0:
+            return;
+        break;
+        case 1:
+            nTiles = particleSystems_[0].getNGenerations();
+        break;
+        default:
+            nTiles = boost::math::lcm( particleSystems_[0].getNGenerations(), particleSystems_[1].getNGenerations() );
+            for( i=2; i<particleSystems_.size(); i++ ){
+                nTiles = boost::math::lcm( nTiles, particleSystems_[i].getNGenerations() );
+            }
+    }
+
+    // Compute the number of rows and columns in the tileset.
+    // FIXME: Compute it better.
+    nRows = 1;
+    nColumns = nTiles;
+
+    std::cout << "nTiles: " << nTiles << std::endl;
+    std::cout << "Tileset dimensions (tiles): " << nRows << " x " << nColumns << std::endl;
+
+    // Create a SDL surface for tiles.
     #if SDL_BYTEORDER == SDL_BIG_ENDIAN
         Uint32 rmask = 0xff000000;
         Uint32 gmask = 0x00ff0000;
@@ -232,23 +269,56 @@ void ParticleSystemsGroup::generateTileset( const char* file, const glm::vec4& c
     glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE);
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
-    glClear( GL_COLOR_BUFFER_BIT );
-    drawAndUpdate( glm::ortho( 0.0f, (float)tileWidth, 0.0f, (float)tileHeight, 1.0f, -1.0f ) /* glm::ortho( 0.0f, (float)tileWidth, (float)tileHeight, 0.0f, 1.0f, -1.0f ) */ );
+    // Create a SDL surface for the full tileset.
+    tilesetSurface = SDL_CreateRGBSurface( 0,                       // flags
+                                           tileWidth * nColumns,    // width
+                                           tileHeight * nRows,      // height
+                                           32,                      // depth
+                                           rmask,                   // RGBA masks
+                                           gmask,
+                                           bmask,
+                                           amask );
+    if( !tilesetSurface ){
+        throw std::runtime_error( std::string( "ERROR creating tileset surface - " ) + SDL_GetError() );
+    }
+    SDL_FillRect( tilesetSurface, nullptr, 0 );
 
-    glReadBuffer( GL_COLOR_ATTACHMENT0 );
 
-    checkOpenGL( "ParticleSystemsGroup::geenerateTileset() - 6" );
+    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 
-    glReadPixels( 0, 0, tileWidth, tileHeight, GL_RGBA, GL_UNSIGNED_BYTE, tileSurface->pixels );
+    // Render every frame in the particle system animation and blit it to the
+    // tileset surface.
+    i = 0;
+    for( row=0; row<nRows, i<nTiles; row++ ){
+        dstRect.y = row * tileHeight;
+        for( column=0; column<nColumns, i<nTiles; column++ ){
+            dstRect.x = column * tileWidth;
+
+            glClear( GL_COLOR_BUFFER_BIT );
+
+            drawAndUpdate( glm::ortho( 0.0f, (float)tileWidth, 0.0f, (float)tileHeight, 1.0f, -1.0f ) /* glm::ortho( 0.0f, (float)tileWidth, (float)tileHeight, 0.0f, 1.0f, -1.0f ) */ );
+
+            glReadBuffer( GL_COLOR_ATTACHMENT0 );
+
+            checkOpenGL( "ParticleSystemsGroup::geenerateTileset() - 6" );
+
+            glReadPixels( 0, 0, tileWidth, tileHeight, GL_RGBA, GL_UNSIGNED_BYTE, tileSurface->pixels );
+
+            // Thanks to http://wiki.libsdl.org/SDL_CreateRGBSurface! :D
+            SDL_SetSurfaceBlendMode( tileSurface , SDL_BLENDMODE_NONE );
+            std::cout << "Blitting: " << SDL_BlitSurface( tileSurface, nullptr, tilesetSurface, &dstRect ) << std::endl;
+
+            i++;
+        }
+    }
 
     //for( unsigned int i = 0; i<tileWidth*tileHeight; i++ ){
     //    std::cout << (int)( ( (char *)( tileSurface->pixels ) )[i] ) << ", ";
     //}
 
-
     checkOpenGL( "ParticleSystemsGroup::geenerateTileset() - 7" );
 
-    std::cout << "SavePNG: " << SDL_SavePNG( tileSurface, "data/fire.png" ) << std::endl;
+    std::cout << "SavePNG: " << SDL_SavePNG( tilesetSurface, file ) << std::endl;
 
     if( glCheckFramebufferStatus( GL_DRAW_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE ){
         std::cerr << "ERROR - Framebuffer not complete" << std::endl;

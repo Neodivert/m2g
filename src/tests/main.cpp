@@ -119,12 +119,26 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
 
     m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
 
-    fire.generateTileset( "data/img/fire.bmp", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
+    fire.generateTileset( "data/img/fire.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
 
-    //m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
-    //m2g::ParticleSystem fire( "data/config/particle_systems.xml", "fire" );
-    //m2g::ParticleSystem fireCore( "data/config/particle_systems.xml", "fire_core" );
 
+    fire.moveTo( 250, 0 );
+    m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
+    /*
+    m2g::ParticleSystem electricField( "data/config/particle_systems.xml", "electric_field" );
+    m2g::ParticleSystem snow( "data/config/particle_systems.xml", "snow" );
+    m2g::ParticleSystem fireCore( "data/config/particle_systems.xml", "fire_core" );
+    */
+
+    SDL_ShowCursor( SDL_DISABLE );
+
+    /*
+    electricField.moveTo( 200, 0 );
+    snow.moveTo( 400, 0 );
+    fireCore.moveTo( 300, 300 );
+    */
+
+    glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
     while( !quit ){
         t0 = SDL_GetTicks();
         while( (t1 - t0) < REFRESH_TIME ){
@@ -134,6 +148,9 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
                         // Player wants to exit the game.
                         quit = true;
                     break;
+                    //case SDL_MOUSEMOTION:
+                    //    smoke.moveTo( event.motion.x, event.motion.y );
+                    //break;
                 }
             }
             t1 = SDL_GetTicks();
@@ -146,9 +163,10 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
 
         // Draw the particles system.
         fire.drawAndUpdate( projectionMatrix );
-        //smoke.drawAndUpdate( projectionMatrix );
-        //fire.drawAndUpdate( projectionMatrix );
-        //fireCore.drawAndUpdate( projectionMatrix );
+        smoke.drawAndUpdate( projectionMatrix );
+        /*electricField.drawAndUpdate( projectionMatrix );
+        fireCore.drawAndUpdate( projectionMatrix );
+        snow.drawAndUpdate( projectionMatrix );*/
 
         // Refresh screen.
         SDL_GL_SwapWindow( window );

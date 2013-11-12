@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 
 <particle_systems>
-	<!-- Fire -->
-	<particle_system name="fire">
-		<particles generations="50" particles_per_generation="150" particle_size="5" />
-		<base_line x1="200.0" y1="0.0" />
-		<angle min="85.0" max="95.0" />
-		<base_color r="230" g="95" b="0" a="50" />
-		<delta_color r="0" g="0" b="0" a="-1" />
-	</particle_system>
-
 	<!-- Smoke -->
 	<particle_system name="smoke">
 		<particles generations="70" particles_per_generation="150" particle_size="5" />
@@ -17,6 +8,15 @@
 		<angle min="85.0" max="95.0" />
 		<base_color r="0" g="0" b="0" a="50" />
 		<delta_color r="0" g="0" b="0" a="-0.71" />
+	</particle_system>
+
+	<!-- Fire -->
+	<particle_system name="fire">
+		<particles generations="50" particles_per_generation="150" particle_size="5" />
+		<base_line x1="200.0" y1="0.0" />
+		<angle min="85.0" max="95.0" />
+		<base_color r="230" g="95" b="0" a="50" />
+		<delta_color r="0" g="0" b="0" a="-1" />
 	</particle_system>
 
 	<!-- Fire core -->
@@ -28,8 +28,26 @@
 		<delta_color r="0" g="0" b="0" a="-2" />
 	</particle_system>
 
+	<!-- Electric field -->
+	<particle_system name="electric_field">
+		<particles generations="70" particles_per_generation="10" particle_size="5" />
+		<base_line x1="100.0" y1="100.0" />
+		<angle min="0.0" max="0.0" />
+		<base_color r="0" g="0" b="150-255" a="50" />
+		<delta_color r="0" g="0" b="0" a="0" />
+	</particle_system>
+
+	<!-- Snow -->
+	<particle_system name="snow">
+		<particles generations="70" particles_per_generation="10" particle_size="5" />
+		<base_line x1="150.0" y1="0.0" />
+		<angle min="265.0" max="275.0" />
+		<base_color r="255" g="255" b="255" a="200" />
+		<delta_color r="0" g="0" b="0" a="0" />
+	</particle_system>
+
 	<particle_systems_group name="fire">
-		<particle_system name="smoke" />
+		<!-- <particle_system name="smoke" /> -->
 		<particle_system name="fire" />
 		<particle_system name="fire_core" />
 	</particle_systems_group>
