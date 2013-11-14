@@ -51,6 +51,10 @@ class ParticleSystem : public Drawable
         // particle in the system.
         float minAngle_, maxAngle_;
 
+        // Range of speeds used to determine the initial velocity modulus
+        // of every particle in the system.
+        float minSpeed_, maxSpeed_;
+
         // Range of colors used to determine the initial color of every
         // particle in the system.
         glm::ivec4 minBaseColor_, maxBaseColor_;

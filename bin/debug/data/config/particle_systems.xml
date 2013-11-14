@@ -5,7 +5,7 @@
 	<particle_system name="smoke">
 		<particles generations="70" particles_per_generation="150" particle_size="5" />
 		<base_line x1="200.0" y1="0.0" />
-		<angle min="85.0" max="95.0" />
+		<velocity minAngle="85.0" maxAngle="95.0" modulus="1.0" />
 		<base_color r="0" g="0" b="0" a="50" />
 		<delta_color r="0" g="0" b="0" a="-0.71" />
 	</particle_system>
@@ -14,7 +14,7 @@
 	<particle_system name="fire">
 		<particles generations="50" particles_per_generation="150" particle_size="5" />
 		<base_line x1="200.0" y1="0.0" />
-		<angle min="85.0" max="95.0" />
+		<velocity minAngle="85.0" maxAngle="95.0" modulus="1.0" />
 		<base_color r="230" g="95" b="0" a="50" />
 		<delta_color r="0" g="0" b="0" a="-1" />
 	</particle_system>
@@ -23,25 +23,25 @@
 	<particle_system name="fire_core">
 		<particles generations="25" particles_per_generation="150" particle_size="5" />
 		<base_line x1="200.0" y1="0.0" />
-		<angle min="85.0" max="95.0" />
+		<velocity minAngle="85.0" maxAngle="95.0" modulus="1.0" />
 		<base_color r="200-255" g="0" b="0" a="50" />
 		<delta_color r="0" g="0" b="0" a="-2" />
 	</particle_system>
 
 	<!-- Foam -->
 	<particle_system name="foam">
-		<particles generations="25" particles_per_generation="25" particle_size="3" />
+		<particles generations="15" particles_per_generation="100" particle_size="3" />
 		<base_line x1="5.0" y1="5.0" />
-		<angle min="90.0" max="180.0" />
-		<base_color r="170" g="170" b="170" a="100" />
-		<delta_color r="0" g="0" b="0" a="-4" />
+		<velocity minAngle="100.0" maxAngle="170.0" modulus="2.5" />
+		<base_color r="200" g="200" b="200" a="100" />
+		<delta_color r="0" g="0" b="0" a="-6.67" />
 	</particle_system>
 
 	<!-- Electric field -->
 	<particle_system name="electric_field">
 		<particles generations="70" particles_per_generation="10" particle_size="5" />
 		<base_line x1="100.0" y1="100.0" />
-		<angle min="0.0" max="0.0" />
+		<velocity minAngle="0.0" maxAngle="0.0" modulus="1.0" />
 		<base_color r="0" g="0" b="150-255" a="50" />
 		<delta_color r="0" g="0" b="0" a="0" />
 	</particle_system>
@@ -50,7 +50,7 @@
 	<particle_system name="snow">
 		<particles generations="70" particles_per_generation="10" particle_size="5" />
 		<base_line x1="150.0" y1="0.0" />
-		<angle min="265.0" max="275.0" />
+		<velocity minAngle="265.0" maxAngle="275.0" modulus="1.0" />
 		<base_color r="255" g="255" b="255" a="200" />
 		<delta_color r="0" g="0" b="0" a="0" />
 	</particle_system>

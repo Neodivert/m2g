@@ -49,6 +49,7 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         "r", "g", "b", "a"
     };
     float angle;
+    float speed;
     std::string str;
 
     GLint currentProgram = 0;
@@ -87,10 +88,23 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     baseLine_[1].x = xmlNode->FloatAttribute( "x1" );
     baseLine_[1].y = xmlNode->FloatAttribute( "y1" );
 
-    // Initialize the angle range.
-    xmlNode = rootNode->FirstChildElement( "angle" );
-    minAngle_ = xmlNode->FloatAttribute( "min" );
-    maxAngle_ = xmlNode->FloatAttribute( "max" );
+    // Initialize the velocity info.
+    xmlNode = rootNode->FirstChildElement( "velocity" );
+    minAngle_ = xmlNode->FloatAttribute( "minAngle" );
+    maxAngle_ = xmlNode->FloatAttribute( "maxAngle" );
+
+    str = xmlNode->Attribute( "modulus" );
+    if( str.find( '-' ) != std::string::npos ){
+        minSpeed_ = atof( ( str.substr( 0, str.find( '-' ) ) ).c_str() );
+        maxSpeed_ = atof( ( str.substr( str.find( '-' ) + 1 ) ).c_str() );
+    }else{
+        minSpeed_ = atof( str.c_str() );
+        maxSpeed_ = atof( str.c_str() );
+    }
+
+    if( !strcmp( name, "foam" ) ){
+        std::cout << "\t\t\tspeed: (" << minSpeed_ << ", " << maxSpeed_ << ")" << std::endl;
+    }
 
     // Initialize the base color range.
     xmlNode = rootNode->FirstChildElement( "base_color" );
@@ -159,10 +173,16 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         vertexData[i+1] = rand() % ((int)(baseLine_[1].y) + 1);
 
         // Velocity.
-        angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 + 1 ) + ( (int)minAngle_ * 10 ) ) * 0.1;
+        angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 + 1 ) * 0.1f + minAngle_ );
+        speed = ( rand() % (int)( (maxSpeed_-minSpeed_)*10 + 1 ) * 0.1f + minSpeed_ );
+
+        if( !strcmp( name, "foam" ) ){
+            std::cout << "speed: " << speed << ", ";
+        }
+
         //std::cout << "(" << minAngle_ << ", " << maxAngle_ << "): " << angle << std::endl;
-        vertexData[i+2] = cos( angle * PI / 180.0f );
-        vertexData[i+3] = -sin( angle * PI / 180.0f );
+        vertexData[i+2] = speed * cos( angle * PI / 180.0f );
+        vertexData[i+3] = speed * -sin( angle * PI / 180.0f );
 
         // Compute the final position of this particle and use it to update
         // the particle system's boundary box.
