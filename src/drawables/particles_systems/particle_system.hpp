@@ -109,7 +109,10 @@ class ParticleSystem : public Drawable
          ***/
         virtual void draw( const glm::mat4& projectionMatrix ) const ;
         virtual void drawAndUpdate( const glm::mat4& projectionMatrix );
-        void generateTileset( const char* file, const glm::vec4& currentViewport );
+        void generateTileset( const char* file,
+                              const glm::vec4& currentViewport,
+                              GLsizei tileWidth = 0,
+                              GLsizei tileHeight = 0 );
 
 
         /***

@@ -117,18 +117,18 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     // Set projection mode.
     glm::mat4 projectionMatrix = glm::ortho( 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f, -1.0f );
 
-    m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
-    fire.generateTileset( "data/img/fire.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
+    //m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
+    //fire.generateTileset( "data/img/fire.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
 
     m2g::ParticleSystem foam( "data/config/particle_systems.xml", "foam" );
-    foam.generateTileset( "data/img/foam.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
+    foam.generateTileset( "data/img/foam.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ), 128, 128 );
 
 
-    fire.moveTo( 250, 0 );
+    //fire.moveTo( 250, 0 );
     foam.moveTo( 350, 350 );
 
-    m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
     /*
+    m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
     m2g::ParticleSystem electricField( "data/config/particle_systems.xml", "electric_field" );
     m2g::ParticleSystem snow( "data/config/particle_systems.xml", "snow" );
     m2g::ParticleSystem fireCore( "data/config/particle_systems.xml", "fire_core" );
@@ -166,8 +166,8 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
         glClear ( GL_COLOR_BUFFER_BIT );
 
         // Draw the particles system.
-        fire.drawAndUpdate( projectionMatrix );
-        smoke.drawAndUpdate( projectionMatrix );
+        //fire.drawAndUpdate( projectionMatrix );
+        //smoke.drawAndUpdate( projectionMatrix );
         foam.drawAndUpdate( projectionMatrix );
         /*electricField.drawAndUpdate( projectionMatrix );
         fireCore.drawAndUpdate( projectionMatrix );

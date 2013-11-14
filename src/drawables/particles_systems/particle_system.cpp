@@ -352,11 +352,13 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
 }
 
 
-void ParticleSystem::generateTileset( const char* file, const glm::vec4& currentViewport )
+void ParticleSystem::generateTileset( const char* file,
+                                      const glm::vec4& currentViewport,
+                                      GLsizei tileWidth,
+                                      GLsizei tileHeight )
 {
     GLuint framebuffer;
     GLuint renderBuffer;
-    GLsizei tileWidth, tileHeight;
     GLint maxRenderbufferSize;
     SDL_Surface* tileSurface = nullptr;
     SDL_Surface* tilesetSurface = nullptr;
@@ -366,16 +368,22 @@ void ParticleSystem::generateTileset( const char* file, const glm::vec4& current
     unsigned int nRows, nColumns;
     unsigned int row, column;
 
-    // Round off the tile width to its nearest upper pow of two.
-    tileWidth = 1;
-    while( tileWidth < boundaryBox.width ){
-        tileWidth <<= 1;
-    }
+    if( tileWidth && tileHeight ){
+        if( (tileWidth % 2) || (tileHeight % 2) ){
+            throw std::runtime_error( "ERROR: tile's width and/or height is not a power of two" );
+        }
+    }else{
+        // Round off the tile width to its nearest upper pow of two.
+        tileWidth = 1;
+        while( tileWidth < boundaryBox.width ){
+            tileWidth <<= 1;
+        }
 
-    // Round off the tile height to its nearest upper pow of two.
-    tileHeight = 1;
-    while( tileHeight < boundaryBox.height ){
-        tileHeight <<= 1;
+        // Round off the tile height to its nearest upper pow of two.
+        tileHeight = 1;
+        while( tileHeight < boundaryBox.height ){
+            tileHeight <<= 1;
+        }
     }
 
     // Compute the number of rows and columns in the tileset.
