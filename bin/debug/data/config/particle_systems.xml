@@ -28,6 +28,15 @@
 		<delta_color r="0" g="0" b="0" a="-2" />
 	</particle_system>
 
+	<!-- Foam -->
+	<particle_system name="foam">
+		<particles generations="25" particles_per_generation="25" particle_size="3" />
+		<base_line x1="5.0" y1="5.0" />
+		<angle min="90.0" max="180.0" />
+		<base_color r="170" g="170" b="170" a="100" />
+		<delta_color r="0" g="0" b="0" a="-4" />
+	</particle_system>
+
 	<!-- Electric field -->
 	<particle_system name="electric_field">
 		<particles generations="70" particles_per_generation="10" particle_size="5" />
