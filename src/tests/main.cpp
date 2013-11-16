@@ -118,11 +118,10 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     glm::mat4 projectionMatrix = glm::ortho( 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f, -1.0f );
 
     m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
-    fire.generateTileset( "data/img/fire.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
+    fire.generateTileset( "data/img/fire.png", 5 );
 
     m2g::ParticleSystem foam( "data/config/particle_systems.xml", "foam" );
-    foam.generateTileset( "data/img/foam.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ), 128, 128, 5 );
-
+    foam.generateTileset( "data/img/foam.png", 128, 128, 5 );
 
     fire.moveTo( 250, 0 );
     foam.moveTo( 350, 350 );

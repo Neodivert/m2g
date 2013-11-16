@@ -39,12 +39,9 @@ void GraphicsLibrary::loadAll( std::string libraryFolder )
     std::string imagesFolder;
     std::string libraryFile;
 
-    std::cout << "Loading [" << libraryFolder.c_str() << "] (1)" << std::endl;
-
     // Use the library folder path to get the paths to the images folder and metadata file.
     getLibraryPaths( libraryFolder, imagesFolder, libraryFile );
 
-    std::cout << "Loading [" << libraryFolder.c_str() << "] (2)" << std::endl;
     // Load the "tilesets" XML node.
     xmlNode = getTilesetsRootNode( libraryFile );
 
@@ -62,7 +59,6 @@ void GraphicsLibrary::loadAll( std::string libraryFolder )
         }
     }
 
-    std::cout << "Loading [" << libraryFolder.c_str() << "] (3)" << std::endl;
     // Load the "animations" XML node.
     xmlNode = getAnimationDataRootNode( libraryFile );
 
@@ -79,7 +75,6 @@ void GraphicsLibrary::loadAll( std::string libraryFolder )
             xmlNode = xmlNode->NextSiblingElement();
         }
     }
-    std::cout << "Loading [" << libraryFolder.c_str() << "] (4)" << std::endl;
 }
 
 

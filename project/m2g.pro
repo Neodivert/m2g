@@ -19,7 +19,9 @@ SOURCES += \
     ../src/dependencies/msl/src/shader_loader.cpp \
     ../src/drawables/particles_systems/particle_systems_group.cpp \
     ../src/drawables/particles_systems/particle_system.cpp \
-    ../src/dependencies/SDL_SavePNG/savepng.cpp
+    ../src/dependencies/SDL_SavePNG/savepng.cpp \
+    ../src/drawables/particles_systems/particles_set.cpp \
+    ../src/drawables/particles_systems/ps_tileset_info.cpp
 
 HEADERS += \
     ../src/dependencies/tinyxml2/tinyxml2.h \
@@ -38,7 +40,9 @@ HEADERS += \
     ../src/dependencies/msl/src/shader_loader.hpp \
     ../src/drawables/particles_systems/particle_systems_group.hpp \
     ../src/drawables/particles_systems/particle_system.hpp \
-    ../src/dependencies/SDL_SavePNG/savepng.hpp
+    ../src/dependencies/SDL_SavePNG/savepng.hpp \
+    ../src/drawables/particles_systems/particles_set.hpp \
+    ../src/drawables/particles_systems/ps_tileset_info.hpp
 
 LIBS += -lGL -lGLU -lpng -lSDL2 -lSDL2_image -lSDL2_ttf `sdl-config --libs`
 

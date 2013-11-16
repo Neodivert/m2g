@@ -20,17 +20,16 @@
 #ifndef PARTICLESYSTEM_HPP
 #define PARTICLESYSTEM_HPP
 
-#include "../drawable.hpp"
+#include "particles_set.hpp"
 #include "../../dependencies/dependencies.hpp"
 #include <vector>
-#include "../../dependencies/SDL_SavePNG/savepng.hpp"
 
 namespace m2g {
 
 // Attributes per vertex = 12 = 2D pos + 2D vel + 4D color + 4D color variation.
 const unsigned int N_ATTRIBUTES_PER_VERTEX = 2 + 2 + 4 + 4;
 
-class ParticleSystem : public Drawable
+class ParticleSystem : public ParticlesSet
 {
     private:
         // Vector with the current life of every generation of particles.
@@ -41,7 +40,6 @@ class ParticleSystem : public Drawable
 
         // Number of generations and particles per generation in the particle
         // system.
-        unsigned int nGenerations_;
         unsigned int nParticlesPerGeneration_;
 
         // Particle size.
@@ -93,27 +91,13 @@ class ParticleSystem : public Drawable
          * 3. Transformations
          ***/
         void moveBaseLine( const float& tx, const float& ty );
-        //virtual void translate( const float& tx, const float& ty );
-        //virtual void moveTo( const float& x, const float& y );
 
 
         /***
-         * 4. Collision test
-         ***/
-        virtual bool collide( const Drawable& b ) const ;
-        virtual const std::vector<Rect>* getCollisionRects() const ;
-
-
-        /***
-         * 5. Drawing
+         * 4. Drawing
          ***/
         virtual void draw( const glm::mat4& projectionMatrix ) const ;
         virtual void drawAndUpdate( const glm::mat4& projectionMatrix );
-        void generateTileset( const char* file,
-                              const glm::vec4& currentViewport,
-                              GLsizei tileWidth = 0,
-                              GLsizei tileHeight = 0,
-                              unsigned int nColumns = 0 );
 
 
         /***

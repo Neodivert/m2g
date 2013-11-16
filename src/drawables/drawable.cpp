@@ -61,9 +61,22 @@ GLfloat Drawable::getX() const
     return boundaryBox.x;
 }
 
+
 glm::vec2 Drawable::getPosition() const
 {
     return glm::vec2( boundaryBox.x, boundaryBox.y );
+}
+
+
+GLfloat Drawable::getWidth() const
+{
+    return boundaryBox.width;
+}
+
+
+GLfloat Drawable::getHeight() const
+{
+    return boundaryBox.height;
 }
 
 

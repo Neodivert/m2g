@@ -172,13 +172,11 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 + 1 ) * 0.1f + minAngle_ );
         speed = ( rand() % (int)( (maxSpeed_-minSpeed_)*10 + 1 ) * 0.1f + minSpeed_ );
 
-        //std::cout << "(" << minAngle_ << ", " << maxAngle_ << "): " << angle << std::endl;
         vertexData[i+2] = speed * cos( angle * PI / 180.0f );
         vertexData[i+3] = speed * -sin( angle * PI / 180.0f );
 
         // Compute the final position of this particle and use it to update
         // the particle system's boundary box.
-        //std::cout << "y: " << -( vertexData[i+1] + vertexData[i+3] * nGenerations_ ) << ", ";
         updateBoundaryBox( vertexData[i] + vertexData[i+2] * nGenerations_, -( vertexData[i+1] + vertexData[i+3] * nGenerations_ ) );
 
         // Color.
@@ -220,9 +218,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         checkOpenGL( "Particles system () - Setting uniform locations" );
     }
 
-    std::cout << "Boundary box: (" << boundaryBox.x << ", " << boundaryBox.y << ", " << boundaryBox.width << ", " << boundaryBox.height << ")" << std::endl;
-    std::cout << "Base line: (" << baseLine_[0].x << ", " << baseLine_[0].y << ") - (" << baseLine_[0].x << ", " << baseLine_[0].y << ")" << std::endl;
-
     checkOpenGL( "Particles System constructor" );
 }
 
@@ -257,56 +252,35 @@ void ParticleSystem::moveBaseLine( const float& tx, const float& ty )
 
 
 /***
- * 4. Collision test
- ***/
-
-bool ParticleSystem::collide( const Drawable& b ) const
-{
-    b.getX();
-    // FIXME: Use the boundary box in future versions.
-    return false;
-}
-
-const std::vector<Rect>* ParticleSystem::getCollisionRects() const
-{
-    return nullptr;
-}
-
-
-/***
  * 5. Drawing
  ***/
 
 void ParticleSystem::draw( const glm::mat4& projectionMatrix ) const
 {
-    /*
-    unsigned int i = 0, j = 0;
+    unsigned int i = 0;
+
+    glm::mat4 transformationMatrix = projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( boundaryBox.x + baseLine_[0].x, boundaryBox.height + boundaryBox.y + baseLine_[0].y, 0.0f ) );
+
+    glPointSize( particleSize_ );
 
     // Bind the VAO and VBO of this particle system as the active ones.
     glBindVertexArray( vao_ );
     glBindBuffer( GL_ARRAY_BUFFER, vbo_ );
 
     // Send the MVP matrix to the shader.
-    glUniformMatrix4fv( mvpMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0] );
+    glUniformMatrix4fv( mvpMatrixLocation, 1, GL_FALSE, &transformationMatrix[0][0] );
 
-    //glUniform4fv( dColorLocation, 1, &dColor[0] );
-    std::cout << glGetError() << std::endl;
+    for( i = 0; i < nGenerations_; i++ ){
+        if( generationLife_[i] >= 0 ){
+            // Send the current generation's life to the shader.
+            glUniform1i( tLocation, generationLife_[i] );
 
-    for( i = 0; i < particlesGenerations_.size(); i++ ){
-        if( particlesGenerations_[i].t >= 0 ){
-            // Send the current generation's t to the shader.
-            glUniform1i( tLocation, particlesGenerations_[i].t );
-
-            for( j = 0; j < particlesGenerations_[i].particles.size(); j++ ){
-                // Send the currents particle's t and dColor to the shader.
-                //glUniform4fv( dColorLocation, 1, &dColor[0] /*&(particlesGenerations_[i].particles[j].dColor[0])* );
-
-                // Draw every particle as a point.
-                glDrawArrays( GL_POINTS, i * particlesGenerations_[0].particles.size() + j, 1 );
-            }
+            // Draw all the particles in the current generation.
+            glDrawArrays( GL_POINTS, i * nParticlesPerGeneration_, nParticlesPerGeneration_ );
         }
     }
-    */
+
+    glPointSize( 1 );
 }
 
 
@@ -335,203 +309,12 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
         }
 
         generationLife_[i]++;
-        if( generationLife_[i] > nGenerations_){
+        if( generationLife_[i] > static_cast< int >( nGenerations_ ) ){
             generationLife_[i] = 0;
         }
     }
 
     glPointSize( 1 );
-}
-
-
-void ParticleSystem::generateTileset( const char* file,
-                                      const glm::vec4& currentViewport,
-                                      GLsizei tileWidth,
-                                      GLsizei tileHeight,
-                                      unsigned int nColumns )
-{
-    GLuint framebuffer;
-    GLuint renderBuffer;
-    GLint maxRenderbufferSize;
-    SDL_Surface* tileSurface = nullptr;
-    SDL_Surface* tilesetSurface = nullptr;
-    SDL_Rect dstRect = { 0, 0, 0, 0 };
-    unsigned int i;
-    unsigned int nTiles = 0;
-    unsigned int nRows;
-    unsigned int row, column;
-
-    if( tileWidth && tileHeight ){
-        if( (tileWidth % 2) || (tileHeight % 2) ){
-            throw std::runtime_error( "ERROR: tile's width and/or height is not a power of two" );
-        }
-    }else{
-        // Round off the tile width to its nearest upper pow of two.
-        tileWidth = 1;
-        while( tileWidth < boundaryBox.width ){
-            tileWidth <<= 1;
-        }
-
-        // Round off the tile height to its nearest upper pow of two.
-        tileHeight = 1;
-        while( tileHeight < boundaryBox.height ){
-            tileHeight <<= 1;
-        }
-    }
-
-    // Compute the number of rows and columns in the tileset.
-    // FIXME: Compute it better.
-
-    // If caller defined a number of columns for the tileset, compute the
-    // number of rows. Otherwise, compute both dimensions.
-    if( nColumns ){
-        if( !( nGenerations_ % nColumns ) ){
-            nRows = nGenerations_ / nColumns;
-        }else{
-            nRows = nGenerations_ / nColumns + 1;
-        }
-    }else{
-        nRows = 1;
-        nColumns = nGenerations_;
-    }
-
-    nTiles = nRows * nColumns;
-
-    std::cout << "nTiles: " << nTiles << std::endl;
-    std::cout << "Tileset dimensions (tiles): " << nRows << " x " << nColumns << std::endl;
-
-    // Create a SDL surface for tiles.
-    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        Uint32 rmask = 0xff000000;
-        Uint32 gmask = 0x00ff0000;
-        Uint32 bmask = 0x0000ff00;
-        Uint32 amask = 0x000000ff;
-    #else
-        Uint32 rmask = 0x000000ff;
-        Uint32 gmask = 0x0000ff00;
-        Uint32 bmask = 0x00ff0000;
-        Uint32 amask = 0xff000000;
-    #endif
-
-    tileSurface = SDL_CreateRGBSurface( 0,          // flags
-                                        tileWidth,  // width
-                                        tileHeight, // height
-                                        32,         // depth
-                                        rmask,      // RGBA masks
-                                        gmask,
-                                        bmask,
-                                        amask );
-
-    if( !tileSurface ){
-        throw std::runtime_error( std::string( "ERROR creating tile surface - " ) + SDL_GetError() );
-    }
-    SDL_FillRect( tileSurface, nullptr, 0 );
-
-    std::cout << "Tile dimensions: (" << tileWidth << ", " << tileHeight << ")" << std::endl;
-    std::cout << "Surface dimensions: (" << tileSurface->w << ", " << tileSurface->h << ")" << std::endl;
-
-    glGetIntegerv( GL_MAX_RENDERBUFFER_SIZE_EXT, &maxRenderbufferSize );
-    std::cout << "Max renderBuffer: " << maxRenderbufferSize << std::endl;
-
-    checkOpenGL( "ParticleSystem::geenerateTileset() - 1" );
-
-    // Generate and bind the render buffer.
-    glGenRenderbuffersEXT( 1, &renderBuffer );
-    glBindRenderbuffer( GL_RENDERBUFFER, renderBuffer );
-    checkOpenGL( "ParticleSystemsGroup::geenerateTileset() - 3" );
-    glRenderbufferStorage( GL_RENDERBUFFER, GL_RGBA8, tileWidth, tileHeight  );
-
-    // Generate a framebuffer and bind it for off-screen drawing.
-    glGenFramebuffers( 1, &framebuffer );
-    glBindFramebuffer( GL_FRAMEBUFFER, framebuffer );
-
-    checkOpenGL( "ParticleSystem::geenerateTileset() - 2" );
-
-    checkOpenGL( "ParticleSystem::geenerateTileset() - 4" );
-
-    // Attach the previous render buffer and framebuffer.
-    glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer );
-
-    checkOpenGL( "ParticleSystem::geenerateTileset() - 5" );
-
-    // Set the viewport to the dimensions of the off-screen framebuffer.
-    glViewport( 0, 0, tileWidth, tileHeight );
-
-    // RENDER
-    glDisable(GL_DEPTH_TEST);
-    glEnable( GL_BLEND );
-    //glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE);
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-
-    // Create a SDL surface for the full tileset.
-    tilesetSurface = SDL_CreateRGBSurface( 0,                       // flags
-                                           tileWidth * nColumns,    // width
-                                           tileHeight * nRows,      // height
-                                           32,                      // depth
-                                           rmask,                   // RGBA masks
-                                           gmask,
-                                           bmask,
-                                           amask );
-    if( !tilesetSurface ){
-        throw std::runtime_error( std::string( "ERROR creating tileset surface - " ) + SDL_GetError() );
-    }
-    SDL_FillRect( tilesetSurface, nullptr, 0 );
-
-
-    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-
-    // Render every frame in the particle system animation and blit it to the
-    // tileset surface.
-    i = 0;
-
-    for( row=0; (row<nRows && i<nTiles); row++ ){
-        dstRect.y = row * tileHeight;
-        for( column=0; (column<nColumns && i<nTiles); column++ ){
-            dstRect.x = column * tileWidth;
-
-            glClear( GL_COLOR_BUFFER_BIT );
-
-            drawAndUpdate( glm::ortho( 0.0f, (float)tileWidth, 0.0f, (float)tileHeight, 1.0f, -1.0f ) );
-
-            glReadBuffer( GL_COLOR_ATTACHMENT0 );
-
-            checkOpenGL( "ParticleSystemsGroup::geenerateTileset() - 6" );
-
-            glReadPixels( 0, 0, tileWidth, tileHeight, GL_RGBA, GL_UNSIGNED_BYTE, tileSurface->pixels );
-
-            // Thanks to http://wiki.libsdl.org/SDL_CreateRGBSurface! :D
-            SDL_SetSurfaceBlendMode( tileSurface , SDL_BLENDMODE_NONE );
-            SDL_BlitSurface( tileSurface, nullptr, tilesetSurface, &dstRect );
-
-            i++;
-        }
-    }
-
-    //for( unsigned int i = 0; i<tileWidth*tileHeight; i++ ){
-    //    std::cout << (int)( ( (char *)( tileSurface->pixels ) )[i] ) << ", ";
-    //}
-
-    checkOpenGL( "ParticleSystem::geenerateTileset() - 7" );
-
-    std::cout << "SavePNG: " << SDL_SavePNG( tilesetSurface, file ) << std::endl;
-
-    if( glCheckFramebufferStatus( GL_DRAW_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE ){
-        std::cerr << "ERROR - Framebuffer not complete" << std::endl;
-    }
-
-    // Unbind the used framebuffer.
-    glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
-
-    // Restart the app viewport.
-    glViewport( currentViewport[0], currentViewport[1], currentViewport[2], currentViewport[3] );
-
-    // Delete the user framebuffer.
-    // FIXME: Not declared.
-    glDeleteFramebuffersEXT( 1, &framebuffer );
-    glDeleteRenderbuffersEXT( 1, &renderBuffer );
-
-    SDL_FreeSurface( tileSurface );
 }
 
 

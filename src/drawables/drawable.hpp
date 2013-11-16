@@ -57,6 +57,8 @@ class Drawable
          ***/
         GLfloat getX() const;
         glm::vec2 getPosition() const ;
+        GLfloat getWidth() const ;
+        GLfloat getHeight() const ;
 
 
         /***

@@ -17,34 +17,31 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#ifndef PARTICLE_SYSTEMS_GROUP_HPP
-#define PARTICLE_SYSTEMS_GROUP_HPP
+#ifndef PARTICLES_SET_HPP
+#define PARTICLES_SET_HPP
 
-#include "particle_system.hpp"
 #include "../drawable.hpp"
-#include "../../dependencies/SDL_SavePNG/savepng.hpp"
+#include "ps_tileset_info.hpp"
+
 
 namespace m2g {
 
-class ParticleSystemsGroup : public ParticlesSet
+class ParticlesSet : public Drawable
 {
-    private:
-        std::vector< ParticleSystem > particleSystems_;
-        ParticleSystem* refParticleSystem;
+    protected:
+        unsigned int nGenerations_;
 
     public:
         /***
-         * 1. Initialization and destruction.
+         * 1. Initialization
          ***/
-        ParticleSystemsGroup( const char* file, const char* name );
-        void loadXML( const char* file, const char* name );
+        virtual void loadXML( const char* file, const char* name ) = 0;
 
 
         /***
-         * 2. Transformations
+         * 2. Getters and setters
          ***/
-        virtual void translate( const float& tx, const float& ty );
-        virtual void moveTo( const float& x, const float& y );
+        virtual unsigned int getNGenerations() const ;
 
 
         /***
@@ -57,10 +54,21 @@ class ParticleSystemsGroup : public ParticlesSet
         /***
          * 4. Drawing
          ***/
-        virtual void draw( const glm::mat4& projectionMatrix ) const ;
-        virtual void drawAndUpdate( const glm::mat4& projectionMatrix );
+        virtual void draw( const glm::mat4& projectionMatrix ) const = 0;
+        virtual void drawAndUpdate( const glm::mat4& projectionMatrix ) = 0;
+
+
+        /***
+         * 5. Tileset generation
+         ***/
+        virtual void generateTileset( const char* file,
+                                      unsigned int nColumns = 0 );
+        virtual void generateTileset( const char* file,
+                                      GLsizei tileWidth,
+                                      GLsizei tileHeight,
+                                      unsigned int nColumns = 0 );
 };
 
 } // namespace m2g
 
-#endif // PARTICLE_SYSTEMS_GROUP_HPP
+#endif // PARTICLES_SET_HPP
