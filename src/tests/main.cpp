@@ -123,8 +123,8 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     m2g::ParticleSystem foam( "data/config/particle_systems.xml", "foam" );
     foam.generateTileset( "data/img/foam.png", 128, 128, 5 );
 
-    fire.moveTo( 250, 0 );
-    foam.moveTo( 350, 350 );
+    fire.moveTo( 0, 1 );
+    //foam.moveTo( 350, 350 );
 
     /*
     m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );

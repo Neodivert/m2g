@@ -205,6 +205,9 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     boundaryBox.x = 0.0f;
     boundaryBox.y = 0.0f;
 
+    std::cout << "Base line: (" << baseLine_[0].x << ", " << baseLine_[0].y << ") - (" << baseLine_[1].x << ", " << baseLine_[1].y << ")" << std::endl;
+    std::cout << "Boundary box: " << boundaryBox.x << ", " << boundaryBox.y << ", " << boundaryBox.width << ", " << boundaryBox.height << ")" << std::endl << std::endl;
+
     // Unmap the VBO memory.
     glUnmapBuffer( GL_ARRAY_BUFFER );
 
@@ -259,7 +262,13 @@ void ParticleSystem::draw( const glm::mat4& projectionMatrix ) const
 {
     unsigned int i = 0;
 
-    glm::mat4 transformationMatrix = projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( boundaryBox.x + baseLine_[0].x, boundaryBox.height + boundaryBox.y + baseLine_[0].y, 0.0f ) );
+    glm::mat4 transformationMatrix =
+            projectionMatrix *
+            glm::translate( glm::mat4( 1.0f ), glm::vec3(
+                                boundaryBox.x + baseLine_[0].x,
+                                boundaryBox.y + boundaryBox.height + baseLine_[0].y,
+                                0.0f )
+            );
 
     glPointSize( particleSize_ );
 
@@ -288,7 +297,13 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
 {
     unsigned int i = 0;
 
-    glm::mat4 transformationMatrix = projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( boundaryBox.x + baseLine_[0].x, boundaryBox.height + boundaryBox.y + baseLine_[0].y, 0.0f ) );
+    glm::mat4 transformationMatrix =
+            projectionMatrix *
+            glm::translate( glm::mat4( 1.0f ), glm::vec3(
+                                boundaryBox.x + baseLine_[0].x,
+                                boundaryBox.y + boundaryBox.height - baseLine_[0].y,
+                                0.0f )
+            );
 
     glPointSize( particleSize_ );
 
@@ -332,7 +347,7 @@ void ParticleSystem::updateBoundaryBox( const float& x, const float& y )
 
     if( y < boundaryBox.y ){
         boundaryBox.y = y;
-    }else if( y > (boundaryBox.y + boundaryBox.height) ){  
+    }else if( y > (boundaryBox.y + boundaryBox.height) ){
         boundaryBox.height = y - boundaryBox.y;
     }
 }

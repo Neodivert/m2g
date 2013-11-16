@@ -80,7 +80,7 @@ void ParticleSystemsGroup::loadXML( const char* file, const char* name )
             currentBaseLineOrigin = particleSystems_[i].getBaseLineOrigin();
             currentBoundaryBox = particleSystems_[i].getBoundaryBox();
 
-            particleSystems_[i].moveBaseLine( refBaseLineOrigin.x - currentBaseLineOrigin.x, refBoundaryBox->height - currentBoundaryBox->height );
+            particleSystems_[i].moveBaseLine( refBaseLineOrigin.x - currentBaseLineOrigin.x, currentBoundaryBox->height - refBoundaryBox->height );
         }
     }
 
