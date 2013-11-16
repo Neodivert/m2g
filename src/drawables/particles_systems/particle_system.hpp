@@ -112,7 +112,8 @@ class ParticleSystem : public Drawable
         void generateTileset( const char* file,
                               const glm::vec4& currentViewport,
                               GLsizei tileWidth = 0,
-                              GLsizei tileHeight = 0 );
+                              GLsizei tileHeight = 0,
+                              unsigned int nColumns = 0 );
 
 
         /***

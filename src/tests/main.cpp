@@ -117,14 +117,14 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     // Set projection mode.
     glm::mat4 projectionMatrix = glm::ortho( 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f, -1.0f );
 
-    //m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
-    //fire.generateTileset( "data/img/fire.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
+    m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
+    fire.generateTileset( "data/img/fire.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ) );
 
     m2g::ParticleSystem foam( "data/config/particle_systems.xml", "foam" );
-    foam.generateTileset( "data/img/foam.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ), 128, 128 );
+    foam.generateTileset( "data/img/foam.png", glm::vec4( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT ), 128, 128, 5 );
 
 
-    //fire.moveTo( 250, 0 );
+    fire.moveTo( 250, 0 );
     foam.moveTo( 350, 350 );
 
     /*
@@ -152,9 +152,9 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
                         // Player wants to exit the game.
                         quit = true;
                     break;
-                    //case SDL_MOUSEMOTION:
-                    //    smoke.moveTo( event.motion.x, event.motion.y );
-                    //break;
+                    case SDL_MOUSEMOTION:
+                        foam.moveTo( event.motion.x, event.motion.y );
+                    break;
                 }
             }
             t1 = SDL_GetTicks();
@@ -166,7 +166,7 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
         glClear ( GL_COLOR_BUFFER_BIT );
 
         // Draw the particles system.
-        //fire.drawAndUpdate( projectionMatrix );
+        fire.drawAndUpdate( projectionMatrix );
         //smoke.drawAndUpdate( projectionMatrix );
         foam.drawAndUpdate( projectionMatrix );
         /*electricField.drawAndUpdate( projectionMatrix );

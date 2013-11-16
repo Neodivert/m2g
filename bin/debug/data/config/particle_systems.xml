@@ -30,11 +30,11 @@
 
 	<!-- Foam -->
 	<particle_system name="foam">
-		<particles generations="20" particles_per_generation="150" particle_size="3" />
+		<particles generations="25" particles_per_generation="350" particle_size="3" />
 		<base_line x1="5.0" y1="5.0" />
-		<velocity minAngle="100.0" maxAngle="170.0" modulus="2.5" />
-		<base_color r="200" g="200" b="200" a="100" />
-		<delta_color r="0" g="0" b="0" a="-5" />
+		<velocity minAngle="100.0" maxAngle="170.0" modulus="2.0-2.5" />
+		<base_color r="240" g="240" b="240" a="100" />
+		<delta_color r="0" g="0" b="0" a="-4" />
 	</particle_system>
 
 	<!-- Electric field -->

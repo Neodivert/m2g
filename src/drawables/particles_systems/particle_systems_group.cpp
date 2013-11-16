@@ -314,7 +314,7 @@ void ParticleSystemsGroup::generateTileset( const char* file,
 
             // Thanks to http://wiki.libsdl.org/SDL_CreateRGBSurface! :D
             SDL_SetSurfaceBlendMode( tileSurface , SDL_BLENDMODE_NONE );
-            std::cout << "Blitting: " << SDL_BlitSurface( tileSurface, nullptr, tilesetSurface, &dstRect ) << std::endl;
+            SDL_BlitSurface( tileSurface, nullptr, tilesetSurface, &dstRect );
 
             i++;
         }

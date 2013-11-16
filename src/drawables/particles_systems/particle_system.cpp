@@ -102,10 +102,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         maxSpeed_ = atof( str.c_str() );
     }
 
-    if( !strcmp( name, "foam" ) ){
-        std::cout << "\t\t\tspeed: (" << minSpeed_ << ", " << maxSpeed_ << ")" << std::endl;
-    }
-
     // Initialize the base color range.
     xmlNode = rootNode->FirstChildElement( "base_color" );
     for( i=0; i<4; i++ ){
@@ -175,10 +171,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         // Velocity.
         angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 + 1 ) * 0.1f + minAngle_ );
         speed = ( rand() % (int)( (maxSpeed_-minSpeed_)*10 + 1 ) * 0.1f + minSpeed_ );
-
-        if( !strcmp( name, "foam" ) ){
-            std::cout << "speed: " << speed << ", ";
-        }
 
         //std::cout << "(" << minAngle_ << ", " << maxAngle_ << "): " << angle << std::endl;
         vertexData[i+2] = speed * cos( angle * PI / 180.0f );
@@ -355,7 +347,8 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
 void ParticleSystem::generateTileset( const char* file,
                                       const glm::vec4& currentViewport,
                                       GLsizei tileWidth,
-                                      GLsizei tileHeight )
+                                      GLsizei tileHeight,
+                                      unsigned int nColumns )
 {
     GLuint framebuffer;
     GLuint renderBuffer;
@@ -365,7 +358,7 @@ void ParticleSystem::generateTileset( const char* file,
     SDL_Rect dstRect = { 0, 0, 0, 0 };
     unsigned int i;
     unsigned int nTiles = 0;
-    unsigned int nRows, nColumns;
+    unsigned int nRows;
     unsigned int row, column;
 
     if( tileWidth && tileHeight ){
@@ -388,8 +381,20 @@ void ParticleSystem::generateTileset( const char* file,
 
     // Compute the number of rows and columns in the tileset.
     // FIXME: Compute it better.
-    nRows = 1;
-    nColumns = nGenerations_;
+
+    // If caller defined a number of columns for the tileset, compute the
+    // number of rows. Otherwise, compute both dimensions.
+    if( nColumns ){
+        if( !( nGenerations_ % nColumns ) ){
+            nRows = nGenerations_ / nColumns;
+        }else{
+            nRows = nGenerations_ / nColumns + 1;
+        }
+    }else{
+        nRows = 1;
+        nColumns = nGenerations_;
+    }
+
     nTiles = nRows * nColumns;
 
     std::cout << "nTiles: " << nTiles << std::endl;
@@ -479,9 +484,10 @@ void ParticleSystem::generateTileset( const char* file,
     // Render every frame in the particle system animation and blit it to the
     // tileset surface.
     i = 0;
-    for( row=0; row<nRows, i<nTiles; row++ ){
+
+    for( row=0; (row<nRows && i<nTiles); row++ ){
         dstRect.y = row * tileHeight;
-        for( column=0; column<nColumns, i<nTiles; column++ ){
+        for( column=0; (column<nColumns && i<nTiles); column++ ){
             dstRect.x = column * tileWidth;
 
             glClear( GL_COLOR_BUFFER_BIT );
@@ -496,7 +502,7 @@ void ParticleSystem::generateTileset( const char* file,
 
             // Thanks to http://wiki.libsdl.org/SDL_CreateRGBSurface! :D
             SDL_SetSurfaceBlendMode( tileSurface , SDL_BLENDMODE_NONE );
-            std::cout << "Blitting: " << SDL_BlitSurface( tileSurface, nullptr, tilesetSurface, &dstRect ) << std::endl;
+            SDL_BlitSurface( tileSurface, nullptr, tilesetSurface, &dstRect );
 
             i++;
         }
@@ -545,7 +551,6 @@ void ParticleSystem::updateBoundaryBox( const float& x, const float& y )
         boundaryBox.y = y;
     }else if( y > (boundaryBox.y + boundaryBox.height) ){  
         boundaryBox.height = y - boundaryBox.y;
-        std::cout << "new Height: " << boundaryBox.height << std::endl;
     }
 }
 
