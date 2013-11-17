@@ -103,7 +103,28 @@ void ParticleSystemsGroup::loadXML( const char* file, const char* name )
 
 
 /***
- * 2. Transformations
+ * 2. Getters and setters
+ ***/
+
+bool ParticleSystemsGroup::isAlive() const
+{
+    return ( particleSystems_[0] ).isAlive();
+}
+
+
+void ParticleSystemsGroup::setAlive( bool alive )
+{
+    std::vector< ParticleSystem >::iterator it = particleSystems_.begin();
+
+    for( ; it != particleSystems_.end(); it++ )
+    {
+        it->setAlive( alive );
+    }
+}
+
+
+/***
+ * 3. Transformations
  ***/
 
 void ParticleSystemsGroup::translate( const float& tx, const float& ty )
@@ -129,7 +150,7 @@ void ParticleSystemsGroup::moveTo( const float& x, const float& y )
 
 
 /***
- * 3. Collision test
+ * 4. Collision test
  ***/
 
 bool ParticleSystemsGroup::collide( const Drawable& b ) const
@@ -145,7 +166,7 @@ const std::vector<Rect>* ParticleSystemsGroup::getCollisionRects() const
 
 
 /***
- * 4. Drawing
+ * 5. Drawing
  ***/
 
 void ParticleSystemsGroup::draw( const glm::mat4& projectionMatrix ) const

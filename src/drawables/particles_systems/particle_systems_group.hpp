@@ -41,21 +41,28 @@ class ParticleSystemsGroup : public ParticlesSet
 
 
         /***
-         * 2. Transformations
+         * 2. Getters and setters
+         ***/
+        virtual bool isAlive() const ;
+        virtual void setAlive( bool alive );
+
+
+        /***
+         * 3. Transformations
          ***/
         virtual void translate( const float& tx, const float& ty );
         virtual void moveTo( const float& x, const float& y );
 
 
         /***
-         * 3. Collision test
+         * 4. Collision test
          ***/
         virtual bool collide( const Drawable& b ) const ;
         virtual const std::vector<Rect>* getCollisionRects() const ;
 
 
         /***
-         * 4. Drawing
+         * 5. Drawing
          ***/
         virtual void draw( const glm::mat4& projectionMatrix ) const ;
         virtual void drawAndUpdate( const glm::mat4& projectionMatrix );

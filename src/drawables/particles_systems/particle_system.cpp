@@ -33,7 +33,8 @@ const float PI = 3.14159265;
  ***/
 
 
-ParticleSystem::ParticleSystem( const char* file, const char*name )
+ParticleSystem::ParticleSystem( const char* file, const char*name ) :
+    alive_( true )
 {
     loadXML( file, name );
 }
@@ -51,6 +52,7 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     float angle;
     float speed;
     std::string str;
+    GLfloat baseLineSlope;
 
     GLint currentProgram = 0;
 
@@ -87,6 +89,9 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     xmlNode = rootNode->FirstChildElement( "base_line" );
     baseLine_[1].x = xmlNode->FloatAttribute( "x1" );
     baseLine_[1].y = xmlNode->FloatAttribute( "y1" );
+
+    // FIXME: Possible division by 0.
+    baseLineSlope = ( baseLine_[0].y - baseLine_[1].y ) / ( baseLine_[1].x - baseLine_[0].x );
 
     // Initialize the velocity info.
     xmlNode = rootNode->FirstChildElement( "velocity" );
@@ -166,7 +171,7 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     for( i = 0; i < N_ATTRIBUTES_PER_VERTEX * nGenerations_ * nParticlesPerGeneration_; i += N_ATTRIBUTES_PER_VERTEX ){
         // Position.
         vertexData[i] = rand() % ((int)(baseLine_[1].x) + 1);
-        vertexData[i+1] = rand() % ((int)(baseLine_[1].y) + 1);
+        vertexData[i+1] = baseLineSlope * vertexData[i]; //rand() % ((int)(baseLine_[1].y) + 1);
 
         // Velocity.
         angle = ( rand() % (int)( (maxAngle_-minAngle_)*10 + 1 ) * 0.1f + minAngle_ );
@@ -199,7 +204,7 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     baseLine_[1].x += -boundaryBox.x;
     baseLine_[1].y += -boundaryBox.y;
 
-    // With the boundary box origin "moved to" the particle system's origin, we
+    // With the boundary box origin "moved to" the particle system's oridiying_gin, we
     // set the boundary box origin as the transformed position of the
     // particle system.
     boundaryBox.x = 0.0f;
@@ -239,6 +244,19 @@ unsigned int ParticleSystem::getNGenerations() const
 {
     return nGenerations_;
 }
+
+
+bool ParticleSystem::isAlive() const
+{
+    return alive_;
+}
+
+
+void ParticleSystem::setAlive( bool alive )
+{
+    alive_ = alive;
+}
+
 
 /***
  * 3. Transformations
@@ -323,9 +341,18 @@ void ParticleSystem::drawAndUpdate( const glm::mat4& projectionMatrix )
             glDrawArrays( GL_POINTS, i * nParticlesPerGeneration_, nParticlesPerGeneration_ );
         }
 
-        generationLife_[i]++;
-        if( generationLife_[i] > static_cast< int >( nGenerations_ ) ){
-            generationLife_[i] = 0;
+        if( generationLife_[i] < 0 ){
+            if( alive_ ){
+                generationLife_[i]++;
+            }
+        }else if( generationLife_[i] < static_cast< int >( nGenerations_ ) ){
+            generationLife_[i]++;
+        }else{
+            if( alive_ ){
+                generationLife_[i] = 1;
+            }else{
+                generationLife_[i] = -i - 1;
+            }
         }
     }
 

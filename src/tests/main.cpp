@@ -99,6 +99,8 @@ int main()
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+    //glClearColor( 0xCE/255.0f, 0xE3/255.0f, 0xF6/255.0f, 1.0f );
     glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
 
     m2g::checkOpenGL( "constructor" );
@@ -114,18 +116,14 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     SDL_Event event;
     Uint32 t0, t1;
 
+    const char CONFIG_FILE[] = "data/config/particle_systems.xml";
+
     // Set projection mode.
     glm::mat4 projectionMatrix = glm::ortho( 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f, -1.0f );
 
-    m2g::ParticleSystemsGroup fire( "data/config/particle_systems.xml", "fire" );
-    fire.generateTileset( "data/img/fire.png", 5 );
-
-    m2g::ParticleSystem foam( "data/config/particle_systems.xml", "foam" );
-    foam.generateTileset( "data/img/foam.png", 128, 128, 5 );
-
-    fire.moveTo( 0, 1 );
-    //foam.moveTo( 350, 350 );
-
+    // Load particle systems and particle systems groups.
+    m2g::ParticleSystemsGroup fire( CONFIG_FILE, "fire" );
+    m2g::ParticleSystem foam( CONFIG_FILE, "foam" );
     /*
     m2g::ParticleSystem smoke( "data/config/particle_systems.xml", "smoke" );
     m2g::ParticleSystem electricField( "data/config/particle_systems.xml", "electric_field" );
@@ -133,15 +131,24 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     m2g::ParticleSystem fireCore( "data/config/particle_systems.xml", "fire_core" );
     */
 
-    SDL_ShowCursor( SDL_DISABLE );
+    // Generate tilesets.
+    //fire.generateTileset( "data/img/fire.png", 5 );
+    //foam.generateTileset( "data/img/foam.png", 128, 128, 5 );
 
+    // Move particle sets to their final positions.
+    fire.moveTo( 255, 255 );
+    //foam.moveTo( 350, 350 );
     /*
     electricField.moveTo( 200, 0 );
     snow.moveTo( 400, 0 );
     fireCore.moveTo( 300, 300 );
     */
 
-    glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
+    // Make the cursor invisible.
+    SDL_ShowCursor( SDL_DISABLE );
+
+    // Main loop.
+    //glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
     while( !quit ){
         t0 = SDL_GetTicks();
         while( (t1 - t0) < REFRESH_TIME ){
@@ -154,6 +161,9 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
                     case SDL_MOUSEMOTION:
                         foam.moveTo( event.motion.x, event.motion.y );
                     break;
+                    case SDL_MOUSEBUTTONDOWN:
+                        fire.setAlive( !fire.isAlive() );
+                    break;
                 }
             }
             t1 = SDL_GetTicks();
@@ -164,7 +174,7 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
         // Clear screen.
         glClear ( GL_COLOR_BUFFER_BIT );
 
-        // Draw the particles system.
+        // Draw the particle sets.
         fire.drawAndUpdate( projectionMatrix );
         //smoke.drawAndUpdate( projectionMatrix );
         foam.drawAndUpdate( projectionMatrix );

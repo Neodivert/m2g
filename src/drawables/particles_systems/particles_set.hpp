@@ -26,6 +26,7 @@
 
 namespace m2g {
 
+
 class ParticlesSet : public Drawable
 {
     protected:
@@ -42,6 +43,8 @@ class ParticlesSet : public Drawable
          * 2. Getters and setters
          ***/
         virtual unsigned int getNGenerations() const ;
+        virtual bool isAlive() const = 0 ;
+        virtual void setAlive( bool alive ) = 0 ;
 
 
         /***

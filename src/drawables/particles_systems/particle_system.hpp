@@ -72,6 +72,9 @@ class ParticleSystem : public ParticlesSet
         static GLint mvpMatrixLocation;
         static GLint tLocation;
 
+        // Bool for indicating whether the particle system is alive or not.
+        bool alive_;
+
     public:
         /***
          * 1. Initialization
@@ -85,6 +88,8 @@ class ParticleSystem : public ParticlesSet
          ***/
         glm::vec2 getBaseLineOrigin() const ;
         unsigned int getNGenerations() const ;
+        virtual bool isAlive() const ;
+        virtual void setAlive( bool alive );
 
 
         /***
