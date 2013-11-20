@@ -20,13 +20,13 @@
 #ifndef TILESETS_BUFFER_HPP
 #define TILESETS_BUFFER_HPP
 
+#include "../drawables/drawable.hpp"
+
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
 
 #include <GL/glu.h>
 #include <iostream>
-
-#include "../drawables/drawable.hpp"
 
 namespace m2g {
 
