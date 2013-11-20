@@ -38,6 +38,7 @@ class ParticleSystemsGroup : public ParticlesSet
          ***/
         ParticleSystemsGroup( const char* file, const char* name );
         void loadXML( const char* file, const char* name );
+        virtual void reset();
 
 
         /***

@@ -37,6 +37,7 @@ class ParticlesSet : public Drawable
          * 1. Initialization
          ***/
         virtual void loadXML( const char* file, const char* name ) = 0;
+        virtual void reset() = 0;
 
 
         /***
@@ -65,10 +66,9 @@ class ParticlesSet : public Drawable
          * 5. Tileset generation
          ***/
         virtual void generateTileset( const char* file,
-                                      unsigned int nColumns = 0 );
-        virtual void generateTileset( const char* file,
                                       GLsizei tileWidth,
                                       GLsizei tileHeight,
+                                      bool includeDeath = false,
                                       unsigned int nColumns = 0 );
 };
 

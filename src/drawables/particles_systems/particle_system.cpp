@@ -18,6 +18,7 @@
 ***/
 
 #include "particle_system.hpp"
+#include <cmath>
 
 namespace m2g {
 
@@ -197,6 +198,12 @@ void ParticleSystem::loadXML( const char* file, const char*name )
         vertexData[i+11] = deltaColor_[3];
     }
 
+    // Add the particle size to the particle system's boundaries.
+    boundaryBox.x -= particleSize_ ;//* 0.5f;
+    boundaryBox.y += particleSize_ ;//* 0.5f;
+    boundaryBox.width += particleSize_ ;//* 0.5f );
+    boundaryBox.height += particleSize_ ;//* 0.5f );
+
     // Update the base line so its include an offset from the boundary box's
     // origin.
     baseLine_[0].x = -boundaryBox.x;
@@ -227,6 +234,18 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     }
 
     checkOpenGL( "Particles System constructor" );
+}
+
+
+void ParticleSystem::reset()
+{
+    unsigned int i = 0;
+
+    for( ; i<nGenerations_; i++ ){
+        generationLife_[i] = i;
+    }
+
+    setAlive( true );
 }
 
 

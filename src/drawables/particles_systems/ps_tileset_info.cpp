@@ -62,31 +62,27 @@ void PSTilesetInfo::computeTilesetDimensions()
 
     // Check the validity of tile width and round it to the nearest upper power
     // of two.
-    if( tileWidth_ % 2 ){
-        if( !tileWidth_ ){
-            throw std::runtime_error( "ERROR: tile's width can't be zero" );
-        }
-
-        pow2 = 1;
-        while( pow2 < tileWidth_ ){
-            pow2 <<= 1;
-        }
-        tileWidth_ = pow2;
+    if( !tileWidth_ ){
+        throw std::runtime_error( "ERROR: tile's width can't be zero" );
     }
+
+    pow2 = 1;
+    while( pow2 < tileWidth_ ){
+        pow2 <<= 1;
+    }
+    tileWidth_ = pow2;
 
     // Check the validity of tile height and round it to the nearest upper
     // power of two.
-    if( tileHeight_ % 2 ){
-        if( !tileHeight_ ){
-            throw std::runtime_error( "ERROR: tile's height can't be zero" );
-        }
-
-        pow2 = 1;
-        while( pow2 < tileHeight_ ){
-            pow2 <<= 1;
-        }
-        tileHeight_ = pow2;
+    if( !tileHeight_ ){
+        throw std::runtime_error( "ERROR: tile's height can't be zero" );
     }
+
+    pow2 = 1;
+    while( pow2 < tileHeight_ ){
+        pow2 <<= 1;
+    }
+    tileHeight_ = pow2;
 
     // Compute the number of rows and columns in the tileset.
     // FIXME: Compute it better.

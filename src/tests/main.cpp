@@ -3,6 +3,7 @@
 #include "../dependencies/dependencies.hpp"
 #include "../drawables/particles_systems/particle_systems_group.hpp"
 #include "../dependencies/msl/src/shader_loader.hpp"
+#include "../graphics_library.hpp"
 
 using namespace std;
 
@@ -10,6 +11,7 @@ const float WINDOW_WIDTH = 800.0f;
 const float WINDOW_HEIGHT = 600.0f;
 
 void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen );
+void generateTilesetFromSprite( const char* spritePath, const char* finalFile, GLuint tileWidth, GLuint tileHeight, GLuint nRows, GLuint nColumns );
 
 int main()
 {
@@ -116,8 +118,13 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     SDL_Event event;
     Uint32 t0, t1;
 
+    m2g::GraphicsLibrary graphicsLibrary;
+    m2g::Sprite extinguisher;
+
     const char CONFIG_FILE[] = "data/config/particle_systems.xml";
 
+    graphicsLibrary.loadAll( "data/img/tools" );
+    extinguisher.setTileset( graphicsLibrary.getTileset( "extinguisher.png" ) );
     // Set projection mode.
     glm::mat4 projectionMatrix = glm::ortho( 0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f, -1.0f );
 
@@ -132,8 +139,11 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     */
 
     // Generate tilesets.
-    //fire.generateTileset( "data/img/fire.png", 5 );
-    //foam.generateTileset( "data/img/foam.png", 128, 128, 5 );
+    fire.generateTileset( "data/img/fire.png", 0, 0, true, 6 );
+    foam.generateTileset( "data/img/foam.png", 128, 128, false, 5 );
+
+
+    generateTilesetFromSprite( "data/img/tools/default/extinguisher.png", "data/img/final_extinguisher.png", 128, 128, 4, 5 );
 
     // Move particle sets to their final positions.
     fire.moveTo( 255, 255 );
@@ -148,7 +158,7 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     SDL_ShowCursor( SDL_DISABLE );
 
     // Main loop.
-    //glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
+    glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
     while( !quit ){
         t0 = SDL_GetTicks();
         while( (t1 - t0) < REFRESH_TIME ){
@@ -159,6 +169,7 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
                         quit = true;
                     break;
                     case SDL_MOUSEMOTION:
+                        extinguisher.moveTo( event.motion.x, event.motion.y );
                         foam.moveTo( event.motion.x, event.motion.y );
                     break;
                     case SDL_MOUSEBUTTONDOWN:
@@ -176,6 +187,7 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
 
         // Draw the particle sets.
         fire.drawAndUpdate( projectionMatrix );
+        extinguisher.draw( projectionMatrix );
         //smoke.drawAndUpdate( projectionMatrix );
         foam.drawAndUpdate( projectionMatrix );
         /*electricField.drawAndUpdate( projectionMatrix );
@@ -187,3 +199,51 @@ void ParticlesSystemsTest( SDL_Window* window, SDL_Surface* screen )
     }
 }
 
+
+void generateTilesetFromSprite( const char* spritePath, const char* finalFile, GLuint tileWidth, GLuint tileHeight, GLuint nRows, GLuint nColumns )
+{
+    SDL_Surface* sprite = nullptr;
+    SDL_Surface* tileset = nullptr;
+    SDL_Rect dstRect = { 0, 0, 0, 0 };
+    GLuint row, column;
+
+    // Load
+    sprite = IMG_Load( spritePath );
+    if( !sprite ){
+        throw std::runtime_error( IMG_GetError() );
+    }
+
+
+    tileset = SDL_CreateRGBSurface( 0,
+                                    tileWidth * nColumns,
+                                    tileHeight * nRows,
+                                    32,
+                                    sprite->format->Rmask,
+                                    sprite->format->Gmask,
+                                    sprite->format->Bmask,
+                                    sprite->format->Amask
+                                  );
+    if( !tileset ){
+        throw std::runtime_error( SDL_GetError() );
+    }
+    SDL_FillRect( tileset, nullptr, 0 );
+
+
+
+    //SDL_SetSurfaceBlendMode( tileset, SDL_BLENDMODE_NONE );
+    SDL_SetSurfaceBlendMode( sprite, SDL_BLENDMODE_NONE );
+
+    for( row = 0; row < nRows; row++ ){
+        dstRect.y = row * tileHeight;
+        for( column = 0; column < nColumns; column++ ){
+            dstRect.x = column * tileWidth;
+
+            std::cout << SDL_BlitSurface( sprite, nullptr, tileset, &dstRect ) << std::endl;
+        }
+    }
+
+    SDL_SavePNG( tileset, finalFile );
+
+    SDL_FreeSurface( sprite );
+    SDL_FreeSurface( tileset );
+}

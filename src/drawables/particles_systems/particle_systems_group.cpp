@@ -102,6 +102,17 @@ void ParticleSystemsGroup::loadXML( const char* file, const char* name )
 }
 
 
+void ParticleSystemsGroup::reset()
+{
+    std::vector< ParticleSystem >::iterator it = particleSystems_.begin();
+
+    for( ; it != particleSystems_.end(); it++ )
+    {
+        it->reset();
+    }
+}
+
+
 /***
  * 2. Getters and setters
  ***/

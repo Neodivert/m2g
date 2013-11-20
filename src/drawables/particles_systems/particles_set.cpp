@@ -61,32 +61,36 @@ const std::vector<Rect>* ParticlesSet::getCollisionRects() const
  * 5. Tileset generation
  ***/
 
-
-void ParticlesSet::generateTileset( const char* file,
-                                    unsigned int nColumns )
-{
-    generateTileset( file,
-                     getWidth(),
-                     getHeight(),
-                     nColumns
-                     );
-}
-
 void ParticlesSet::generateTileset( const char* file,
                                     GLsizei tileWidth,
                                     GLsizei tileHeight,
+                                    bool includeDeath,
                                     unsigned int nColumns )
 {
     GLint oldViewport[4];
     unsigned int i;
     SDL_Rect dstRect = { 0, 0, 0, 0 };
     unsigned int row, column;
+    unsigned int nTiles;
 
     // Save the current viewport dimensions for restoring it at the end.
     glGetIntegerv( GL_VIEWPORT, oldViewport );
 
     // Generate a struct with all the info needed for generating a tileset.
-    PSTilesetInfo psTilesetInfo( nGenerations_, tileWidth, tileHeight, nColumns );
+    if( !includeDeath ){
+        nTiles = nGenerations_;
+    }else{
+        nTiles = nGenerations_ * 2;
+    }
+
+    if( !tileWidth ){
+        tileWidth = getWidth();
+    }
+    if( !tileHeight ){
+        tileHeight = getHeight();
+    }
+
+    PSTilesetInfo psTilesetInfo( nTiles, tileWidth, tileHeight, nColumns );
 
     // Thanks to http://wiki.libsdl.org/SDL_CreateRGBSurface! :D
     SDL_SetSurfaceBlendMode( psTilesetInfo.getTileSurface(), SDL_BLENDMODE_NONE );
@@ -125,7 +129,13 @@ void ParticlesSet::generateTileset( const char* file,
             SDL_BlitSurface( psTilesetInfo.getTileSurface(), nullptr, psTilesetInfo.getTilesetSurface(), &dstRect );
 
             i++;
+            if( includeDeath && ( i == psTilesetInfo.getNTiles() / 2 ) ){
+                setAlive( false );
+            }
         }
+    }
+    if( includeDeath ){
+        reset();
     }
 
     // Save the tileset in a PNG file.

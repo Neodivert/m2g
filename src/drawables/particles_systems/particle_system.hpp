@@ -81,6 +81,7 @@ class ParticleSystem : public ParticlesSet
          ***/
         ParticleSystem( const char* file, const char*name );
         void loadXML( const char* file, const char*name );
+        virtual void reset();
 
 
         /***
