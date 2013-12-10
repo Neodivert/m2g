@@ -70,7 +70,7 @@ class Tileset {
          * 1. Initialization and destruction.
          ***/
         Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder );
-        Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight );
+        Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx = 1.0f, GLfloat fy = 1.0f );
         ~Tileset();
 
 
@@ -78,7 +78,7 @@ class Tileset {
          * 2. Loading
          ***/
         void load( const tinyxml2::XMLNode* xmlNode, const char* folder );
-        void load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight );
+        void load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx = 1.0f, GLfloat fy = 1.0f );
 
 
         /***

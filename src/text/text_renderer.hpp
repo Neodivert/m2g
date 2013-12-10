@@ -21,6 +21,7 @@
 #define TEXT_RENDERER_HPP
 
 #include "bitmap_font.hpp"
+#include "../drawables/sprite.hpp"
 #include <SDL2/SDL_ttf.h>
 
 namespace m2g {
@@ -51,6 +52,7 @@ class TextRenderer
          * 3. Drawing
          ***/
         void drawText( const glm::mat4& projectionMatrix, const char* text, unsigned int fontIndex, GLuint x = 0, GLuint y = 0 );
+        SpritePtr drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color );
 };
 
 } // namespace m2g

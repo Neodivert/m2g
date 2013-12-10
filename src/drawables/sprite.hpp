@@ -82,6 +82,9 @@ class Sprite : public Drawable
 };
 
 
+typedef std::shared_ptr< Sprite > SpritePtr;
+
+
 } // Namespace m2g
 
 #endif // SPRITE_HPP

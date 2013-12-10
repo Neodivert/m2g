@@ -96,4 +96,86 @@ void TextRenderer::drawText( const glm::mat4& projectionMatrix, const char* text
     }
 }
 
+
+SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color )
+{
+    TTF_Font* font = nullptr;
+    TilesetPtr textTileset;
+    SpritePtr textSprite( new Sprite );
+    SDL_Surface* auxTextSurface = nullptr;
+    SDL_Surface* textSurface = nullptr;
+    int textWidth, textHeight;
+    int aux;
+
+    // Load the required font.
+    font = TTF_OpenFont( fontPath, fontSize );
+    if( font == nullptr ){
+        throw std::runtime_error( std::string( "ERROR opening font - " ) + TTF_GetError() );
+    }
+
+    // Set the RGBA mask for the text surface.
+    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        const Uint32 rmask = 0xff000000;
+        const Uint32 gmask = 0x00ff0000;
+        const Uint32 bmask = 0x0000ff00;
+        const Uint32 amask = 0x000000ff;
+    #else
+        const Uint32 rmask = 0x000000ff;
+        const Uint32 gmask = 0x0000ff00;
+        const Uint32 bmask = 0x00ff0000;
+        const Uint32 amask = 0xff000000;
+    #endif
+
+    // Render the text on an auxiliar surface.
+    auxTextSurface = TTF_RenderText_Blended( font, text, color );
+    //auxTextSurface = SDL_ConvertSurface( auxTextSurface, textSurface->format, textSurface->flags );
+
+    // Round text dimensions to nearest upper pow of two.
+    textWidth = 1;
+    while( textWidth < auxTextSurface->w ){
+        textWidth <<= 1;
+    }
+
+    textHeight = 1;
+    while( textHeight < auxTextSurface->h ){
+        textHeight <<= 1;
+    }
+
+    std::cout << "Aux text dimensions: (" << auxTextSurface->w << ", " << auxTextSurface->h << ")" << std::endl;
+    std::cout << "Text dimensions: (" << textWidth << ", " << textHeight << ")" << std::endl;
+
+    // Create the final text surface with the power-of-two dimensions.
+    textSurface = SDL_CreateRGBSurface( 0, textWidth, textHeight, 32, rmask, gmask, bmask, amask );
+
+    // Prepare the final text surface for the blitting.
+    SDL_FillRect( textSurface, nullptr, 0 );
+    SDL_SetSurfaceBlendMode( auxTextSurface, SDL_BLENDMODE_NONE );
+
+    // Blit the text to its final surface.
+    SDL_BlitSurface( auxTextSurface, nullptr, textSurface, nullptr );
+
+    IMG_SavePNG( auxTextSurface, "foo1.png" );
+    IMG_SavePNG( textSurface, "foo2.png" );
+
+    // Generate a tileset from the text surface.
+    //textTileset = TilesetPtr( new Tileset( textSurface, textWidth, textHeight, auxTextSurface->w / (GLfloat)textWidth, auxTextSurface->h / (GLfloat)textHeight ) );
+    textTileset = TilesetPtr( new Tileset( textSurface, textWidth, textHeight ) );
+
+    std::cout << "Factors: (" << auxTextSurface->w / (GLfloat)textWidth << ", " << auxTextSurface->h / (GLfloat)textHeight << ")" << std::endl;
+    //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
+
+    // Create the final sprite from the previous tileset.
+    textSprite->setTileset( textTileset );
+
+    // Free resources.
+    TTF_CloseFont( font );
+    SDL_FreeSurface( auxTextSurface );
+    SDL_FreeSurface( textSurface );
+
+    checkOpenGL( "TextRenderer::draw" );
+
+    // Return the text sprite.
+    return textSprite;
+}
+
 } // namespace m2g

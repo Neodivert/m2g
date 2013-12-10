@@ -54,7 +54,7 @@ Tileset::Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder ) :
 }
 
 
-Tileset::Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
+Tileset::Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx, GLfloat fy )
 {
     if( tilesetsBuffer == nullptr ){
         // If the tilesets buffer is not initialized, create it!.
@@ -64,7 +64,7 @@ Tileset::Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
     // Increment the references count.
     refCount++;
 
-    load( surface, tileWidth, tileHeight );
+    load( surface, tileWidth, tileHeight, fx, fy );
 }
 
 
@@ -199,7 +199,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
 }
 
 
-void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
+void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx, GLfloat fy )
 {
     // Load the tileset name.
     name = "SDL_Surface";
@@ -222,7 +222,7 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
     nTiles = nRows * nColumns;
 
     // Insert the tileset vertex attributes in the tilesetsBuffer and get its index.
-    bufferIndex = tilesetsBuffer->insertTileset( tileWidth, tileHeight );
+    bufferIndex = tilesetsBuffer->insertTileset( tileWidth, tileHeight, fx, fy );
 
     // Load the texture
     loadTexture( surface->pixels, surface->w );
@@ -262,8 +262,10 @@ void Tileset::loadTexture( void* data, int pitch )
     glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 
-    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-
+    glPixelStorei( GL_UNPACK_ALIGNMENT, 4 );
+    glPixelStorei( GL_UNPACK_SKIP_PIXELS, 0 );
+    glPixelStorei( GL_UNPACK_SKIP_ROWS, 0 );
+    glPixelStorei( GL_UNPACK_ROW_LENGTH, pitch );
 
     // Set the texture's storage.
     glTexStorage3D( GL_TEXTURE_2D_ARRAY,    // target

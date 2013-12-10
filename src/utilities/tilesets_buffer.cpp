@@ -85,7 +85,7 @@ TilesetsBuffer::~TilesetsBuffer()
  ***/
 
 // TODO: Avoid inserting repeated elements (tileWidth, tileHeight).
-unsigned int TilesetsBuffer::insertTileset( GLfloat tileWidth, GLfloat tileHeight )
+unsigned int TilesetsBuffer::insertTileset( GLfloat tileWidth, GLfloat tileHeight, GLfloat fx, GLfloat fy )
 {
     GLvoid* mappedPtr = nullptr;
     GLchar* oldData = nullptr;
@@ -101,15 +101,15 @@ unsigned int TilesetsBuffer::insertTileset( GLfloat tileWidth, GLfloat tileHeigh
 
         // Bottom right
         width, 0.0f,    // Vertice coordinates
-        1.0f, 0.0f,     // Texture coordinates
+        fx, 0.0f,     // Texture coordinates
 
         // Top left
         0.0f, height,   // Vertice coordinates
-        0.0f, 1.0f,     // Texture coordinates
+        0.0f, fy,     // Texture coordinates
 
         // Top right
         width, height,  // Vertice coordinates
-        1.0f, 1.0f      // Texture coordinates
+        fx, fy      // Texture coordinates
     };
 
     tilesetData[4] = tileWidth;
