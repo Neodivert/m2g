@@ -27,7 +27,8 @@ namespace m2g {
  ***/
 
 Animation::Animation( AnimationDataPtr animationData ) :
-    Sprite( animationData->tileset )
+    Sprite( animationData->tileset ),
+    lastFrameTick_( 0 )
 {
     setAnimationData( animationData );
 }
@@ -84,21 +85,27 @@ void Animation::setAnimationState( int newState )
 
 void Animation::update()
 {
-    // Get the current animation state's info.
-    std::array< int, 3 > state = animationData->states[ currentState ];
+    Uint32 t = SDL_GetTicks();
 
-    // Get the current tile / frame.
-    GLint currentTile = getCurrentTile();
+    if( ( t - lastFrameTick_ ) > animationData->refreshRate ){
+        // Get the current animation state's info.
+        std::array< int, 3 > state = animationData->states[ currentState ];
 
-    // Get the next tile / frame.
-    if( currentTile < state[LAST_FRAME] ){
-        currentTile++;
-    }else{
-        currentTile = state[BACK_FRAME];
+        // Get the current tile / frame.
+        GLint currentTile = getCurrentTile();
+
+        // Get the next tile / frame.
+        if( currentTile < state[LAST_FRAME] ){
+            currentTile++;
+        }else{
+            currentTile = state[BACK_FRAME];
+        }
+
+        // Update the current tile / frame.
+        setTile( currentTile );
+
+        lastFrameTick_ = t;
     }
-
-    // Update the current tile / frame.
-    setTile( currentTile );
 }
 
 

@@ -31,6 +31,8 @@ class Animation : public Sprite
         AnimationDataPtr animationData;
         int currentState;
 
+        Uint32 lastFrameTick_;
+
     public:
         /***
          * 1. Initialization and destruction

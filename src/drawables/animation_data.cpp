@@ -38,6 +38,7 @@ AnimationData::AnimationData( const tinyxml2::XMLNode* xmlNode, const char* fold
 void AnimationData::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
 {
     std::array< int, 3 > animationState;
+    unsigned int fps;
 
     const tinyxml2::XMLNode* tilesetNode = xmlNode->FirstChildElement( "tileset" );
     const tinyxml2::XMLNode* animationStatesNode = tilesetNode->NextSiblingElement( "animation_states" );
@@ -45,6 +46,10 @@ void AnimationData::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
 
     // Load the tileset info.
     tileset = std::shared_ptr< Tileset >( new Tileset( tilesetNode, folder ) );
+
+    // Load the fps and compute the refresh rate.
+    fps = ( dynamic_cast< const tinyxml2::XMLElement* >( xmlNode ) )->IntAttribute( "fps" );
+    refreshRate = 1.0f / (float)fps * 1000;
 
     // Access the XML node with the animation states info.
     animationStateNode = animationStatesNode->FirstChildElement();

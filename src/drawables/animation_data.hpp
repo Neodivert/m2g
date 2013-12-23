@@ -36,6 +36,9 @@ struct AnimationData
     // Tileset associated with this animation.
     TilesetPtr tileset;
 
+     // Refresh rate (ms).
+    unsigned int refreshRate;
+
     // Each state is a tuple (firstFrame, lastFrame, backFrame).
     std::vector< std::array< int, 3 > >  states;
 

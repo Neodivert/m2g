@@ -234,7 +234,8 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, G
  ***/
 
 void Tileset::draw() const
-{
+{ 
+    // Draw.
     tilesetsBuffer->draw( bufferIndex );
 }
 
