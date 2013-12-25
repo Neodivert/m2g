@@ -25,6 +25,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <GL/glu.h>
+#include <memory>
 #include "../dependencies/tinyxml2/tinyxml2.h"
 
 namespace m2g {
@@ -89,6 +90,8 @@ class Drawable
 
 void checkOpenGL( const char* str );
 
+typedef std::shared_ptr< Drawable > DrawablePtr;
+typedef std::shared_ptr< const Drawable > DrawableConstPtr;
 
 } // Namespace m2g
 
