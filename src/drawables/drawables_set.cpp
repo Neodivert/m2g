@@ -33,6 +33,10 @@ DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable, float x, float y
     // Add the given drawable to the container.
     drawables_.push_back( newDrawable );
 
+    // Update the set's boundary box so it contains the boundary box of the
+    // recently added drawable.
+    updateBoundaryBox( newDrawable->getBoundaryBox() );
+
     // Return the recently added newDrawable.
     return newDrawable;
 }
@@ -50,10 +54,36 @@ SpritePtr DrawablesSet::addSprite( TilesetPtr tileset, float x, float y )
 
 
 /***
- * 2. Drawing
- **/
+ * 2. Transformations
+ ***/
 
-void DrawablesSet::drawAll( const glm::mat4& projectionMatrix ) const
+void DrawablesSet::translate( const float& tx, const float& ty )
+{
+    DrawablesContainer::iterator currentDrawable;
+
+    // Translate all the drawables in the container.
+    for( currentDrawable = drawables_.begin(); currentDrawable != drawables_.end(); currentDrawable++ ){
+        (*currentDrawable)->translate( tx, ty );
+    }
+}
+
+
+void DrawablesSet::moveTo( const float& x, const float& y )
+{
+    DrawablesContainer::iterator currentDrawable;
+
+    // Move all the drawables in the container.
+    for( currentDrawable = drawables_.begin(); currentDrawable != drawables_.end(); currentDrawable++ ){
+        (*currentDrawable)->moveTo( x, y );
+    }
+}
+
+
+/***
+ * 3. Drawing
+ ***/
+
+void DrawablesSet::draw( const glm::mat4& projectionMatrix ) const
 {
     DrawablesContainer::const_iterator currentDrawable;
 
@@ -63,5 +93,25 @@ void DrawablesSet::drawAll( const glm::mat4& projectionMatrix ) const
     }
 }
 
+
+/***
+ * 4. Auxiliar methods.
+ ***/
+
+void DrawablesSet::updateBoundaryBox( const Rect* newBoundaryBox )
+{
+    if( newBoundaryBox->x < boundaryBox.x ){
+        boundaryBox.x = newBoundaryBox->x;
+    }
+    if( newBoundaryBox->y < boundaryBox.y ){
+        boundaryBox.y = newBoundaryBox->y;
+    }
+    if( newBoundaryBox->x + newBoundaryBox->width > boundaryBox.x + boundaryBox.width ){
+        boundaryBox.width = newBoundaryBox->width;
+    }
+    if( newBoundaryBox->y + newBoundaryBox->height > boundaryBox.y + boundaryBox.height ){
+        boundaryBox.height = newBoundaryBox->height;
+    }
+}
 
 } // namespace m2g

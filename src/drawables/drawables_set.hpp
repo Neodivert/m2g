@@ -26,13 +26,13 @@
 
 namespace m2g {
 
-typedef std::list< DrawableConstPtr > DrawablesContainer;
+typedef std::list< DrawablePtr > DrawablesContainer;
 
-class DrawablesSet
+class DrawablesSet : public Drawable
 {
     private:
         // Drawables container.
-        std::list< DrawableConstPtr > drawables_;
+        DrawablesContainer drawables_;
 
     public:
         /***
@@ -43,9 +43,22 @@ class DrawablesSet
 
 
         /***
-         * 2. Drawing
-         **/
-        void drawAll( const glm::mat4& projectionMatrix ) const ;
+         * 2. Transformations
+         ***/
+        virtual void translate( const float& tx, const float& ty );
+        virtual void moveTo( const float& x, const float& y );
+
+
+        /***
+         * 3. Drawing
+         ***/
+        virtual void draw( const glm::mat4& projectionMatrix ) const ;
+
+
+        /***
+         * 4. Auxiliar methods.
+         ***/
+        void updateBoundaryBox( const Rect* newBoundaryBox );
 };
 
 } // namespace m2g
