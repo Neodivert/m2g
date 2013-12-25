@@ -23,12 +23,13 @@
 #include "tileset.hpp"
 #include "../utilities/tilesets_buffer.hpp"
 #include <memory>
+#include "collidable.hpp"
 #include <iostream>
 #include <vector>
 
 namespace m2g {
 
-class Sprite : public Drawable
+class Sprite : public Collidable
 {
     private:
         static GLint mvpMatrixLocation;

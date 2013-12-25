@@ -80,6 +80,12 @@ GLfloat Drawable::getHeight() const
 }
 
 
+const Rect* Drawable::getBoundaryBox() const
+{
+    return &boundaryBox;
+}
+
+
 /***
  * 3. Transformations
  ***/
@@ -97,57 +103,6 @@ void Drawable::moveTo( const float& x, const float& y )
     // Update the Sprite's position.
     boundaryBox.x = x;
     boundaryBox.y = y;
-}
-
-
-/***
- * 4. Collision test
- ***/
-
-bool Drawable::collide( const Drawable& b ) const
-{
-    const std::vector<Rect>* aRects = nullptr;
-    const std::vector<Rect>* bRects = nullptr;
-
-    const Rect* aBoundaryBox = getBoundaryBox();
-    const Rect* bBoundaryBox = b.getBoundaryBox();
-
-    if( !aBoundaryBox->collide( *bBoundaryBox ) ){
-        return false;
-    }
-
-    aRects = getCollisionRects();
-    bRects = b.getCollisionRects();
-
-    const glm::vec2 bPosition = b.getPosition();
-
-    Rect aRect, bRect;
-
-    for( unsigned int i=0; i<aRects->size(); i++ ){
-        aRect.x = ( (*aRects)[i] ).x + boundaryBox.x;
-        aRect.y = ( (*aRects)[i] ).y + boundaryBox.y;
-        aRect.width = ( (*aRects)[i] ).width;
-        aRect.height = ( (*aRects)[i] ).height;
-
-        for( unsigned int j=0; j<bRects->size(); j++ ){
-            bRect.x = ( (*bRects)[j] ).x + bPosition.x;
-            bRect.y = ( (*bRects)[j] ).y + bPosition.y;
-            bRect.width = ( (*bRects)[j] ).width;
-            bRect.height = ( (*bRects)[j] ).height;
-
-            if( aRect.collide( bRect ) ){
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-
-const Rect* Drawable::getBoundaryBox() const
-{
-    return &boundaryBox;
 }
 
 

@@ -60,6 +60,7 @@ class Drawable
         glm::vec2 getPosition() const ;
         GLfloat getWidth() const ;
         GLfloat getHeight() const ;
+        virtual const Rect* getBoundaryBox() const ;
 
 
         /***
@@ -70,15 +71,7 @@ class Drawable
 
 
         /***
-         * 4. Collision test
-         ***/
-        virtual bool collide( const Drawable& b ) const ;
-        virtual const Rect* getBoundaryBox() const ;
-        virtual const std::vector<Rect>* getCollisionRects() const = 0;
-
-
-        /***
-         * 5. Drawing
+         * 4. Drawing
          ***/
         virtual void draw( const glm::mat4& projectionMatrix ) const = 0;
 };

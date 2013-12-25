@@ -105,7 +105,6 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
     SDL_Surface* auxTextSurface = nullptr;
     SDL_Surface* textSurface = nullptr;
     int textWidth, textHeight;
-    int aux;
 
     // Load the required font.
     font = TTF_OpenFont( fontPath, fontSize );
