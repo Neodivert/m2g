@@ -102,9 +102,13 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
     TTF_Font* font = nullptr;
     TilesetPtr textTileset;
     SpritePtr textSprite( new Sprite );
-    SDL_Surface* auxTextSurface = nullptr;
+    SDL_Surface* lineSurface = nullptr;
     SDL_Surface* textSurface = nullptr;
     int textWidth, textHeight;
+    int pow2;
+    unsigned int i;
+    std::vector< std::string > lines;
+    SDL_Rect dstRect = { 0, 0, 0, 0 };
 
     // Load the required font.
     font = TTF_OpenFont( fontPath, fontSize );
@@ -125,42 +129,62 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
         const Uint32 amask = 0xff000000;
     #endif
 
-    // Render the text on an auxiliar surface.
-    auxTextSurface = TTF_RenderText_Blended( font, text, color );
+    // Get the text dimensions.
+    getTextDimensions( font, text, textWidth, textHeight, lines );
+
+    std::cout << "Text dimensions: " << std::endl
+              << "\twidth: " << textWidth << std::endl
+              << "\theight: " << textHeight << std::endl
+              << "\tnLines: " << lines.size() << std::endl;
+
+
     //auxTextSurface = SDL_ConvertSurface( auxTextSurface, textSurface->format, textSurface->flags );
 
     // Round text dimensions to nearest upper pow of two.
-    textWidth = 1;
-    while( textWidth < auxTextSurface->w ){
-        textWidth <<= 1;
+    pow2 = 1;
+    while( pow2 < textWidth ){
+        pow2 <<= 1;
     }
+    textWidth = pow2;
 
-    textHeight = 1;
-    while( textHeight < auxTextSurface->h ){
-        textHeight <<= 1;
+    pow2 = 1;
+    while( pow2 < textHeight ){
+        pow2 <<= 1;
     }
+    textHeight = pow2;
 
-    std::cout << "Aux text dimensions: (" << auxTextSurface->w << ", " << auxTextSurface->h << ")" << std::endl;
-    std::cout << "Text dimensions: (" << textWidth << ", " << textHeight << ")" << std::endl;
+    std::cout << "Text dimensions - pow of two : (" << textWidth << ", " << textHeight << ")" << std::endl;
 
     // Create the final text surface with the power-of-two dimensions.
     textSurface = SDL_CreateRGBSurface( 0, textWidth, textHeight, 32, rmask, gmask, bmask, amask );
 
     // Prepare the final text surface for the blitting.
     SDL_FillRect( textSurface, nullptr, 0 );
-    SDL_SetSurfaceBlendMode( auxTextSurface, SDL_BLENDMODE_NONE );
+    SDL_SetSurfaceBlendMode( lineSurface, SDL_BLENDMODE_NONE );
 
-    // Blit the text to its final surface.
-    SDL_BlitSurface( auxTextSurface, nullptr, textSurface, nullptr );
+    // Render every line and blit it to the final surface.
+    for( i = 0; i < lines.size(); i++ ){
+        // Generate a surface with the text line.
+        lineSurface = TTF_RenderText_Blended( font, lines[i].c_str(), color );
 
-    IMG_SavePNG( auxTextSurface, "foo1.png" );
-    IMG_SavePNG( textSurface, "foo2.png" );
+        // Blit the line surface to its final surface.
+        SDL_BlitSurface( lineSurface, nullptr, textSurface, &dstRect );
+
+        //
+        dstRect.y += TTF_FontHeight( font );
+
+        // Free the line surface.
+        SDL_FreeSurface( lineSurface );
+    }
+
+
+
+    IMG_SavePNG( textSurface, "text.png" );
 
     // Generate a tileset from the text surface.
-    //textTileset = TilesetPtr( new Tileset( textSurface, textWidth, textHeight, auxTextSurface->w / (GLfloat)textWidth, auxTextSurface->h / (GLfloat)textHeight ) );
     textTileset = TilesetPtr( new Tileset( textSurface, textWidth, textHeight ) );
 
-    std::cout << "Factors: (" << auxTextSurface->w / (GLfloat)textWidth << ", " << auxTextSurface->h / (GLfloat)textHeight << ")" << std::endl;
+    //std::cout << "Factors: (" << auxTextSurface->w / (GLfloat)textWidth << ", " << auxTextSurface->h / (GLfloat)textHeight << ")" << std::endl;
     //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
 
     // Create the final sprite from the previous tileset.
@@ -168,13 +192,64 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
 
     // Free resources.
     TTF_CloseFont( font );
-    SDL_FreeSurface( auxTextSurface );
+
     SDL_FreeSurface( textSurface );
 
     checkOpenGL( "TextRenderer::draw" );
 
     // Return the text sprite.
     return textSprite;
+}
+
+
+/***
+ * 4. Auxiliar methods
+ ***/
+
+void TextRenderer::getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines )
+{
+    char textLine[128];
+    int lineWidth;
+    unsigned int i;
+
+    // Initialize the text dimensions to 0.
+    textWidth = 0;
+    textHeight = 0;
+    lines.clear();
+
+    // Iterate over the given text, extracting and getting the dimensions of
+    // its lines.
+    textWidth = 0;
+    while( *text ){
+
+        // Extract the next line and insert it in the vector of lines.
+        i = 0;
+        while( *text && ( *text != '\n' ) ){
+            textLine[i] = *text;
+
+            text++;
+            i++;
+        }
+        textLine[i] = 0;
+        lines.push_back( std::string( textLine ) );
+
+        std::cout << "Text line: [" << lines.back() << "]" << std::endl;
+
+        // Get the line dimensions.
+        TTF_SizeText( font, textLine, &lineWidth, nullptr );
+
+        // Set the maximum line width as the text one.
+        if( lineWidth > textWidth ){
+            textWidth = lineWidth;
+        }
+
+        // Go for next line.
+        text++;
+    }
+
+    // Compute the text height by multiplying the font height by the numer of
+    // lines in the text.
+    textHeight = TTF_FontHeight( font ) * lines.size();
 }
 
 } // namespace m2g

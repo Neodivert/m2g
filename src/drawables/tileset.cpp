@@ -277,6 +277,7 @@ void Tileset::loadTexture( void* data, int pitch )
                     nTiles         // texture depth (number of slices).
                     );
 
+
     // Set texture's image data.
     GLuint tile = 0;
     for( GLuint row = 0; row < nRows; row++ ){

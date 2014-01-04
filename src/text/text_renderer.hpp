@@ -53,6 +53,13 @@ class TextRenderer
          ***/
         void drawText( const glm::mat4& projectionMatrix, const char* text, unsigned int fontIndex, GLuint x = 0, GLuint y = 0 );
         SpritePtr drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color );
+
+
+        /***
+         * 4. Auxiliar methods
+         ***/
+    private:
+        void getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines );
 };
 
 } // namespace m2g
