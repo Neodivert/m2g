@@ -24,6 +24,13 @@
 #include "../drawables/sprite.hpp"
 #include <SDL2/SDL_ttf.h>
 
+enum class TextAlign
+{
+    LEFT,
+    CENTER,
+    RIGHT
+};
+
 namespace m2g {
 
 class TextRenderer
@@ -52,7 +59,7 @@ class TextRenderer
          * 3. Drawing
          ***/
         void drawText( const glm::mat4& projectionMatrix, const char* text, unsigned int fontIndex, GLuint x = 0, GLuint y = 0 );
-        SpritePtr drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color );
+        SpritePtr drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT );
 
 
         /***

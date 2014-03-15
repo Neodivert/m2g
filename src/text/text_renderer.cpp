@@ -97,7 +97,7 @@ void TextRenderer::drawText( const glm::mat4& projectionMatrix, const char* text
 }
 
 
-SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color )
+SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color, TextAlign textAlign )
 {
     TTF_Font* font = nullptr;
     TilesetPtr textTileset;
@@ -164,20 +164,45 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
 
     // Render every line and blit it to the final surface.
     for( i = 0; i < lines.size(); i++ ){
+        std::cout << "1" << std::endl;
         // Generate a surface with the text line.
         lineSurface = TTF_RenderText_Blended( font, lines[i].c_str(), color );
+        std::cout << "2 (" << lineSurface << ")" << std::endl;
 
+        // Give the text the given align.
+        // TODO: Change so the switch is executed only once.
+        switch( textAlign ){
+            case TextAlign::LEFT:
+                dstRect.x = 0;
+            break;
+            case TextAlign::CENTER:
+                dstRect.x = (textWidth >> 1) - (lineSurface->w >> 1);
+                std::cout << "textWidth >> 1: " << (textWidth >> 1) << std::endl;
+                std::cout << "lineSurface->w >> 1: " << (lineSurface->w >> 1) << std::endl;
+                std::cout << "dstRect.x: " << dstRect.x << std::endl;
+            break;
+            case TextAlign::RIGHT:
+                dstRect.x = textWidth - lineSurface->w;
+            break;
+        }
+
+        std::cout << "Blitting [" << lines[i] << "] to (" << dstRect.x << ", " << dstRect.y << ") ..." << std::endl;
         // Blit the line surface to its final surface.
         SDL_BlitSurface( lineSurface, nullptr, textSurface, &dstRect );
+        std::cout << "Blitting [" << lines[i] << "] to (" << dstRect.x << ", " << dstRect.y << ") ...OK" << std::endl;
 
         //
         dstRect.y += TTF_FontHeight( font );
 
+        std::cout << "3" << std::endl;
+
         // Free the line surface.
         SDL_FreeSurface( lineSurface );
+
+        std::cout << "4" << std::endl;
     }
 
-
+    std::cout << "5" << std::endl;
 
     IMG_SavePNG( textSurface, "text.png" );
 
@@ -192,7 +217,6 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
 
     // Free resources.
     TTF_CloseFont( font );
-
     SDL_FreeSurface( textSurface );
 
     checkOpenGL( "TextRenderer::draw" );
