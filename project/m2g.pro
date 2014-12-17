@@ -5,7 +5,6 @@ CONFIG -= qt
 
 SOURCES += \
     ../src/tests/main.cpp \
-    ../src/dependencies/tinyxml2/tinyxml2.cpp \
     ../src/drawables/tileset.cpp \
     ../src/drawables/sprite.cpp \
     ../src/drawables/drawable.cpp \
@@ -24,7 +23,6 @@ SOURCES += \
     ../src/drawables/particles_systems/ps_tileset_info.cpp
 
 HEADERS += \
-    ../src/dependencies/tinyxml2/tinyxml2.h \
     ../src/dependencies/dependencies.hpp \
     ../src/drawables/tileset.hpp \
     ../src/drawables/sprite.hpp \

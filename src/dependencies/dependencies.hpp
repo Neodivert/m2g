@@ -19,7 +19,7 @@
 #include <SDL2/SDL_image.h>
 
 // TinyXML 2
-#include "tinyxml2/tinyxml2.h"
+#include <tinyxml2.h>
 
 // Others
 #include <stdexcept>

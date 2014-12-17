@@ -25,7 +25,7 @@
 #include <iostream>
 #include <vector>
 #include "../utilities/tilesets_buffer.hpp"
-#include "../dependencies/tinyxml2/tinyxml2.h"
+#include <tinyxml2.h>
 #include <SDL2/SDL_ttf.h>
 
 namespace m2g {

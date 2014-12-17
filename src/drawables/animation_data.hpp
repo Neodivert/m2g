@@ -23,7 +23,7 @@
 #include "tileset.hpp"
 #include <vector>
 #include <array>
-#include "../dependencies/tinyxml2/tinyxml2.h"
+#include <tinyxml2.h>
 
 namespace m2g {
 

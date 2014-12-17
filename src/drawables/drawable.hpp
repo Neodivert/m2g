@@ -26,7 +26,7 @@
 #include <stdexcept>
 #include <GL/glu.h>
 #include <memory>
-#include "../dependencies/tinyxml2/tinyxml2.h"
+#include <tinyxml2.h>
 
 namespace m2g {
 
