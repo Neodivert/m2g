@@ -58,7 +58,7 @@ class Animation : public Sprite
         /***
          * 4. Updating
          ***/
-        void update();
+        virtual void update();
 };
 
 } // namespace m2g
