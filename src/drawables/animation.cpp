@@ -50,6 +50,12 @@ GLuint Animation::getFrame() const
 }
 
 
+bool Animation::finished() const
+{
+    return animationFinished_;
+}
+
+
 /***
  * 3. Setters
  ***/
@@ -76,6 +82,8 @@ void Animation::setAnimationState( int newState )
     // Update the current tile / frame so it is now the first of the
     // new state.
     setTile( state[FIRST_FRAME] );
+
+    animationFinished_ = false;
 }
 
 
@@ -98,6 +106,7 @@ void Animation::update()
         if( currentTile < state[LAST_FRAME] ){
             currentTile++;
         }else{
+            animationFinished_ = ( state[LAST_FRAME] == state[BACK_FRAME] );
             currentTile = state[BACK_FRAME];
         }
 

@@ -33,6 +33,8 @@ class Animation : public Sprite
 
         Uint32 lastFrameTick_;
 
+        bool animationFinished_;
+
     public:
         /***
          * 1. Initialization and destruction
@@ -45,6 +47,7 @@ class Animation : public Sprite
          ***/        
         int getAnimationState() const ;
         GLuint getFrame() const ;
+        bool finished() const;
 
 
         /***
