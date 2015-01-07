@@ -15,7 +15,7 @@ list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
 include_directories( "${PROJECT_SOURCE_DIR}/src" )
 
 # Compiler flags
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -pedantic-errors" )
 
 # Include libraries SDL2 and SDL2_image
 include( FindPkgConfig )
@@ -31,8 +31,6 @@ set( LIBRARIES "${LIBRARIES};${OPENGL_LIBRARIES}" )
 
 # Include library tinyxml2
 set( LIBRARIES "${LIBRARIES};-ltinyxml2" )
-
-# TODO: Add compiler flags: -Wall -Werrors -pedantic-errors
 
 # Configure header file
 #configure_file(
