@@ -1,0 +1,65 @@
+cmake_minimum_required( VERSION 2.8 )
+set( CMAKE_BUILD_TYPE Release )
+
+# Project info
+project( m2g )
+set( LIBRARY_NAME ${PROJECT_NAME} )
+set( PROJECT_VERSION_MAJOR 0 )
+set( PROJECT_VERSION_MINOR 1 )
+set( PROJECT_VERSION_PATCH 0 )
+set( PROJECT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH} )
+
+# Project files
+file( GLOB_RECURSE SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" )
+list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
+include_directories( "${PROJECT_SOURCE_DIR}/src" )
+
+# Compiler flags
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+
+# Include libraries SDL2 and SDL2_image
+include( FindPkgConfig )
+pkg_search_module( SDL2 REQUIRED sdl2 )
+pkg_search_module( SDL2IMAGE REQUIRED SDL2_image>=2.0.0 )
+include_directories( ${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} )
+set( LIBRARIES "${LIBRARIES};${SDL2IMAGE_LIBRARIES};${SDL2_LIBRARIES}" )
+
+# Include library OpenGL.
+find_package( OpenGL REQUIRED )
+include_directories( ${OPENGL_INCLUDE_DIR} )
+set( LIBRARIES "${LIBRARIES};${OPENGL_LIBRARIES}" )
+
+# Include library tinyxml2
+set( LIBRARIES "${LIBRARIES};-ltinyxml2" )
+
+# TODO: Add compiler flags: -Wall -Werrors -pedantic-errors
+
+# Configure header file
+#configure_file(
+#    "${PROJECT_SOURCE_DIR}/src/shader_loader.hpp.in"
+#    "${PROJECT_BINARY_DIR}/src/shader_loader.hpp" )
+
+# Build shared library.
+add_library( ${LIBRARY_NAME} SHARED ${SOURCE_FILES} )
+set_target_properties(
+    ${LIBRARY_NAME} PROPERTIES
+    VERSION ${PROJECT_VERSION_STRING}
+    SOVERSION ${PROJECT_VERSION_MAJOR} )
+
+# Link libraries.
+target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
+
+# Instalation.
+install( DIRECTORY src/ DESTINATION include/m2g FILES_MATCHING PATTERN "*.hpp" )
+install( TARGETS ${LIBRARY_NAME} DESTINATION lib )
+
+# Uninstall target
+# Source: http://www.cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+add_custom_target(
+    uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake )
