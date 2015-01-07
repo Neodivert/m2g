@@ -48,7 +48,7 @@ class TilesetsBuffer
          * 1. Initialization and destruction
          ***/
         TilesetsBuffer( GLuint nTilesets_ );
-        ~TilesetsBuffer();
+        virtual ~TilesetsBuffer();
 
 
         /***
