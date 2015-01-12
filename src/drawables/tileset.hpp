@@ -22,7 +22,6 @@
 
 #include "drawable.hpp"
 #include <memory>
-#include <iostream>
 #include <vector>
 #include "../utilities/tilesets_buffer.hpp"
 #include <tinyxml2.h>

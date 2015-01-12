@@ -164,7 +164,6 @@ void TilesetsBuffer::draw( GLuint index )
     // Bind the buffer's VAO and VBO as the active ones.
     glBindVertexArray( vao );
     glBindBuffer( GL_ARRAY_BUFFER, vbo );
-    std::cout << "BINDING!" << std::endl;
 #endif
 
     // Draw the requested rect.

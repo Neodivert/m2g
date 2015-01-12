@@ -21,7 +21,6 @@
 #define DRAWABLE_HPP
 
 #include <vector>
-#include <iostream>
 #include <stdexcept>
 #include <memory>
 #include <tinyxml2.h>

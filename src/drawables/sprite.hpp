@@ -24,7 +24,6 @@
 #include "../utilities/tilesets_buffer.hpp"
 #include <memory>
 #include "collidable.hpp"
-#include <iostream>
 #include <vector>
 
 namespace m2g {

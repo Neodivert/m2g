@@ -123,9 +123,6 @@ void BitmapFont::load( const char* fontPath, unsigned int size, const SDL_Color&
     }
     tileWidth = pow2;
 
-    std::cout << "Tile dimensions: " << tileWidth << " x " << tileHeight << std::endl;
-
-
     // First ASCII printable character.
     char character[2] = { ' ', '\0' };
     SDL_Surface* auxLetterSurface = nullptr;
@@ -290,8 +287,6 @@ void BitmapFont::drawCharacter( char c ) const
 
     // Draw the requested rect.
     glDrawArrays( GL_TRIANGLE_STRIP, index*4, 4 );
-
-    //std::cout << "Drawing character (" << c << ") [index: " << index << "]" << std::endl;
 }
 
 

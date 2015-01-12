@@ -90,8 +90,6 @@ void TextRenderer::drawText( const glm::mat4& projectionMatrix, const char* text
         glUniform1ui( sliceLocation, text[i]-' ' );
         bitmapFonts[fontIndex]->drawCharacter( text[i] );
 
-        //std::cout << "Translating: " << bitmapFonts[fontIndex]->getCharacterWidth( text[i] - ' ' ) << std::endl;
-
         x += bitmapFonts[fontIndex]->getCharacterWidth( text[i] );
 
         //transformationMatrix = transformationMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( bitmapFonts[fontIndex]->getCharacterWidth( text[i] - ' ' ) * 2, 0.0f, 0.0f ) );
@@ -134,12 +132,6 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
     // Get the text dimensions.
     getTextDimensions( font, text, textWidth, textHeight, lines );
 
-    std::cout << "Text dimensions: " << std::endl
-              << "\twidth: " << textWidth << std::endl
-              << "\theight: " << textHeight << std::endl
-              << "\tnLines: " << lines.size() << std::endl;
-
-
     //auxTextSurface = SDL_ConvertSurface( auxTextSurface, textSurface->format, textSurface->flags );
 
     // Round text dimensions to nearest upper pow of two.
@@ -155,8 +147,6 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
     }
     textHeight = pow2;
 
-    std::cout << "Text dimensions - pow of two : (" << textWidth << ", " << textHeight << ")" << std::endl;
-
     // Create the final text surface with the power-of-two dimensions.
     textSurface = SDL_CreateRGBSurface( 0, textWidth, textHeight, 32, rmask, gmask, bmask, amask );
 
@@ -166,10 +156,8 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
 
     // Render every line and blit it to the final surface.
     for( i = 0; i < lines.size(); i++ ){
-        std::cout << "1" << std::endl;
         // Generate a surface with the text line.
         lineSurface = TTF_RenderText_Blended( font, lines[i].c_str(), color );
-        std::cout << "2 (" << lineSurface << ")" << std::endl;
 
         // Give the text the given align.
         // TODO: Change so the switch is executed only once.
@@ -179,37 +167,25 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
             break;
             case TextAlign::CENTER:
                 dstRect.x = (textWidth >> 1) - (lineSurface->w >> 1);
-                std::cout << "textWidth >> 1: " << (textWidth >> 1) << std::endl;
-                std::cout << "lineSurface->w >> 1: " << (lineSurface->w >> 1) << std::endl;
-                std::cout << "dstRect.x: " << dstRect.x << std::endl;
             break;
             case TextAlign::RIGHT:
                 dstRect.x = textWidth - lineSurface->w;
             break;
         }
 
-        std::cout << "Blitting [" << lines[i] << "] to (" << dstRect.x << ", " << dstRect.y << ") ..." << std::endl;
         // Blit the line surface to its final surface.
         SDL_BlitSurface( lineSurface, nullptr, textSurface, &dstRect );
-        std::cout << "Blitting [" << lines[i] << "] to (" << dstRect.x << ", " << dstRect.y << ") ...OK" << std::endl;
 
         //
         dstRect.y += TTF_FontHeight( font );
 
-        std::cout << "3" << std::endl;
-
         // Free the line surface.
         SDL_FreeSurface( lineSurface );
-
-        std::cout << "4" << std::endl;
     }
-
-    std::cout << "5" << std::endl;
 
     // Generate a tileset from the text surface.
     textTileset = TilesetPtr( new Tileset( textSurface, textWidth, textHeight ) );
 
-    //std::cout << "Factors: (" << auxTextSurface->w / (GLfloat)textWidth << ", " << auxTextSurface->h / (GLfloat)textHeight << ")" << std::endl;
     //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
 
     // Create the final sprite from the previous tileset.
@@ -256,8 +232,6 @@ void TextRenderer::getTextDimensions( TTF_Font* font, const char* text, int& tex
         }
         textLine[i] = 0;
         lines.push_back( std::string( textLine ) );
-
-        std::cout << "Text line: [" << lines.back() << "]" << std::endl;
 
         // Get the line dimensions.
         TTF_SizeText( font, textLine, &lineWidth, nullptr );

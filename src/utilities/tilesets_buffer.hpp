@@ -26,7 +26,6 @@
 #include <GL/gl.h>
 
 #include <GL/glu.h>
-#include <iostream>
 
 namespace m2g {
 

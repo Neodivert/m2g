@@ -220,9 +220,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     boundaryBox.x = 0.0f;
     boundaryBox.y = 0.0f;
 
-    std::cout << "Base line: (" << baseLine_[0].x << ", " << baseLine_[0].y << ") - (" << baseLine_[1].x << ", " << baseLine_[1].y << ")" << std::endl;
-    std::cout << "Boundary box: " << boundaryBox.x << ", " << boundaryBox.y << ", " << boundaryBox.width << ", " << boundaryBox.height << ")" << std::endl << std::endl;
-
     // Unmap the VBO memory.
     glUnmapBuffer( GL_ARRAY_BUFFER );
 

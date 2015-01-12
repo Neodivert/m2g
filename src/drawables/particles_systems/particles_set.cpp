@@ -103,7 +103,7 @@ void ParticlesSet::generateTileset( const char* file,
     // Bind the off-screen framebuffer and check its status.
     psTilesetInfo.bindFramebuffer();
     if( glCheckFramebufferStatus( GL_DRAW_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE ){
-        std::cerr << "ERROR - Framebuffer not complete" << std::endl;
+        throw std::runtime_error( "ERROR - Framebuffer not complete" );
     }
     checkOpenGL( "ParticleSystem::geenerateTileset() - Checking off-screen framebuffer status" );
 
