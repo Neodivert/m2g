@@ -3,7 +3,6 @@
 
 // OpenGL
 #define GL_GLEXT_PROTOTYPES
-#include "GL3W/gl3w.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 
