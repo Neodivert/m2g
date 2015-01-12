@@ -20,7 +20,6 @@
 #include "text_renderer.hpp"
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
-#include <SDL2/SDL_image.h>
 
 namespace m2g {
 
@@ -206,8 +205,6 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
     }
 
     std::cout << "5" << std::endl;
-
-    IMG_SavePNG( textSurface, "text.png" );
 
     // Generate a tileset from the text surface.
     textTileset = TilesetPtr( new Tileset( textSurface, textWidth, textHeight ) );
