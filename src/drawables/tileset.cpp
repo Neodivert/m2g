@@ -19,6 +19,7 @@
 
 #include "tileset.hpp"
 #include <iostream>
+#include <SDL2/SDL_image.h>
 
 namespace m2g {
 

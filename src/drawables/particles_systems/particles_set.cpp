@@ -17,7 +17,12 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
+#include <SDL2/SDL.h>
+
 #include "particles_set.hpp"
+
 
 namespace m2g {
 

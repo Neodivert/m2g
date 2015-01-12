@@ -21,7 +21,6 @@
 #define PS_TILESET_INFO_H
 
 #include "../drawable.hpp"
-#include "../../dependencies/dependencies.hpp"
 #include "../../dependencies/SDL_SavePNG/savepng.hpp"
 
 namespace m2g {

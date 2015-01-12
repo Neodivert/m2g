@@ -18,6 +18,7 @@
 ***/
 
 #include "drawable.hpp"
+#include <GL/glu.h>
 
 namespace m2g {
 

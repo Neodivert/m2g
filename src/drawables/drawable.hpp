@@ -20,13 +20,17 @@
 #ifndef DRAWABLE_HPP
 #define DRAWABLE_HPP
 
-#include "../dependencies/dependencies.hpp"
 #include <vector>
 #include <iostream>
 #include <stdexcept>
-#include <GL/glu.h>
 #include <memory>
 #include <tinyxml2.h>
+#include <glm/vec2.hpp>
+#include <glm/mat4x4.hpp>
+#define GL_GLEXT_PROTOTYPES
+extern "C" {
+    #include <GL/gl.h>
+}
 
 namespace m2g {
 

@@ -18,6 +18,9 @@
 ***/
 
 #include "text_renderer.hpp"
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
+#include <SDL2/SDL_image.h>
 
 namespace m2g {
 

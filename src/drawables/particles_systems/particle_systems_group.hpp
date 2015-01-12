@@ -22,7 +22,6 @@
 
 #include "particle_system.hpp"
 #include "../drawable.hpp"
-#include "../../dependencies/SDL_SavePNG/savepng.hpp"
 
 namespace m2g {
 

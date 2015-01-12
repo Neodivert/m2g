@@ -19,6 +19,8 @@
 
 #include "sprite.hpp"
 #include <iostream>
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace m2g {
 

@@ -21,7 +21,6 @@
 #define PARTICLESYSTEM_HPP
 
 #include "particles_set.hpp"
-#include "../../dependencies/dependencies.hpp"
 #include <vector>
 
 namespace m2g {

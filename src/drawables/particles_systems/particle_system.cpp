@@ -19,6 +19,9 @@
 
 #include "particle_system.hpp"
 #include <cmath>
+#include <glm/vec3.hpp>
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace m2g {
 
