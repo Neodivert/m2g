@@ -29,9 +29,6 @@ int main()
     //glClearColor( 0xCE/255.0f, 0xE3/255.0f, 0xF6/255.0f, 1.0f );
     glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
 
-    // Make the cursor invisible.
-    SDL_ShowCursor( SDL_DISABLE );
-
     // Main loop.
     bool quit = false;
     Uint32 t0, t1;
