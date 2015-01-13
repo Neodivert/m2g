@@ -47,7 +47,11 @@ set_target_properties(
 
 # Build samples
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/samples ) # TODO: Does this affect the target instalation?
-add_executable( gui-buttons "${PROJECT_SOURCE_DIR}/src/samples/gui/buttons/buttons.cpp" )
+set( SAMPLE_KERNEL_SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/samples/kernel/sample_app.cpp" )
+message( "SAMPLE_KERNEL_SOURCE_FILES: ${SAMPLE_KERNEL_SOURCE_FILES}" )
+add_executable(
+    gui-buttons
+    ${PROJECT_SOURCE_DIR}/src/samples/gui/buttons/buttons.cpp ${SAMPLE_KERNEL_SOURCE_FILES} )
 target_link_libraries( gui-buttons "${LIBRARIES} -lm2g" ) # TODO: Or use the previous ${LIBRARY_NAME} library?
 # TODO: Add old sample "particles systems".
 
