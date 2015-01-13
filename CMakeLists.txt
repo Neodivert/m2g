@@ -45,12 +45,19 @@ set_target_properties(
     VERSION ${PROJECT_VERSION_STRING}
     SOVERSION ${PROJECT_VERSION_MAJOR} )
 
+# Build samples
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/samples ) # TODO: Does this affect the target instalation?
+add_executable( gui-buttons "${PROJECT_SOURCE_DIR}/src/samples/gui/buttons/buttons.cpp" )
+target_link_libraries( gui-buttons "${LIBRARIES} -lm2g" ) # TODO: Or use the previous ${LIBRARY_NAME} library?
+# TODO: Add old sample "particles systems".
+
 # Link libraries.
 target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
 
 # Instalation.
 install( DIRECTORY src/ DESTINATION include/m2g FILES_MATCHING PATTERN "*.hpp" )
 install( TARGETS ${LIBRARY_NAME} DESTINATION lib )
+# TODO: Install samples.
 
 # Uninstall target
 # Source: http://www.cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F
