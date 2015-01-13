@@ -2,6 +2,7 @@
 #include <m2g/graphics_library.hpp>
 #include <msl/shader_loader.hpp>
 #include "../../kernel/sample_app.hpp"
+#include <gui/gui.hpp>
 
 int WINDOW_WIDTH = 800;
 int WINDOW_HEIGHT = 600;
