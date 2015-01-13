@@ -59,15 +59,6 @@ int main()
         // Clear screen.
         glClear ( GL_COLOR_BUFFER_BIT );
 
-        // Draw the particle sets.
-        //fire.drawAndUpdate( projectionMatrix );
-        //extinguisher.draw( projectionMatrix );
-        //smoke.drawAndUpdate( projectionMatrix );
-        //foam.drawAndUpdate( projectionMatrix );
-        /*electricField.drawAndUpdate( projectionMatrix );
-        fireCore.drawAndUpdate( projectionMatrix );
-        snow.drawAndUpdate( projectionMatrix );*/
-
         // Refresh screen.
         sampleApp.refreshWindow();
     }
