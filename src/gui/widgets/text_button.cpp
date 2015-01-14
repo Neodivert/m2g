@@ -51,9 +51,16 @@ TilesetPtr TextButton::generateTileset( const std::string &text )
 {
     SDL_Color color = { 255, 0, 0, 255 };
     TTF_Font* font =
-            TTF_OpenFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.tff", 18 );
+            TTF_OpenFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 18 );
+    if( font == nullptr ){
+        throw std::runtime_error( TTF_GetError() );
+    }
+
     SDL_Surface* normalButtonSurface =
             TTF_RenderText_Solid( font, text.c_str(), color );
+    if( normalButtonSurface == nullptr ){
+        throw std::runtime_error( TTF_GetError() );
+    }
     // TODO: Generate surfaces, blit and generate tileset.
 
     TilesetPtr tileset =
