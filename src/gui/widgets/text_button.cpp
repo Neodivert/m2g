@@ -25,7 +25,8 @@ namespace m2g {
  * 1. Construction
  ***/
 
-TextButton::TextButton( const std::string& text )
+TextButton::TextButton( const std::string& text ) :
+    Sprite( generateTileset( text ) )
 {
     (void)( text );
     setStatus( ButtonStatus::NORMAL );
@@ -43,7 +44,31 @@ bool TextButton::handleEvent( const SDL_Event &event )
 
 
 /***
- * 3. Private setters
+ * 3. Initialization
+ ***/
+
+TilesetPtr TextButton::generateTileset( const std::string &text )
+{
+    SDL_Color color = { 255, 0, 0, 255 };
+    TTF_Font* font =
+            TTF_OpenFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.tff", 18 );
+    SDL_Surface* normalButtonSurface =
+            TTF_RenderText_Solid( font, text.c_str(), color );
+    // TODO: Generate surfaces, blit and generate tileset.
+
+    TilesetPtr tileset =
+            TilesetPtr( new Tileset( normalButtonSurface,
+                                     normalButtonSurface->w,
+                                     normalButtonSurface->h ) );
+    SDL_FreeSurface( normalButtonSurface );
+    TTF_CloseFont( font );
+
+    return tileset;
+}
+
+
+/***
+ * 4. Private setters
  ***/
 
 void TextButton::setStatus( ButtonStatus newStatus )

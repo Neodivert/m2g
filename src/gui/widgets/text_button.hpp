@@ -47,7 +47,13 @@ class TextButton : public Widget, public Sprite
 
     private:
         /***
-         * 3. Private setters
+         * 3. Initialization
+         ***/
+        static TilesetPtr generateTileset( const std::string& text );
+
+
+        /***
+         * 4. Private setters
          ***/
         void setStatus( ButtonStatus newStatus );
 
