@@ -17,6 +17,16 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
+#include <gui/widgets/button.hpp>
+
 namespace m2g {
+
+class GUI {
+    public:
+        /***
+         * 1. Construction
+         ***/
+        GUI( const char* filePath );
+};
 
 } // namespace m2g

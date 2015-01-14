@@ -17,12 +17,30 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include <gui/interfaces/event_listener.hpp>
+#include "button.hpp"
 
 namespace m2g {
 
-class Widget : public EventListener
-{
-};
+/***
+ * 1. Construction
+ ***/
 
+Button::Button( AnimationDataPtr animationData ) :
+    Animation( animationData )
+{
+    if( animationData->states.size() < 3 ){
+        throw std::runtime_error( "Button's animation must contain 3 states: normal, hover and pressed" );
+    }
 }
+
+
+/***
+ * 2. Event handling
+ ***/
+
+bool Button::handleEvent( const SDL_Event &event )
+{
+    return false;
+}
+
+} // namespace m2g

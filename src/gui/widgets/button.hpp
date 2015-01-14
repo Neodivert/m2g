@@ -17,12 +17,23 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include <gui/interfaces/event_listener.hpp>
+#include "widget.hpp"
+#include <drawables/animation.hpp>
 
 namespace m2g {
 
-class Widget : public EventListener
+class Button : public Widget, public Animation
 {
+    /***
+     * 1. Construction
+     ***/
+    Button( AnimationDataPtr animationData );
+
+
+    /***
+     * 2. Event handling
+     ***/
+    virtual bool handleEvent( const SDL_Event &event );
 };
 
-}
+} // namespace m2g

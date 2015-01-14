@@ -52,7 +52,8 @@ message( "SAMPLE_KERNEL_SOURCE_FILES: ${SAMPLE_KERNEL_SOURCE_FILES}" )
 add_executable(
     gui-buttons
     ${PROJECT_SOURCE_DIR}/src/samples/gui/buttons/buttons.cpp ${SAMPLE_KERNEL_SOURCE_FILES} )
-target_link_libraries( gui-buttons "${LIBRARIES} -lm2g" ) # TODO: Or use the previous ${LIBRARY_NAME} library?
+add_dependencies( gui-buttons ${LIBRARY_NAME} )
+target_link_libraries( gui-buttons "-L${CMAKE_SOURCE_DIR}" "${LIBRARIES}" "-lm2g" ) # TODO: Or use the previous ${LIBRARY_NAME} library?
 # TODO: Add old sample "particles systems".
 
 # Link libraries.
