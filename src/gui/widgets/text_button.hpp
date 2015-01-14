@@ -22,6 +22,13 @@
 
 namespace m2g {
 
+enum class ButtonStatus
+{
+    NORMAL,
+    HOVER,
+    PRESSED
+};
+
 class TextButton : public Widget, public Drawable
 {
     public:
@@ -36,6 +43,24 @@ class TextButton : public Widget, public Drawable
          * 2. Event handling
          ***/
         virtual bool handleEvent( const SDL_Event &event );
+
+
+    private:
+        /***
+         * 3. Private setters
+         ***/
+        void setStatus( ButtonStatus newStatus );
+
+
+        /***
+         * Attributes
+         ***/
+        ButtonStatus status_;
+        SDL_Texture* currentTexture_;
+
+        SDL_Texture* normalTexture_;
+        SDL_Texture* hoverTexture_;
+        SDL_Texture* pressedTexture_;
 };
 
 } // namespace m2g

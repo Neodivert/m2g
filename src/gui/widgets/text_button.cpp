@@ -28,6 +28,8 @@ namespace m2g {
 TextButton::TextButton( const std::string& text )
 {
     (void)( text );
+
+    setStatus( ButtonStatus::NORMAL );
 }
 
 
@@ -38,6 +40,27 @@ TextButton::TextButton( const std::string& text )
 bool TextButton::handleEvent( const SDL_Event &event )
 {
     return false;
+}
+
+
+/***
+ * 3. Private setters
+ ***/
+
+void TextButton::setStatus( ButtonStatus newStatus )
+{
+    status_ = newStatus;
+    switch( status_ ){
+        case ButtonStatus::NORMAL:
+            currentTexture_ = normalTexture_;
+        break;
+        case ButtonStatus::HOVER:
+            currentTexture_ = hoverTexture_;
+        break;
+        case ButtonStatus::PRESSED:
+            currentTexture_ = pressedTexture_;
+        break;
+    }
 }
 
 } // namespace m2g
