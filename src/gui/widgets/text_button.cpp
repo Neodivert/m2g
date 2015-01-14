@@ -25,16 +25,44 @@ namespace m2g {
  * 1. Construction
  ***/
 
-TextButton::TextButton( const std::string& text )
+TextButton::TextButton( SDL_Renderer* renderer, const std::string& text )
 {
     (void)( text );
+    // TODO: Retrieve color and font from file.
+    const SDL_Color color = { 255, 0, 0, 255 };
+    TTF_Font* font =
+            TTF_OpenFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 20 );
+    if( font == nullptr ){
+        throw std::runtime_error( TTF_GetError() );
+    }
 
     setStatus( ButtonStatus::NORMAL );
+
+    // Generate 3 different textures.
+    SDL_Surface* surface = TTF_RenderText_Solid( font, text.c_str(), color );
+    normalTexture_ = SDL_CreateTextureFromSurface( renderer, surface );
+    hoverTexture_ = SDL_CreateTextureFromSurface( renderer, surface );
+    pressedTexture_ = SDL_CreateTextureFromSurface( renderer, surface );
+    SDL_FreeSurface( surface );
+
+    TTF_CloseFont( font );
 }
 
 
 /***
- * 2. Event handling
+ * 2. Destruction
+ ***/
+
+TextButton::~TextButton()
+{
+    SDL_DestroyTexture( normalTexture_ );
+    SDL_DestroyTexture( hoverTexture_ );
+    SDL_DestroyTexture( pressedTexture_ );
+}
+
+
+/***
+ * 3. Event handling
  ***/
 
 bool TextButton::handleEvent( const SDL_Event &event )
@@ -44,7 +72,7 @@ bool TextButton::handleEvent( const SDL_Event &event )
 
 
 /***
- * 3. Private setters
+ * 4. Private setters
  ***/
 
 void TextButton::setStatus( ButtonStatus newStatus )

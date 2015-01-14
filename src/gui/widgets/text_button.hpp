@@ -36,18 +36,24 @@ class TextButton : public Widget, public Drawable
          * 1. Construction
          ***/
         // TODO: Use UTF-8 / UTF-16 for text.
-        TextButton( const std::string& text );
+        TextButton( SDL_Renderer* renderer, const std::string& text );
 
 
         /***
-         * 2. Event handling
+         * 2. Destruction
+         ***/
+        ~TextButton();
+
+
+        /***
+         * 3. Event handling
          ***/
         virtual bool handleEvent( const SDL_Event &event );
 
 
     private:
         /***
-         * 3. Private setters
+         * 4. Private setters
          ***/
         void setStatus( ButtonStatus newStatus );
 
