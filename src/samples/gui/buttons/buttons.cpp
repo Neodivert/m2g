@@ -36,7 +36,6 @@ int main()
     SDL_Event event;
     const Uint32 REFRESH_TIME = 33;
     glClearColor( 0xF5/255.0f, 0xF6/255.0f, 0xCE/255.0f, 1.0f );
-    m2g::GUI gui( "foo" );
 
     while( !quit ){
         t0 = t1 = SDL_GetTicks();
