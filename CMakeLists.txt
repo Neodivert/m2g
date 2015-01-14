@@ -46,7 +46,7 @@ set_target_properties(
     SOVERSION ${PROJECT_VERSION_MAJOR} )
 
 # Build samples
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/samples ) # TODO: Does this affect the target instalation?
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/samples/gui ) # TODO: Does this affect the target instalation?
 set( SAMPLE_KERNEL_SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/samples/kernel/sample_app.cpp" )
 message( "SAMPLE_KERNEL_SOURCE_FILES: ${SAMPLE_KERNEL_SOURCE_FILES}" )
 add_executable(
