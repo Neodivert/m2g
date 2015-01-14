@@ -27,14 +27,14 @@ class TextButton : public Widget, public Drawable
     /***
      * 1. Construction
      ***/
-        // TODO: Use UTF-8 / UTF-16 for text.
-        TextButton( const std::string& text );
+    // TODO: Use UTF-8 / UTF-16 for text.
+    TextButton( const std::string& text );
 
 
-        /***
-         * 2. Event handling
-         ***/
-        virtual bool handleEvent( const SDL_Event &event );
+    /***
+     * 2. Event handling
+     ***/
+    virtual bool handleEvent( const SDL_Event &event );
 };
 
 } // namespace m2g
