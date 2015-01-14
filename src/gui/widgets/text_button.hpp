@@ -29,31 +29,25 @@ enum class ButtonStatus
     PRESSED
 };
 
-class TextButton : public Widget, public Drawable
+class TextButton : public Widget, public Sprite
 {
     public:
         /***
          * 1. Construction
          ***/
         // TODO: Use UTF-8 / UTF-16 for text.
-        TextButton( SDL_Renderer* renderer, const std::string& text );
+        TextButton( const std::string& text );
 
 
         /***
-         * 2. Destruction
-         ***/
-        ~TextButton();
-
-
-        /***
-         * 3. Event handling
+         * 2. Event handling
          ***/
         virtual bool handleEvent( const SDL_Event &event );
 
 
     private:
         /***
-         * 4. Private setters
+         * 3. Private setters
          ***/
         void setStatus( ButtonStatus newStatus );
 
@@ -62,11 +56,6 @@ class TextButton : public Widget, public Drawable
          * Attributes
          ***/
         ButtonStatus status_;
-        SDL_Texture* currentTexture_;
-
-        SDL_Texture* normalTexture_;
-        SDL_Texture* hoverTexture_;
-        SDL_Texture* pressedTexture_;
 };
 
 } // namespace m2g
