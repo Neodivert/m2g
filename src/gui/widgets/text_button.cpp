@@ -17,23 +17,27 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "widget.hpp"
-#include <drawables/animation.hpp>
+#include "text_button.hpp"
 
 namespace m2g {
 
-class Button : public Widget, public Animation
+/***
+ * 1. Construction
+ ***/
+
+TextButton::TextButton( const std::string& text )
 {
-    /***
-     * 1. Construction
-     ***/
-    Button( AnimationDataPtr animationData );
+    (void)( text );
+}
 
 
-    /***
-     * 2. Event handling
-     ***/
-    virtual bool handleEvent( const SDL_Event &event );
-};
+/***
+ * 2. Event handling
+ ***/
+
+bool TextButton::handleEvent( const SDL_Event &event )
+{
+    return false;
+}
 
 } // namespace m2g

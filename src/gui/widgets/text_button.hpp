@@ -17,30 +17,24 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "button.hpp"
+#include "widget.hpp"
+#include <drawables/animation.hpp>
 
 namespace m2g {
 
-/***
- * 1. Construction
- ***/
-
-Button::Button( AnimationDataPtr animationData ) :
-    Animation( animationData )
+class TextButton : public Widget, public Drawable
 {
-    if( animationData->states.size() < 3 ){
-        throw std::runtime_error( "Button's animation must contain 3 states: normal, hover and pressed" );
-    }
-}
+    /***
+     * 1. Construction
+     ***/
+        // TODO: Use UTF-8 / UTF-16 for text.
+        TextButton( const std::string& text );
 
 
-/***
- * 2. Event handling
- ***/
-
-bool Button::handleEvent( const SDL_Event &event )
-{
-    return false;
-}
+        /***
+         * 2. Event handling
+         ***/
+        virtual bool handleEvent( const SDL_Event &event );
+};
 
 } // namespace m2g

@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include <gui/widgets/button.hpp>
+#include <gui/widgets/text_button.hpp>
 
 namespace m2g {
 
