@@ -27,7 +27,7 @@ namespace m2g {
  * 1. Initialization and destruction.
  ***/
 
-Tileset::Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder ) :
+Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder ) :
     texture( 0 ),
     tileWidth( 0 ),
     tileHeight( 0 ),
@@ -36,13 +36,15 @@ Tileset::Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder ) :
     nRows( 0 ),
     nColumns( 0 ),
     nTiles( 0 ),
-    bufferIndex( 0 )
+    bufferIndex( 0 ),
+    renderer_( renderer )
 {
     load( xmlNode, folder );
 }
 
 
-Tileset::Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx, GLfloat fy )
+Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx, GLfloat fy ) :
+    renderer_( renderer )
 {
     load( surface, tileWidth, tileHeight, fx, fy );
 }

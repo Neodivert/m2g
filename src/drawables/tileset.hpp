@@ -64,8 +64,8 @@ class Tileset {
         /***
          * 1. Initialization and destruction.
          ***/
-        Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder );
-        Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx = 1.0f, GLfloat fy = 1.0f );
+        Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder );
+        Tileset( SDL_Renderer* renderer, SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx = 1.0f, GLfloat fy = 1.0f );
         ~Tileset();
 
 
@@ -88,6 +88,9 @@ class Tileset {
         static void bindBuffer();
     private:
         void loadTexture( void* data, int pitch  );
+
+    protected:
+        SDL_Renderer* renderer_;
 };
 
 typedef std::shared_ptr< const Tileset > TilesetPtr;
