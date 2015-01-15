@@ -35,7 +35,6 @@ Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, cons
     nRows( 0 ),
     nColumns( 0 ),
     nTiles( 0 ),
-    bufferIndex( 0 ),
     renderer_( renderer ),
     texture_( nullptr )
 {

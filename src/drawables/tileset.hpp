@@ -66,9 +66,6 @@ class Tileset
         unsigned int nColumns;
         unsigned int nTiles;
 
-        // Index of this tileset's vertex attributes in the tilesets buffer.
-        unsigned int bufferIndex;
-
         // Name of the tileset's base image.
         std::string name;
 
