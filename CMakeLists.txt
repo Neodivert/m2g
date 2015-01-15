@@ -10,8 +10,11 @@ set( PROJECT_VERSION_PATCH 0 )
 set( PROJECT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH} )
 
 # Project files
-file( GLOB_RECURSE SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" ) # TODO: Remove sample and test files.
-list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
+#file( GLOB_RECURSE SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" ) # TODO: Remove sample and test files.
+#list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
+set( SOURCE_FILES
+     "${PROJECT_SOURCE_DIR}/src/drawables/drawable.cpp" )
+
 include_directories( "${PROJECT_SOURCE_DIR}/src" )
 
 # Compiler flags
@@ -46,18 +49,18 @@ set_target_properties(
     SOVERSION ${PROJECT_VERSION_MAJOR} )
 
 # Build samples
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/samples/gui ) # TODO: Does this affect the target instalation?
-set( SAMPLE_KERNEL_SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/samples/kernel/sample_app.cpp" )
-message( "SAMPLE_KERNEL_SOURCE_FILES: ${SAMPLE_KERNEL_SOURCE_FILES}" )
-add_executable(
-    gui-buttons
-    ${PROJECT_SOURCE_DIR}/src/samples/gui/buttons/buttons.cpp ${SAMPLE_KERNEL_SOURCE_FILES} )
-add_dependencies( gui-buttons ${LIBRARY_NAME} )
-target_link_libraries( gui-buttons "-L${CMAKE_SOURCE_DIR}" "${LIBRARIES}" "-lm2g" ) # TODO: Or use the previous ${LIBRARY_NAME} library?
+#set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/samples/gui ) # TODO: Does this affect the target instalation?
+#set( SAMPLE_KERNEL_SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/samples/kernel/sample_app.cpp" )
+#message( "SAMPLE_KERNEL_SOURCE_FILES: ${SAMPLE_KERNEL_SOURCE_FILES}" )
+#add_executable(
+#    gui-buttons
+#    ${PROJECT_SOURCE_DIR}/src/samples/gui/buttons/buttons.cpp ${SAMPLE_KERNEL_SOURCE_FILES} )
+#add_dependencies( gui-buttons ${LIBRARY_NAME} )
+#target_link_libraries( gui-buttons "-L${CMAKE_SOURCE_DIR}" "${LIBRARIES}" "-lm2g" ) # TODO: Or use the previous ${LIBRARY_NAME} library?
 # TODO: Add old sample "particles systems".
 
 # Link libraries.
-target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
+#target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
 
 # Instalation.
 install( DIRECTORY src/ DESTINATION include/m2g FILES_MATCHING PATTERN "*.hpp" )
