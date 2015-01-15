@@ -47,7 +47,8 @@ bool Rect::collide( const Rect& b ) const
  * 1. Initialization
  ***/
 
-Drawable::Drawable()
+Drawable::Drawable( SDL_Renderer* renderer ) :
+    renderer_( renderer )
 {
     boundaryBox = { 0.0f, 0.0f, 0.0f, 0.0f };
 }

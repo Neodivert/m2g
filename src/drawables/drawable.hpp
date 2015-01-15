@@ -30,6 +30,7 @@
 extern "C" {
     #include <GL/gl.h>
 }
+#include <SDL2/SDL.h>
 
 namespace m2g {
 
@@ -47,13 +48,14 @@ struct Rect
 class Drawable
 {
     protected:
+        SDL_Renderer* renderer_;
         Rect boundaryBox;
 
     public:
         /***
          * 1. Initialization
          ***/
-        Drawable();
+        Drawable( SDL_Renderer* renderer );
 
 
         /***
