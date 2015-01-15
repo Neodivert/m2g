@@ -43,7 +43,7 @@ Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, cons
 }
 
 
-Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight ) :
+Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight ) :
     renderer_( renderer )
 {
     load( surface, tileWidth, tileHeight );
@@ -73,8 +73,8 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     // Read texture's source and frame dimensions from the given XML node.
     const char* imageFile = xmlNode->FirstChildElement( "src" )->GetText();
     const tinyxml2::XMLElement* tileDimensionsNode = xmlNode->FirstChildElement( "tile_dimensions" );
-    tileWidth = (GLuint)tileDimensionsNode->IntAttribute( "width" );
-    tileHeight = (GLuint)tileDimensionsNode->IntAttribute( "height" );
+    tileWidth = (unsigned int)tileDimensionsNode->IntAttribute( "width" );
+    tileHeight = (unsigned int)tileDimensionsNode->IntAttribute( "height" );
     const tinyxml2::XMLElement* collisionInfoNode = xmlNode->FirstChildElement( "collision_rects" );
     const tinyxml2::XMLElement* collisionRectNode;
     Rect colRect;
@@ -168,7 +168,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
 }
 
 
-void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
+void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight )
 {
     // Load the tileset name.
     name = "SDL_Surface";
