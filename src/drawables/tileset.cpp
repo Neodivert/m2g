@@ -195,7 +195,6 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
             collisionRectNode = collisionRectNode->NextSiblingElement( "collision_rect" );
         }
     }
-    checkOpenGL( "Sprite constructor" );
 }
 
 

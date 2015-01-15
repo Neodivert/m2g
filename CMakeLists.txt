@@ -13,7 +13,8 @@ set( PROJECT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${
 #file( GLOB_RECURSE SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" ) # TODO: Remove sample and test files.
 #list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
 set( SOURCE_FILES
-     "${PROJECT_SOURCE_DIR}/src/drawables/drawable.cpp" )
+     "${PROJECT_SOURCE_DIR}/src/drawables/drawable.cpp"
+     "${PROJECT_SOURCE_DIR}/src/drawables/tileset.cpp" )
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )
 
