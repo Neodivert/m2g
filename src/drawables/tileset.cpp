@@ -28,7 +28,6 @@ namespace m2g {
  ***/
 
 Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder ) :
-    texture( 0 ),
     tileWidth( 0 ),
     tileHeight( 0 ),
     imageWidth( 0 ),
@@ -37,7 +36,8 @@ Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, cons
     nColumns( 0 ),
     nTiles( 0 ),
     bufferIndex( 0 ),
-    renderer_( renderer )
+    renderer_( renderer ),
+    texture_( nullptr )
 {
     load( xmlNode, folder );
 }
@@ -52,8 +52,8 @@ Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, GLuint tileWidth
 
 Tileset::~Tileset()
 {
-    // Free the OpenGL texture object.
-    glDeleteTextures( 1, &texture );
+    // Free the texture.
+    SDL_DestroyTexture( texture_ );
 }
 
 
@@ -105,7 +105,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     nTiles = nRows * nColumns;
 
     // Load the texture
-    loadTexture( image->pixels, image->w );
+    texture_ = SDL_CreateTextureFromSurface( renderer_, image );
 
     // Free the image's surface.
     SDL_FreeSurface( image );
@@ -191,7 +191,7 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, G
     nTiles = nRows * nColumns;
 
     // Load the texture
-    loadTexture( surface->pixels, surface->w );
+    texture_ = SDL_CreateTextureFromSurface( renderer_, surface );
 }
 
 
@@ -200,72 +200,7 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, G
  ***/
 
 void Tileset::draw() const
-{ 
-}
-
-
-/***
- * 4. Auxiliar methods
- ***/
-
-void Tileset::bindBuffer()
 {
-}
-
-
-void Tileset::loadTexture( void* data, int pitch )
-{
-    // Generate the texture and set its parameters.
-    // TODO: play with multiple texture units (or not?).
-    glActiveTexture( GL_TEXTURE0 );
-    glGenTextures( 1, &texture );
-    glBindTexture( GL_TEXTURE_2D_ARRAY, texture );
-
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-
-    glPixelStorei( GL_UNPACK_ALIGNMENT, 4 );
-    glPixelStorei( GL_UNPACK_SKIP_PIXELS, 0 );
-    glPixelStorei( GL_UNPACK_SKIP_ROWS, 0 );
-    glPixelStorei( GL_UNPACK_ROW_LENGTH, pitch );
-
-    // Set the texture's storage.
-    glTexStorage3D( GL_TEXTURE_2D_ARRAY,    // target
-                    1,                      // levels (1 = no mipmapping).
-                    GL_RGBA8,               // internal format (32-bit textures).
-                    tileWidth,     // texture width.
-                    tileHeight,    // texture height.
-                    nTiles         // texture depth (number of slices).
-                    );
-
-
-    // Set texture's image data.
-    GLuint tile = 0;
-    for( GLuint row = 0; row < nRows; row++ ){
-        for( GLuint column = 0; column < nColumns; column++ ){
-            glPixelStorei( GL_UNPACK_SKIP_PIXELS, column*tileWidth );
-            glPixelStorei( GL_UNPACK_SKIP_ROWS, row*tileHeight );
-            glPixelStorei( GL_UNPACK_ROW_LENGTH, pitch );
-
-            glTexSubImage3D( GL_TEXTURE_2D_ARRAY,   // target
-                             0,                     // level
-                             0,                     // xoffset
-                             0,                     // yoffset
-                             tile,                  // zoffset
-                             tileWidth,    // width
-                             tileHeight,   // height
-                             1,                     // depth
-                             GL_RGBA,               // format
-                             GL_UNSIGNED_BYTE,      // type
-                             data          // image data.
-                             );
-            tile++;
-        }
-
-    }
-    glPixelStorei( GL_UNPACK_ROW_LENGTH, 0 );
 }
 
 } // Namespace m2g

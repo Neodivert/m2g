@@ -33,9 +33,6 @@ namespace m2g {
 class Tileset {
 
     public:
-        // Texture 2D array id (OpenGL).
-        GLuint texture;
-
         // Tile dimensions.
         GLuint tileWidth;
         GLuint tileHeight;
@@ -82,15 +79,9 @@ class Tileset {
         void draw() const ;
 
 
-        /***
-         * 4. Auxiliar methods
-         ***/
-        static void bindBuffer();
-    private:
-        void loadTexture( void* data, int pitch  );
-
     protected:
         SDL_Renderer* renderer_;
+        SDL_Texture* texture_;
 };
 
 typedef std::shared_ptr< const Tileset > TilesetPtr;
