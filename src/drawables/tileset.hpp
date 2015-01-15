@@ -35,6 +35,7 @@ class Tileset {
         unsigned int tileHeight;
 
         // Image dimensions.
+        // TODO: Remove these and query texture_'s dimensions when required?
         unsigned int imageWidth;
         unsigned int imageHeight;
 
