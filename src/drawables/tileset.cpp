@@ -43,10 +43,10 @@ Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, cons
 }
 
 
-Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx, GLfloat fy ) :
+Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight ) :
     renderer_( renderer )
 {
-    load( surface, tileWidth, tileHeight, fx, fy );
+    load( surface, tileWidth, tileHeight );
 }
 
 
@@ -168,7 +168,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
 }
 
 
-void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx, GLfloat fy )
+void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
 {
     // Load the tileset name.
     name = "SDL_Surface";
