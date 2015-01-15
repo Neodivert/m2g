@@ -30,8 +30,6 @@ namespace m2g {
 Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder ) :
     tileWidth( 0 ),
     tileHeight( 0 ),
-    imageWidth( 0 ),
-    imageHeight( 0 ),
     nRows( 0 ),
     nColumns( 0 ),
     nTiles( 0 ),
@@ -97,8 +95,6 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     }
 
     // Read tileset general info.
-    imageWidth = image->w;
-    imageHeight = image->h;
     nRows = ( image->h / tileHeight );
     nColumns = ( image->w / tileWidth );
     nTiles = nRows * nColumns;
@@ -183,8 +179,6 @@ void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int t
     }
 
     // Read tileset general info.
-    imageWidth = surface->w;
-    imageHeight = surface->h;
     nRows = ( surface->h / tileHeight );
     nColumns = ( surface->w / tileWidth );
     nTiles = nRows * nColumns;

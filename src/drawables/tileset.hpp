@@ -56,11 +56,6 @@ class Tileset
         unsigned int tileWidth;
         unsigned int tileHeight;
 
-        // Image dimensions.
-        // TODO: Remove these and query texture_'s dimensions when required?
-        unsigned int imageWidth;
-        unsigned int imageHeight;
-
         // Tileset number of elements.
         unsigned int nRows;
         unsigned int nColumns;
