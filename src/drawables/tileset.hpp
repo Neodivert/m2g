@@ -27,9 +27,31 @@
 
 namespace m2g {
 
-class Tileset {
-
+class Tileset
+{
     public:
+        /***
+         * 1. Initialization and destruction.
+         ***/
+        Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder );
+        Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
+        ~Tileset();
+
+
+        /***
+         * 2. Loading
+         ***/
+        void load( const tinyxml2::XMLNode* xmlNode, const char* folder );
+        void load( SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
+
+
+        /***
+         * 3. Drawing
+         ***/
+        void drawTile( unsigned int tile, int x, int y ) const;
+
+
+    private:
         // Tile dimensions.
         unsigned int tileWidth;
         unsigned int tileHeight;
@@ -53,31 +75,6 @@ class Tileset {
         // We keep a vector of collision rects for each tile in the tileset.
         std::vector< std::vector< Rect > > collisionRects;
 
-
-        /*** Methods ***/
-
-        /***
-         * 1. Initialization and destruction.
-         ***/
-        Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder );
-        Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
-        ~Tileset();
-
-
-        /***
-         * 2. Loading
-         ***/
-        void load( const tinyxml2::XMLNode* xmlNode, const char* folder );
-        void load( SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
-
-
-        /***
-         * 3. Drawing
-         ***/
-        void drawTile( unsigned int tile, int x, int y ) const;
-
-
-    protected:
         SDL_Renderer* renderer_;
         SDL_Texture* texture_;
 };
