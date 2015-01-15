@@ -23,20 +23,16 @@
 #include "drawable.hpp"
 #include <memory>
 #include <vector>
-#include "../utilities/tilesets_buffer.hpp"
 #include <tinyxml2.h>
 #include <SDL2/SDL_ttf.h>
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
 
 namespace m2g {
 
 class Tileset {
 
     public:
-        // Common tilesets buffer for all tilesets and its corresponding references
-        // count.
-        static TilesetsBuffer* tilesetsBuffer;
-        static unsigned int refCount;
-
         // Texture 2D array id (OpenGL).
         GLuint texture;
 

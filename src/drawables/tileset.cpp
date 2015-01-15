@@ -27,10 +27,6 @@ namespace m2g {
  * 1. Initialization and destruction.
  ***/
 
-TilesetsBuffer* Tileset::tilesetsBuffer = nullptr;
-unsigned int Tileset::refCount = 0;
-
-
 Tileset::Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder ) :
     texture( 0 ),
     tileWidth( 0 ),
@@ -42,28 +38,12 @@ Tileset::Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder ) :
     nTiles( 0 ),
     bufferIndex( 0 )
 {
-    if( tilesetsBuffer == nullptr ){
-        // If the tilesets buffer is not initialized, create it!.
-        tilesetsBuffer = new TilesetsBuffer( 10 );
-    }
-
-    // Increment the references count.
-    refCount++;
-
     load( xmlNode, folder );
 }
 
 
 Tileset::Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, GLfloat fx, GLfloat fy )
 {
-    if( tilesetsBuffer == nullptr ){
-        // If the tilesets buffer is not initialized, create it!.
-        tilesetsBuffer = new TilesetsBuffer( 10 );
-    }
-
-    // Increment the references count.
-    refCount++;
-
     load( surface, tileWidth, tileHeight, fx, fy );
 }
 
@@ -72,15 +52,6 @@ Tileset::~Tileset()
 {
     // Free the OpenGL texture object.
     glDeleteTextures( 1, &texture );
-
-    // Decrement the references count.
-    refCount--;
-
-    // If the references count reaches 0, delete the tilesets buffer.
-    if( !refCount ){
-        delete tilesetsBuffer;
-        tilesetsBuffer = nullptr;
-    }
 }
 
 
@@ -130,9 +101,6 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     nRows = ( image->h / tileHeight );
     nColumns = ( image->w / tileWidth );
     nTiles = nRows * nColumns;
-
-    // Insert the tileset vertex attributes in the tilesetsBuffer and get its index.
-    bufferIndex = tilesetsBuffer->insertTileset( tileWidth, tileHeight );
 
     // Load the texture
     loadTexture( image->pixels, image->w );
@@ -220,9 +188,6 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, G
     nColumns = ( surface->w / tileWidth );
     nTiles = nRows * nColumns;
 
-    // Insert the tileset vertex attributes in the tilesetsBuffer and get its index.
-    bufferIndex = tilesetsBuffer->insertTileset( tileWidth, tileHeight, fx, fy );
-
     // Load the texture
     loadTexture( surface->pixels, surface->w );
 }
@@ -234,8 +199,6 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, G
 
 void Tileset::draw() const
 { 
-    // Draw.
-    tilesetsBuffer->draw( bufferIndex );
 }
 
 
@@ -245,7 +208,6 @@ void Tileset::draw() const
 
 void Tileset::bindBuffer()
 {
-    tilesetsBuffer->bind();
 }
 
 
