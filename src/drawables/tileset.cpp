@@ -199,8 +199,24 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight, G
  * 3. Drawing
  ***/
 
-void Tileset::draw() const
+void Tileset::drawTile( unsigned int tile, int x, int y ) const
 {
+    SDL_Rect srcRect =
+    {
+        static_cast< int >( tile % nColumns * tileWidth ),
+        static_cast< int >( tile / nColumns * tileHeight ),
+        static_cast< int >( tileWidth ),
+        static_cast< int >( tileHeight )
+    };
+    SDL_Rect dstRect =
+    {
+        x,
+        y,
+        static_cast< int >( tileWidth ),
+        static_cast< int >( tileHeight )
+    };
+
+    SDL_RenderCopy( renderer_, texture_, &srcRect, &dstRect );
 }
 
 } // Namespace m2g

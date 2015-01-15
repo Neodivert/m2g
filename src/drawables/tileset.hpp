@@ -76,7 +76,7 @@ class Tileset {
         /***
          * 3. Drawing
          ***/
-        void draw() const ;
+        void drawTile( unsigned int tile, int x, int y ) const;
 
 
     protected:
