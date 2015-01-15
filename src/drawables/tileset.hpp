@@ -24,9 +24,6 @@
 #include <memory>
 #include <vector>
 #include <tinyxml2.h>
-#include <SDL2/SDL_ttf.h>
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
 
 namespace m2g {
 
