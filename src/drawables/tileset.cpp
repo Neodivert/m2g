@@ -123,10 +123,10 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
         while( collisionRectNode ){
 
             // Get the current collision rect from the XML element.
-            colRect.x = (GLfloat)( collisionRectNode->FloatAttribute( "x" ) );
-            colRect.y = (GLfloat)( collisionRectNode->FloatAttribute( "y" ) );
-            colRect.width = (GLfloat)( collisionRectNode->FloatAttribute( "width" ) );
-            colRect.height = (GLfloat)( collisionRectNode->FloatAttribute( "height" ) );
+            colRect.x = collisionRectNode->IntAttribute( "x" );
+            colRect.y = collisionRectNode->IntAttribute( "y" );
+            colRect.width = collisionRectNode->IntAttribute( "width" );
+            colRect.height = collisionRectNode->IntAttribute( "height" );
 
             // The XML attribute "tiles" tells us in how many tiles is
             // the current collision rect present.
