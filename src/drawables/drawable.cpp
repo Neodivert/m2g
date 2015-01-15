@@ -92,7 +92,7 @@ const Rect* Drawable::getBoundaryBox() const
  * 3. Transformations
  ***/
 
-void Drawable::translate( const float& tx, const float& ty )
+void Drawable::translate( int tx, int ty )
 {
     // Update the Sprite's position.
     boundaryBox.x += tx;
@@ -100,7 +100,7 @@ void Drawable::translate( const float& tx, const float& ty )
 }
 
 
-void Drawable::moveTo( const float& x, const float& y )
+void Drawable::moveTo( int x, int y )
 {
     // Update the Sprite's position.
     boundaryBox.x = x;
