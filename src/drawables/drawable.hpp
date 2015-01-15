@@ -36,10 +36,10 @@ namespace m2g {
 
 struct Rect
 {
-    GLfloat x;
-    GLfloat y;
-    GLfloat width;
-    GLfloat height;
+    int x;
+    int y;
+    unsigned int width;
+    unsigned int height;
 
     void loadFromXML( tinyxml2::XMLElement* xmlElement );
     bool collide( const Rect& b ) const ;
@@ -61,10 +61,10 @@ class Drawable
         /***
          * 2. Getters and setters
          ***/
-        GLfloat getX() const;
-        glm::vec2 getPosition() const ;
-        GLfloat getWidth() const ;
-        GLfloat getHeight() const ;
+        int getX() const;
+        glm::ivec2 getPosition() const ;
+        unsigned int getWidth() const ;
+        unsigned int getHeight() const ;
         virtual const Rect* getBoundaryBox() const ;
 
 

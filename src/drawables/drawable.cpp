@@ -35,10 +35,10 @@ void Rect::loadFromXML( tinyxml2::XMLElement* xmlElement )
 bool Rect::collide( const Rect& b ) const
 {
     return  (
-        ( x < ( b.x + b.width ) ) &&
-        ( ( x + width ) > b.x ) &&
-        ( y < ( b.y + b.height ) ) &&
-        ( ( y + height ) > b.y )
+        ( x < ( b.x + static_cast< int >( b.width ) ) ) &&
+        ( ( x + static_cast< int >( width ) ) > b.x ) &&
+        ( y < ( b.y + static_cast< int >( b.height ) ) ) &&
+        ( ( y + static_cast< int >( height ) ) > b.y )
             );
 }
 
@@ -50,7 +50,7 @@ bool Rect::collide( const Rect& b ) const
 Drawable::Drawable( SDL_Renderer* renderer ) :
     renderer_( renderer )
 {
-    boundaryBox = { 0.0f, 0.0f, 0.0f, 0.0f };
+    boundaryBox = { 0, 0, 0, 0 };
 }
 
 
@@ -58,25 +58,25 @@ Drawable::Drawable( SDL_Renderer* renderer ) :
  * 2. Getters and setters
  ***/
 
-GLfloat Drawable::getX() const
+int Drawable::getX() const
 {
     return boundaryBox.x;
 }
 
 
-glm::vec2 Drawable::getPosition() const
+glm::ivec2 Drawable::getPosition() const
 {
-    return glm::vec2( boundaryBox.x, boundaryBox.y );
+    return glm::ivec2( boundaryBox.x, boundaryBox.y );
 }
 
 
-GLfloat Drawable::getWidth() const
+unsigned int Drawable::getWidth() const
 {
     return boundaryBox.width;
 }
 
 
-GLfloat Drawable::getHeight() const
+unsigned int Drawable::getHeight() const
 {
     return boundaryBox.height;
 }
