@@ -78,7 +78,7 @@ class Drawable
         /***
          * 4. Drawing
          ***/
-        virtual void draw( const glm::mat4& projectionMatrix ) const = 0;
+        virtual void draw() const = 0;
 };
 
 typedef std::shared_ptr< Drawable > DrawablePtr;
