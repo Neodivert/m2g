@@ -106,21 +106,4 @@ void Drawable::moveTo( const float& x, const float& y )
     boundaryBox.y = y;
 }
 
-
-/***
- * 6. Auxiliar functions
- ***/
-
-void checkOpenGL( const char* str )
-{
-    char errorMsg[256];
-
-    GLenum errorCode = glGetError();
-
-    if( errorCode ){
-        sprintf( errorMsg, "OpenGL error code at [%s] - error code: %i (%s)", str, errorCode, gluErrorString( errorCode ) );
-        throw std::runtime_error( errorMsg );
-    }
-}
-
 } // namespace m2g

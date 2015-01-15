@@ -79,13 +79,6 @@ class Drawable
         virtual void draw( const glm::mat4& projectionMatrix ) const = 0;
 };
 
-
-/***
- * 6. Auxiliar functions
- ***/
-
-void checkOpenGL( const char* str );
-
 typedef std::shared_ptr< Drawable > DrawablePtr;
 typedef std::shared_ptr< const Drawable > DrawableConstPtr;
 
