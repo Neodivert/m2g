@@ -34,17 +34,17 @@ class Tileset {
 
     public:
         // Tile dimensions.
-        GLuint tileWidth;
-        GLuint tileHeight;
+        unsigned int tileWidth;
+        unsigned int tileHeight;
 
         // Image dimensions.
-        GLuint imageWidth;
-        GLuint imageHeight;
+        unsigned int imageWidth;
+        unsigned int imageHeight;
 
         // Tileset number of elements.
-        GLuint nRows;
-        GLuint nColumns;
-        GLuint nTiles;
+        unsigned int nRows;
+        unsigned int nColumns;
+        unsigned int nTiles;
 
         // Index of this tileset's vertex attributes in the tilesets buffer.
         unsigned int bufferIndex;
