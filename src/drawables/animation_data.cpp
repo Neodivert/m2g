@@ -25,9 +25,9 @@ namespace m2g {
  * 1. Initialization and destruction
  ***/
 
-AnimationData::AnimationData( const tinyxml2::XMLNode* xmlNode, const char* folder )
+AnimationData::AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder )
 {
-    load( xmlNode, folder );
+    load( renderer, xmlNode, folder );
 }
 
 
@@ -35,7 +35,7 @@ AnimationData::AnimationData( const tinyxml2::XMLNode* xmlNode, const char* fold
  * 2. Loading
  ***/
 
-void AnimationData::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
+void AnimationData::load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder )
 {
     std::array< int, 3 > animationState;
     unsigned int fps;
@@ -45,7 +45,7 @@ void AnimationData::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     const tinyxml2::XMLElement* animationStateNode = nullptr;
 
     // Load the tileset info.
-    tileset = std::shared_ptr< Tileset >( new Tileset( tilesetNode, folder ) );
+    tileset = std::shared_ptr< Tileset >( new Tileset( renderer, tilesetNode, folder ) );
 
     // Load the fps and compute the refresh rate.
     fps = ( dynamic_cast< const tinyxml2::XMLElement* >( xmlNode ) )->IntAttribute( "fps" );

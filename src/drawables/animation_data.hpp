@@ -48,13 +48,13 @@ struct AnimationData
     /***
      * 1. Initialization and destruction
      ***/
-    AnimationData( const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+    AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
 
 
     /***
      * 2. Loading
      ***/
-    void load( const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+    void load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
 };
 
 typedef std::shared_ptr< const AnimationData > AnimationDataPtr;
