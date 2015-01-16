@@ -163,6 +163,19 @@ SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, cons
 }
 
 
+void TextRenderer::drawText( const char *text,
+                             unsigned int fontIndex,
+                             const SDL_Color &color,
+                             int x,
+                             int y,
+                             TextAlign textAlign)
+{
+    SpritePtr textSprite = drawText( text, fontIndex, color , textAlign );
+    textSprite->moveTo( x, y );
+    textSprite->draw();
+}
+
+
 /***
  * 4. Auxiliar methods
  ***/

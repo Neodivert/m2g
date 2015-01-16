@@ -54,6 +54,12 @@ class TextRenderer
          * 3. Drawing
          ***/
         SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT );
+        void drawText( const char* text,
+                       unsigned int fontIndex,
+                       const SDL_Color& color,
+                       int x,
+                       int y,
+                       TextAlign textAlign = TextAlign::LEFT );
 
 
         /***
