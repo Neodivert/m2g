@@ -40,7 +40,7 @@ bool Collidable::collide( const Collidable& b ) const
     aRects = getCollisionRects();
     bRects = b.getCollisionRects();
 
-    const glm::vec2 bPosition = b.getPosition();
+    const glm::ivec2 bPosition = b.getPosition();
 
     Rect aRect, bRect;
 

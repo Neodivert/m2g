@@ -21,6 +21,7 @@
 #define COLLIDABLE_HPP
 
 #include "drawable.hpp"
+#include <vector>
 
 namespace m2g {
 
