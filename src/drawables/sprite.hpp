@@ -37,7 +37,6 @@ class Sprite : public Drawable, public Collidable
         /***
          * 1. Initialization and destruction
          ***/
-        Sprite( SDL_Renderer* renderer );
         Sprite( SDL_Renderer* renderer, TilesetPtr tileset );
 
 

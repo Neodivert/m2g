@@ -25,11 +25,6 @@ namespace m2g {
  * 1. Initialization
  ***/
 
-Sprite::Sprite( SDL_Renderer* renderer ) :
-    Drawable( renderer ),
-    currentTile( 0 )
-{}
-
 Sprite::Sprite( SDL_Renderer* renderer, TilesetPtr tileset_ ) :
     Drawable( renderer ),
     currentTile( 0 )
