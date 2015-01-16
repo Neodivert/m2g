@@ -65,7 +65,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     int separatorIndex;
 
     // Copy the tileset's name ().
-    name = xmlNode->FirstChildElement( "src" )->GetText();
+    name_ = xmlNode->FirstChildElement( "src" )->GetText();
 
     // Read texture's source and frame dimensions from the given XML node.
     const char* imageFile = xmlNode->FirstChildElement( "src" )->GetText();
@@ -166,7 +166,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
 void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight )
 {
     // Load the tileset name.
-    name = "SDL_Surface";
+    name_ = "SDL_Surface";
 
     // Load the tile dimensions.
     this->tileWidth = tileWidth;
@@ -187,10 +187,16 @@ void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int t
     texture_ = SDL_CreateTextureFromSurface( renderer_, surface );
 }
 
-
 /***
  * 3. Getters
  ***/
+
+
+std::string Tileset::name() const
+{
+    return name_;
+}
+
 
 unsigned int Tileset::nTiles() const
 {

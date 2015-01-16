@@ -20,6 +20,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/drawables/sprite.cpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/animation_data.cpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/animation.cpp"
+    "${PROJECT_SOURCE_DIR}/src/graphics_library.cpp"
 )
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )

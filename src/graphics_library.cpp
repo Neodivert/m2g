@@ -25,7 +25,8 @@ namespace m2g {
  * 1. Initialization and destruction.
  ***/
 
-GraphicsLibrary::GraphicsLibrary()
+GraphicsLibrary::GraphicsLibrary( SDL_Renderer* renderer ) :
+    renderer_( renderer )
 {}
 
 
@@ -52,7 +53,7 @@ void GraphicsLibrary::loadAll( std::string libraryFolder )
         // Keep reading XML tileset nodes.
         while( xmlNode ){
             // Load the tileset from the current XML element.
-            tilesets_.push_back( std::shared_ptr< Tileset >( new Tileset( xmlNode, imagesFolder.c_str() ) ) );
+            tilesets_.push_back( std::shared_ptr< Tileset >( new Tileset( renderer_, xmlNode, imagesFolder.c_str() ) ) );
 
             // Load next XML element.
             xmlNode = xmlNode->NextSiblingElement();
@@ -69,7 +70,7 @@ void GraphicsLibrary::loadAll( std::string libraryFolder )
         // Keep reading XML tileset nodes.
         while( xmlNode ){
             // Load the tileset from the current XML element.
-            animationData_.push_back( std::shared_ptr< AnimationData >( new AnimationData( xmlNode, imagesFolder.c_str() ) ) );
+            animationData_.push_back( std::shared_ptr< AnimationData >( new AnimationData( renderer_, xmlNode, imagesFolder.c_str() ) ) );
 
             // Load next XML element.
             xmlNode = xmlNode->NextSiblingElement();
@@ -88,7 +89,7 @@ TilesetPtr GraphicsLibrary::getTileset( std::string name ) const
     TilesetPtr nullPtr;
 
     for( ; i<tilesets_.size(); i++ ){
-        if( tilesets_[i]->name == name ){
+        if( tilesets_[i]->name() == name ){
             return tilesets_[i];
         }
     }
@@ -103,7 +104,7 @@ AnimationDataPtr GraphicsLibrary::getAnimationData( std::string name ) const
     AnimationDataPtr nullPtr;
 
     for( ; i<animationData_.size(); i++ ){
-        if( animationData_[i]->tileset->name == name ){
+        if( animationData_[i]->tileset()->name() == name ){
             return animationData_[i];
         }
     }
@@ -118,7 +119,7 @@ AnimationDataVector GraphicsLibrary::getAnimationDataByPrefix ( std::string pref
     AnimationDataVector animationData;
 
     for( ; i<animationData_.size(); i++ ){
-        if( animationData_[i]->tileset->name.compare( 0, prefix.size(), prefix ) == 0  ){
+        if( animationData_[i]->tileset()->name().compare( 0, prefix.size(), prefix ) == 0  ){
             animationData.push_back( animationData_[i] );
         }
     }

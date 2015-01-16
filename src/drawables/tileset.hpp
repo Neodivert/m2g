@@ -48,6 +48,7 @@ class Tileset
         /***
          * 3. Getters
          ***/
+        std::string name() const;
         unsigned int nTiles() const;
         glm::ivec2 tileDimensions() const;
         const std::vector< Rect >& collisionRects( unsigned int tile ) const;
@@ -70,7 +71,7 @@ class Tileset
         unsigned int nTiles_;
 
         // Name of the tileset's base image.
-        std::string name;
+        std::string name_;
 
         // We keep a vector of collision rects for each tile in the tileset.
         std::vector< std::vector< Rect > > collisionRects_;

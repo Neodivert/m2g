@@ -34,6 +34,7 @@ typedef std::vector< std::shared_ptr<AnimationData> > AnimationDataVector;
 class GraphicsLibrary
 {
     private:
+        SDL_Renderer* renderer_;
         tinyxml2::XMLDocument xmlFile_;
 
         TilesetsVector tilesets_;
@@ -43,7 +44,7 @@ class GraphicsLibrary
         /***
          * 1. Initialization and destruction.
          ***/
-        GraphicsLibrary();
+        GraphicsLibrary( SDL_Renderer* renderer );
 
 
         /***
