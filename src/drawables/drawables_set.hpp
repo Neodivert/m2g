@@ -31,26 +31,32 @@ class DrawablesSet : public Drawable
 {
     public:
         /***
-         * 1. Drawables management
+         * 1. Construction
+         ***/
+        DrawablesSet( SDL_Renderer* renderer );
+
+
+        /***
+         * 2. Drawables management
          ***/
         DrawablePtr addDrawable( DrawablePtr newDrawable, float x = 0.0f, float y = 0.0f );
 
 
         /***
-         * 2. Transformations
+         * 3. Transformations
          ***/
         virtual void translate( const float& tx, const float& ty );
         virtual void moveTo( const float& x, const float& y );
 
 
         /***
-         * 3. Drawing
+         * 4. Drawing
          ***/
         virtual void draw() const;
 
 
         /***
-         * 4. Auxiliar methods.
+         * 5. Auxiliar methods.
          ***/
         void updateBoundaryBox( const Rect& newBoundaryBox );
 

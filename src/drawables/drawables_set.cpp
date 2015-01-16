@@ -22,7 +22,16 @@
 namespace m2g {
 
 /***
- * 1. Drawables management
+ * 1. Construction
+ ***/
+
+DrawablesSet::DrawablesSet( SDL_Renderer *renderer ) :
+    Drawable( renderer )
+{}
+
+
+/***
+ * 2. Drawables management
  ***/
 
 DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable, float x, float y )
@@ -43,7 +52,7 @@ DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable, float x, float y
 
 
 /***
- * 2. Transformations
+ * 3. Transformations
  ***/
 
 void DrawablesSet::translate( const float& tx, const float& ty )
@@ -63,7 +72,7 @@ void DrawablesSet::moveTo( const float& x, const float& y )
 
 
 /***
- * 3. Drawing
+ * 4. Drawing
  ***/
 
 void DrawablesSet::draw() const
@@ -75,7 +84,7 @@ void DrawablesSet::draw() const
 
 
 /***
- * 4. Auxiliar methods.
+ * 5. Auxiliar methods.
  ***/
 
 void DrawablesSet::updateBoundaryBox( const Rect& newBoundaryBox )
