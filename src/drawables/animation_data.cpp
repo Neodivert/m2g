@@ -68,4 +68,20 @@ void AnimationData::load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNo
     }
 }
 
+
+/***
+ * 3. Getters
+ ***/
+
+unsigned int AnimationData::refreshRate() const
+{
+    return refreshRate_;
+}
+
+
+std::array< int, 3 > AnimationData::state( unsigned int index ) const
+{
+    return states_[ index ];
+}
+
 } // namespace m2g

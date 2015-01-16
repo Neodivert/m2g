@@ -46,6 +46,12 @@ class AnimationData
         void load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
 
 
+        /***
+         * 3. Getters
+         ***/
+        unsigned int refreshRate() const;
+        std::array< int, 3 > state( unsigned int index ) const;
+
     private:
         // Tileset associated with this animation.
         TilesetPtr tileset_;
