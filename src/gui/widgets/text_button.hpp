@@ -17,53 +17,51 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#ifndef ANIMATION_HPP
-#define ANIMATION_HPP
-
-#include "animation_data.hpp"
-#include "sprite.hpp"
+#include "widget.hpp"
+#include <drawables/animation.hpp>
 
 namespace m2g {
 
-class Animation : public Sprite
+enum class ButtonStatus
 {
-    private:
-        AnimationDataPtr animationData;
-        int currentState;
+    NORMAL,
+    HOVER,
+    PRESSED
+};
 
-        Uint32 lastFrameTick_;
-
-        bool animationFinished_;
-
+class TextButton : public Widget, public Sprite
+{
     public:
         /***
-         * 1. Initialization and destruction
+         * 1. Construction
          ***/
-        Animation( SDL_Renderer* renderer, AnimationDataPtr animationData );
+        // TODO: Use UTF-8 / UTF-16 for text.
+        TextButton( const std::string& text );
 
 
         /***
-         * 2. Getters
-         ***/        
-        int getAnimationState() const ;
-        unsigned int getFrame() const ;
-        bool finished() const;
+         * 2. Event handling
+         ***/
+        virtual bool handleEvent( const SDL_Event &event );
+
+
+    private:
+        /***
+         * 3. Initialization
+         ***/
+        static TilesetPtr generateTileset( const std::string& text );
 
 
         /***
-         * 3. Setters
+         * 4. Private setters
          ***/
-        // TODO: Overload Sprite setters.
-        virtual void setAnimationData( AnimationDataPtr animationData );
-        virtual void setAnimationState( int newState );
+        void setStatus( ButtonStatus newStatus );
 
 
         /***
-         * 4. Updating
+         * Attributes
          ***/
-        virtual void update();
+        ButtonStatus status_;
 };
 
 } // namespace m2g
-
-#endif // ANIMATION_HPP

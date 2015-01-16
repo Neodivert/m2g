@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -122,9 +122,6 @@ void BitmapFont::load( const char* fontPath, unsigned int size, const SDL_Color&
         pow2 <<= 1;
     }
     tileWidth = pow2;
-
-    std::cout << "Tile dimensions: " << tileWidth << " x " << tileHeight << std::endl;
-
 
     // First ASCII printable character.
     char character[2] = { ' ', '\0' };
@@ -290,8 +287,6 @@ void BitmapFont::drawCharacter( char c ) const
 
     // Draw the requested rect.
     glDrawArrays( GL_TRIANGLE_STRIP, index*4, 4 );
-
-    //std::cout << "Drawing character (" << c << ") [index: " << index << "]" << std::endl;
 }
 
 

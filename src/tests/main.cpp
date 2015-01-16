@@ -2,7 +2,7 @@
 #include "../dependencies/GL3W/gl3w.h"
 #include "../dependencies/dependencies.hpp"
 #include "../drawables/particles_systems/particle_systems_group.hpp"
-#include "../dependencies/msl/src/shader_loader.hpp"
+#include <msl/shader_loader.hpp>
 #include "../graphics_library.hpp"
 
 using namespace std;

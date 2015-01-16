@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -18,47 +18,45 @@
 ***/
 
 #include "text_renderer.hpp"
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace m2g {
 
 
 /***
- * 1. Initialization
+ * 1. Initialization and destruction
  ***/
 
-TextRenderer::TextRenderer()
+TextRenderer::TextRenderer( SDL_Renderer *renderer ) :
+    renderer_( renderer ),
+    nextFontID_( 0 )
+{}
+
+
+TextRenderer::~TextRenderer()
 {
-    GLint currentProgram;
-
-    // Get the uniforms locations.
-    glGetIntegerv( GL_CURRENT_PROGRAM, &currentProgram );
-
-    mvpMatrixLocation = glGetUniformLocation( currentProgram, "mvpMatrix" );
-    samplerLocation = glGetUniformLocation( currentProgram, "tex" );
-    sliceLocation = glGetUniformLocation( currentProgram, "slice" );
-
-    checkOpenGL( "TextRenderer - Getting uniform locations" );
-
-    // Connect sampler to texture unit 0.
-    glUniform1i( samplerLocation, 0 );
+    for( auto& font : fonts_ ){
+        TTF_CloseFont( font.second );
+    }
 }
 
+
 /***
- * 2. Loading
+ * 2. Fonts management
  ***/
 
-unsigned int TextRenderer::loadFont( const char* file, const unsigned int size, const SDL_Color& color )
+unsigned int TextRenderer::loadFont( const char *fontPath, int fontSize )
 {
-    std::shared_ptr< m2g::BitmapFont > bitmapFont = std::shared_ptr< m2g::BitmapFont >( new m2g::BitmapFont );
+    TTF_Font* newFont =
+            TTF_OpenFont( fontPath, fontSize );
+    if( !newFont ){
+        throw std::runtime_error( TTF_GetError() );
+    }
 
-    // Generate the bitmap font from the TrueType one.
-    bitmapFont->load( file, size, color );
+    fonts_[nextFontID_] = newFont;
 
-    // Insert the new bitmap font in the bitmap fonts vector.
-    bitmapFonts.push_back( bitmapFont );
-
-    // Return the index of the just added font.
-    return bitmapFonts.size() - 1;
+    return nextFontID_++;
 }
 
 
@@ -66,34 +64,163 @@ unsigned int TextRenderer::loadFont( const char* file, const unsigned int size, 
  * 3. Drawing
  ***/
 
-void TextRenderer::drawText( const glm::mat4& projectionMatrix, const char* text, unsigned int fontIndex, GLuint x, GLuint y )
+SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign )
 {
-    unsigned int i = 0;
-    glm::mat4 transformationMatrix;
+    TTF_Font* font = nullptr;
+    TilesetPtr textTileset;
+    SDL_Surface* lineSurface = nullptr;
+    SDL_Surface* textSurface = nullptr;
+    int textWidth, textHeight;
+    int pow2;
+    unsigned int i;
+    std::vector< std::string > lines;
+    SDL_Rect dstRect = { 0, 0, 0, 0 };
 
-    // Bind the bitmap font (its VAO, VBO and texture) as the active one.
-    bitmapFonts[fontIndex]->bind();
+    // Load the required font.
+    font = fonts_.at( fontIndex );
 
-    // Send current 0 index to shader.
-    glUniform1ui( sliceLocation, 0 );
+    // Set the RGBA mask for the text surface.
+    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        const Uint32 rmask = 0xff000000;
+        const Uint32 gmask = 0x00ff0000;
+        const Uint32 bmask = 0x0000ff00;
+        const Uint32 amask = 0x000000ff;
+    #else
+        const Uint32 rmask = 0x000000ff;
+        const Uint32 gmask = 0x0000ff00;
+        const Uint32 bmask = 0x00ff0000;
+        const Uint32 amask = 0xff000000;
+    #endif
 
-    for( ; i < strlen( text ); i++ ){
-        // Set MVP matrix.
-        transformationMatrix = projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( x, y, 0.0f ) );
+    // Get the text dimensions.
+    getTextDimensions( font, text, textWidth, textHeight, lines );
 
-        // Send the MVP matrix to the shader.
-        glUniformMatrix4fv( mvpMatrixLocation, 1, GL_FALSE, &transformationMatrix[0][0] );
+    //auxTextSurface = SDL_ConvertSurface( auxTextSurface, textSurface->format, textSurface->flags );
 
-        // Draw the current character.
-        glUniform1ui( sliceLocation, text[i]-' ' );
-        bitmapFonts[fontIndex]->drawCharacter( text[i] );
-
-        //std::cout << "Translating: " << bitmapFonts[fontIndex]->getCharacterWidth( text[i] - ' ' ) << std::endl;
-
-        x += bitmapFonts[fontIndex]->getCharacterWidth( text[i] );
-
-        //transformationMatrix = transformationMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( bitmapFonts[fontIndex]->getCharacterWidth( text[i] - ' ' ) * 2, 0.0f, 0.0f ) );
+    // Round text dimensions to nearest upper pow of two.
+    pow2 = 1;
+    while( pow2 < textWidth ){
+        pow2 <<= 1;
     }
+    textWidth = pow2;
+
+    pow2 = 1;
+    while( pow2 < textHeight ){
+        pow2 <<= 1;
+    }
+    textHeight = pow2;
+
+    // Create the final text surface with the power-of-two dimensions.
+    textSurface = SDL_CreateRGBSurface( 0, textWidth, textHeight, 32, rmask, gmask, bmask, amask );
+
+    // Prepare the final text surface for the blitting.
+    SDL_FillRect( textSurface, nullptr, 0 );
+    SDL_SetSurfaceBlendMode( lineSurface, SDL_BLENDMODE_NONE );
+
+    // Render every line and blit it to the final surface.
+    for( i = 0; i < lines.size(); i++ ){
+        // Generate a surface with the text line.
+        lineSurface = TTF_RenderText_Blended( font, lines[i].c_str(), color );
+
+        // Give the text the given align.
+        // TODO: Change so the switch is executed only once.
+        switch( textAlign ){
+            case TextAlign::LEFT:
+                dstRect.x = 0;
+            break;
+            case TextAlign::CENTER:
+                dstRect.x = (textWidth >> 1) - (lineSurface->w >> 1);
+            break;
+            case TextAlign::RIGHT:
+                dstRect.x = textWidth - lineSurface->w;
+            break;
+        }
+
+        // Blit the line surface to its final surface.
+        SDL_BlitSurface( lineSurface, nullptr, textSurface, &dstRect );
+
+        //
+        dstRect.y += TTF_FontHeight( font );
+
+        // Free the line surface.
+        SDL_FreeSurface( lineSurface );
+    }
+
+    // Generate a tileset from the text surface.
+    textTileset = TilesetPtr( new Tileset( renderer_, textSurface, textWidth, textHeight ) );
+
+    //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
+
+    // Create the final sprite from the previous tileset.
+    SpritePtr textSprite( new Sprite( renderer_, textTileset ) );
+
+    // Free resources.
+    SDL_FreeSurface( textSurface );
+
+    // Return the text sprite.
+    return textSprite;
+}
+
+
+void TextRenderer::drawText( const char *text,
+                             unsigned int fontIndex,
+                             const SDL_Color &color,
+                             int x,
+                             int y,
+                             TextAlign textAlign)
+{
+    SpritePtr textSprite = drawText( text, fontIndex, color , textAlign );
+    textSprite->moveTo( x, y );
+    textSprite->draw();
+}
+
+
+/***
+ * 4. Auxiliar methods
+ ***/
+
+void TextRenderer::getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines )
+{
+    char textLine[128];
+    int lineWidth;
+    unsigned int i;
+
+    // Initialize the text dimensions to 0.
+    textWidth = 0;
+    textHeight = 0;
+    lines.clear();
+
+    // Iterate over the given text, extracting and getting the dimensions of
+    // its lines.
+    textWidth = 0;
+    while( *text ){
+
+        // Extract the next line and insert it in the vector of lines.
+        i = 0;
+        while( *text && ( *text != '\n' ) ){
+            textLine[i] = *text;
+
+            text++;
+            i++;
+        }
+        textLine[i] = 0;
+        lines.push_back( std::string( textLine ) );
+
+        // Get the line dimensions.
+        TTF_SizeText( font, textLine, &lineWidth, nullptr );
+
+        // Set the maximum line width as the text one.
+        if( lineWidth > textWidth ){
+            textWidth = lineWidth;
+        }
+
+        // Go for next line.
+        text++;
+    }
+
+    // Compute the text height by multiplying the font height by the numer of
+    // lines in the text.
+    textHeight = TTF_FontHeight( font ) * lines.size();
 }
 
 } // namespace m2g

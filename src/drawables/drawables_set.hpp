@@ -1,5 +1,9 @@
 /***
+<<<<<<< HEAD
  * Copyright 2013, 2014 Moises J. Bonilla Caraballo (Neodivert)
+=======
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
+>>>>>>> raw-opengl-removal
  *
  * This file is part of M2G.
  *
@@ -21,7 +25,6 @@
 #define DRAWABLES_SET_HPP
 
 #include "drawable.hpp"
-#include "sprite.hpp"
 #include <list>
 
 namespace m2g {
@@ -30,35 +33,40 @@ typedef std::list< DrawablePtr > DrawablesContainer;
 
 class DrawablesSet : public Drawable
 {
-    private:
-        // Drawables container.
-        DrawablesContainer drawables_;
-
     public:
         /***
-         * 1. Drawables management
+         * 1. Construction
          ***/
-        DrawablePtr addDrawable( DrawablePtr newDrawable, float x = 0.0f, float y = 0.0f );
-        SpritePtr addSprite( TilesetPtr tileset, float x = 0.0f, float y = 0.0f );
+        DrawablesSet( SDL_Renderer* renderer );
 
 
         /***
-         * 2. Transformations
+         * 2. Drawables management
+         ***/
+        DrawablePtr addDrawable( DrawablePtr newDrawable, float x = 0.0f, float y = 0.0f );
+
+
+        /***
+         * 3. Transformations
          ***/
         virtual void translate( const float& tx, const float& ty );
         virtual void moveTo( const float& x, const float& y );
 
 
         /***
-         * 3. Drawing
+         * 4. Drawing
          ***/
-        virtual void draw( const glm::mat4& projectionMatrix ) const ;
+        virtual void draw() const;
 
 
         /***
-         * 4. Auxiliar methods.
+         * 5. Auxiliar methods.
          ***/
-        void updateBoundaryBox( const Rect* newBoundaryBox );
+        void updateBoundaryBox( const Rect& newBoundaryBox );
+
+
+    private:
+        DrawablesContainer drawables_;
 };
 
 } // namespace m2g

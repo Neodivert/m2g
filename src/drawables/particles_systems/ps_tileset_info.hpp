@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -21,7 +21,6 @@
 #define PS_TILESET_INFO_H
 
 #include "../drawable.hpp"
-#include "../../dependencies/dependencies.hpp"
 #include "../../dependencies/SDL_SavePNG/savepng.hpp"
 
 namespace m2g {

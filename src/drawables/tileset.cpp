@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -18,7 +18,7 @@
 ***/
 
 #include "tileset.hpp"
-#include <iostream>
+#include <SDL2/SDL_image.h>
 
 namespace m2g {
 
@@ -27,60 +27,30 @@ namespace m2g {
  * 1. Initialization and destruction.
  ***/
 
-TilesetsBuffer* Tileset::tilesetsBuffer = nullptr;
-unsigned int Tileset::refCount = 0;
-
-
-Tileset::Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder ) :
-    texture( 0 ),
+Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder ) :
     tileWidth( 0 ),
     tileHeight( 0 ),
-    imageWidth( 0 ),
-    imageHeight( 0 ),
     nRows( 0 ),
     nColumns( 0 ),
-    nTiles( 0 ),
-    bufferIndex( 0 )
+    nTiles_( 0 ),
+    renderer_( renderer ),
+    texture_( nullptr )
 {
-    if( tilesetsBuffer == nullptr ){
-        // If the tilesets buffer is not initialized, create it!.
-        tilesetsBuffer = new TilesetsBuffer( 10 );
-    }
-
-    // Increment the references count.
-    refCount++;
-
     load( xmlNode, folder );
 }
 
 
-Tileset::Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
+Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight ) :
+    renderer_( renderer )
 {
-    if( tilesetsBuffer == nullptr ){
-        // If the tilesets buffer is not initialized, create it!.
-        tilesetsBuffer = new TilesetsBuffer( 10 );
-    }
-
-    // Increment the references count.
-    refCount++;
-
     load( surface, tileWidth, tileHeight );
 }
 
 
 Tileset::~Tileset()
 {
-    // Free the OpenGL texture object.
-    glDeleteTextures( 1, &texture );
-
-    // Decrement the references count.
-    refCount--;
-
-    // If the references count reaches 0, delete the tilesets buffer.
-    if( !refCount ){
-        delete tilesetsBuffer;
-        tilesetsBuffer = nullptr;
-    }
+    // Free the texture.
+    SDL_DestroyTexture( texture_ );
 }
 
 
@@ -95,13 +65,13 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     int separatorIndex;
 
     // Copy the tileset's name ().
-    name = xmlNode->FirstChildElement( "src" )->GetText();
+    name_ = xmlNode->FirstChildElement( "src" )->GetText();
 
     // Read texture's source and frame dimensions from the given XML node.
     const char* imageFile = xmlNode->FirstChildElement( "src" )->GetText();
     const tinyxml2::XMLElement* tileDimensionsNode = xmlNode->FirstChildElement( "tile_dimensions" );
-    tileWidth = (GLuint)tileDimensionsNode->IntAttribute( "width" );
-    tileHeight = (GLuint)tileDimensionsNode->IntAttribute( "height" );
+    tileWidth = (unsigned int)tileDimensionsNode->IntAttribute( "width" );
+    tileHeight = (unsigned int)tileDimensionsNode->IntAttribute( "height" );
     const tinyxml2::XMLElement* collisionInfoNode = xmlNode->FirstChildElement( "collision_rects" );
     const tinyxml2::XMLElement* collisionRectNode;
     Rect colRect;
@@ -125,23 +95,18 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     }
 
     // Read tileset general info.
-    imageWidth = image->w;
-    imageHeight = image->h;
     nRows = ( image->h / tileHeight );
     nColumns = ( image->w / tileWidth );
-    nTiles = nRows * nColumns;
-
-    // Insert the tileset vertex attributes in the tilesetsBuffer and get its index.
-    bufferIndex = tilesetsBuffer->insertTileset( tileWidth, tileHeight );
+    nTiles_ = nRows * nColumns;
 
     // Load the texture
-    loadTexture( image->pixels, image->w );
+    texture_ = SDL_CreateTextureFromSurface( renderer_, image );
 
     // Free the image's surface.
     SDL_FreeSurface( image );
 
     // Create an empty vector of collision rects for each tile in the tileset.
-    collisionRects.resize( nTiles );
+    collisionRects_.resize( nTiles_ );
 
     // Check if there is available collision info.
     if( collisionInfoNode ){
@@ -153,10 +118,10 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
         while( collisionRectNode ){
 
             // Get the current collision rect from the XML element.
-            colRect.x = (GLfloat)( collisionRectNode->FloatAttribute( "x" ) );
-            colRect.y = (GLfloat)( collisionRectNode->FloatAttribute( "y" ) );
-            colRect.width = (GLfloat)( collisionRectNode->FloatAttribute( "width" ) );
-            colRect.height = (GLfloat)( collisionRectNode->FloatAttribute( "height" ) );
+            colRect.x = collisionRectNode->IntAttribute( "x" );
+            colRect.y = collisionRectNode->IntAttribute( "y" );
+            colRect.width = collisionRectNode->IntAttribute( "width" );
+            colRect.height = collisionRectNode->IntAttribute( "height" );
 
             // The XML attribute "tiles" tells us in how many tiles is
             // the current collision rect present.
@@ -165,8 +130,8 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
             if( tilesStr == "all" ){
                 // The collision rect is present in all the tiles
                 // of the tileset.
-                for( unsigned int i=0; i<nTiles; i++ ){
-                    collisionRects[i].push_back( colRect );
+                for( unsigned int i=0; i<nTiles_; i++ ){
+                    collisionRects_[i].push_back( colRect );
                 }
             }else{
                 // The collision rect is present in a subset of
@@ -187,7 +152,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
                 // Add the collision rect to the requested tiles' collision
                 // info.
                 for( unsigned int i=firstTile; i<=lastTile; i++ ){
-                    collisionRects[i].push_back( colRect );
+                    collisionRects_[i].push_back( colRect );
                 }
             }
 
@@ -195,14 +160,13 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
             collisionRectNode = collisionRectNode->NextSiblingElement( "collision_rect" );
         }
     }
-    checkOpenGL( "Sprite constructor" );
 }
 
 
-void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
+void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight )
 {
     // Load the tileset name.
-    name = "SDL_Surface";
+    name_ = "SDL_Surface";
 
     // Load the tile dimensions.
     this->tileWidth = tileWidth;
@@ -215,90 +179,65 @@ void Tileset::load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight )
     }
 
     // Read tileset general info.
-    imageWidth = surface->w;
-    imageHeight = surface->h;
     nRows = ( surface->h / tileHeight );
     nColumns = ( surface->w / tileWidth );
-    nTiles = nRows * nColumns;
-
-    // Insert the tileset vertex attributes in the tilesetsBuffer and get its index.
-    bufferIndex = tilesetsBuffer->insertTileset( tileWidth, tileHeight );
+    nTiles_ = nRows * nColumns;
 
     // Load the texture
-    loadTexture( surface->pixels, surface->w );
+    texture_ = SDL_CreateTextureFromSurface( renderer_, surface );
+}
+
+/***
+ * 3. Getters
+ ***/
+
+
+std::string Tileset::name() const
+{
+    return name_;
+}
+
+
+unsigned int Tileset::nTiles() const
+{
+    return nTiles_;
+}
+
+
+glm::ivec2 Tileset::tileDimensions() const
+{
+    return glm::ivec2( tileWidth, tileHeight );
+}
+
+
+const std::vector<Rect> &Tileset::collisionRects( unsigned int tile ) const
+{
+    return collisionRects_[tile];
 }
 
 
 /***
- * 3. Drawing
+ * 4. Drawing
  ***/
 
-void Tileset::draw() const
+void Tileset::drawTile( unsigned int tile, int x, int y ) const
 {
-    tilesetsBuffer->draw( bufferIndex );
-}
+    SDL_Rect srcRect =
+    {
+        static_cast< int >( tile % nColumns * tileWidth ),
+        static_cast< int >( tile / nColumns * tileHeight ),
+        static_cast< int >( tileWidth ),
+        static_cast< int >( tileHeight )
+    };
+    SDL_Rect dstRect =
+    {
+        x,
+        y,
+        static_cast< int >( tileWidth ),
+        static_cast< int >( tileHeight )
+    };
 
-
-/***
- * 4. Auxiliar methods
- ***/
-
-void Tileset::bindBuffer()
-{
-    tilesetsBuffer->bind();
-}
-
-
-void Tileset::loadTexture( void* data, int pitch )
-{
-    // Generate the texture and set its parameters.
-    // TODO: play with multiple texture units (or not?).
-    glActiveTexture( GL_TEXTURE0 );
-    glGenTextures( 1, &texture );
-    glBindTexture( GL_TEXTURE_2D_ARRAY, texture );
-
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-    glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-
-    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-
-
-    // Set the texture's storage.
-    glTexStorage3D( GL_TEXTURE_2D_ARRAY,    // target
-                    1,                      // levels (1 = no mipmapping).
-                    GL_RGBA8,               // internal format (32-bit textures).
-                    tileWidth,     // texture width.
-                    tileHeight,    // texture height.
-                    nTiles         // texture depth (number of slices).
-                    );
-
-    // Set texture's image data.
-    GLuint tile = 0;
-    for( GLuint row = 0; row < nRows; row++ ){
-        for( GLuint column = 0; column < nColumns; column++ ){
-            glPixelStorei( GL_UNPACK_SKIP_PIXELS, column*tileWidth );
-            glPixelStorei( GL_UNPACK_SKIP_ROWS, row*tileHeight );
-            glPixelStorei( GL_UNPACK_ROW_LENGTH, pitch );
-
-            glTexSubImage3D( GL_TEXTURE_2D_ARRAY,   // target
-                             0,                     // level
-                             0,                     // xoffset
-                             0,                     // yoffset
-                             tile,                  // zoffset
-                             tileWidth,    // width
-                             tileHeight,   // height
-                             1,                     // depth
-                             GL_RGBA,               // format
-                             GL_UNSIGNED_BYTE,      // type
-                             data          // image data.
-                             );
-            tile++;
-        }
-
-    }
-    glPixelStorei( GL_UNPACK_ROW_LENGTH, 0 );
+    SDL_RenderCopy( renderer_, texture_, &srcRect, &dstRect );
 }
 
 } // Namespace m2g

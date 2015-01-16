@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -20,75 +20,63 @@
 #ifndef DRAWABLE_HPP
 #define DRAWABLE_HPP
 
-#include "../dependencies/dependencies.hpp"
-#include <vector>
-#include <iostream>
-#include <stdexcept>
-#include <GL/glu.h>
-#include "../dependencies/tinyxml2/tinyxml2.h"
+#include <memory> // shared_ptr
+#include <tinyxml2.h>
+#include <glm/vec2.hpp>
+#include <SDL2/SDL.h>
 
 namespace m2g {
 
 struct Rect
 {
-    GLfloat x;
-    GLfloat y;
-    GLfloat width;
-    GLfloat height;
+    int x;
+    int y;
+    unsigned int width;
+    unsigned int height;
 
     void loadFromXML( tinyxml2::XMLElement* xmlElement );
     bool collide( const Rect& b ) const ;
 };
 
+// TODO: Move non-drawing methods to classes Collidable or Sprite.
 class Drawable
 {
     protected:
+        SDL_Renderer* renderer_;
         Rect boundaryBox;
 
     public:
         /***
          * 1. Initialization
          ***/
-        Drawable();
+        Drawable( SDL_Renderer* renderer );
 
 
         /***
          * 2. Getters and setters
          ***/
-        GLfloat getX() const;
-        glm::vec2 getPosition() const ;
-        GLfloat getWidth() const ;
-        GLfloat getHeight() const ;
+        int getX() const;
+        glm::ivec2 getPosition() const ;
+        unsigned int getWidth() const ;
+        unsigned int getHeight() const ;
+        Rect getBoundaryBox() const ;
 
 
         /***
          * 3. Transformations
          ***/
-        virtual void translate( const float& tx, const float& ty );
-        virtual void moveTo( const float& x, const float& y );
+        virtual void translate( int tx, int ty );
+        virtual void moveTo( int x, int y );
 
 
         /***
-         * 4. Collision test
+         * 4. Drawing
          ***/
-        virtual bool collide( const Drawable& b ) const ;
-        virtual const Rect* getBoundaryBox() const ;
-        virtual const std::vector<Rect>* getCollisionRects() const = 0;
-
-
-        /***
-         * 5. Drawing
-         ***/
-        virtual void draw( const glm::mat4& projectionMatrix ) const = 0;
+        virtual void draw() const = 0;
 };
 
-
-/***
- * 6. Auxiliar functions
- ***/
-
-void checkOpenGL( const char* str );
-
+typedef std::shared_ptr< Drawable > DrawablePtr;
+typedef std::shared_ptr< const Drawable > DrawableConstPtr;
 
 } // Namespace m2g
 

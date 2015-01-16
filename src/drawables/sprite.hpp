@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -21,43 +21,39 @@
 #define SPRITE_HPP
 
 #include "tileset.hpp"
-#include "../utilities/tilesets_buffer.hpp"
 #include <memory>
-#include <iostream>
+#include "collidable.hpp"
 #include <vector>
 
 namespace m2g {
 
-class Sprite : public Drawable
+class Sprite : public Drawable, public Collidable
 {
     private:
-        static GLint mvpMatrixLocation;
-        static GLint samplerLocation;
-        static GLint sliceLocation;
-
         TilesetPtr tileset;
-        GLuint currentTile;
+        unsigned int currentTile;
 
     public:
         /***
          * 1. Initialization and destruction
          ***/
-        Sprite();
-        Sprite( TilesetPtr tileset );
+        Sprite( SDL_Renderer* renderer, TilesetPtr tileset );
 
 
         /***
          * 2. Getters
          ***/
         TilesetPtr getTileset();
-        GLuint getCurrentTile() const ;
+        unsigned int getCurrentTile() const;
+        virtual glm::ivec2 getPosition() const;
+        virtual Rect getBoundaryBox() const;
 
 
         /***
          * 3. Setters
          ***/
-        virtual void setTileset( TilesetPtr tileset );
-        virtual void setTile( const GLuint tile );
+        void setTileset( TilesetPtr tileset );
+        virtual void setTile( unsigned int tile );
         virtual void nextTile();
         virtual void previousTile();
 
@@ -71,15 +67,11 @@ class Sprite : public Drawable
         /***
          * 5. Drawing
          ***/
-        virtual void draw( const glm::mat4& projectionMatrix ) const ;
-
-
-        /***
-         * 6. Auxiliar methods
-         ***/
-    private:
-        virtual void sendMVPMatrixToShader( const glm::mat4& mvpMatrix ) const ;
+        virtual void draw() const;
 };
+
+
+typedef std::shared_ptr< Sprite > SpritePtr;
 
 
 } // Namespace m2g

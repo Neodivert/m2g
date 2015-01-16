@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -34,10 +34,10 @@ void Rect::loadFromXML( tinyxml2::XMLElement* xmlElement )
 bool Rect::collide( const Rect& b ) const
 {
     return  (
-        ( x < ( b.x + b.width ) ) &&
-        ( ( x + width ) > b.x ) &&
-        ( y < ( b.y + b.height ) ) &&
-        ( ( y + height ) > b.y )
+        ( x < ( b.x + static_cast< int >( b.width ) ) ) &&
+        ( ( x + static_cast< int >( width ) ) > b.x ) &&
+        ( y < ( b.y + static_cast< int >( b.height ) ) ) &&
+        ( ( y + static_cast< int >( height ) ) > b.y )
             );
 }
 
@@ -46,9 +46,10 @@ bool Rect::collide( const Rect& b ) const
  * 1. Initialization
  ***/
 
-Drawable::Drawable()
+Drawable::Drawable( SDL_Renderer* renderer ) :
+    renderer_( renderer )
 {
-    boundaryBox = { 0.0f, 0.0f, 0.0f, 0.0f };
+    boundaryBox = { 0, 0, 0, 0 };
 }
 
 
@@ -56,27 +57,33 @@ Drawable::Drawable()
  * 2. Getters and setters
  ***/
 
-GLfloat Drawable::getX() const
+int Drawable::getX() const
 {
     return boundaryBox.x;
 }
 
 
-glm::vec2 Drawable::getPosition() const
+glm::ivec2 Drawable::getPosition() const
 {
-    return glm::vec2( boundaryBox.x, boundaryBox.y );
+    return glm::ivec2( boundaryBox.x, boundaryBox.y );
 }
 
 
-GLfloat Drawable::getWidth() const
+unsigned int Drawable::getWidth() const
 {
     return boundaryBox.width;
 }
 
 
-GLfloat Drawable::getHeight() const
+unsigned int Drawable::getHeight() const
 {
     return boundaryBox.height;
+}
+
+
+Rect Drawable::getBoundaryBox() const
+{
+    return boundaryBox;
 }
 
 
@@ -84,7 +91,7 @@ GLfloat Drawable::getHeight() const
  * 3. Transformations
  ***/
 
-void Drawable::translate( const float& tx, const float& ty )
+void Drawable::translate( int tx, int ty )
 {
     // Update the Sprite's position.
     boundaryBox.x += tx;
@@ -92,79 +99,11 @@ void Drawable::translate( const float& tx, const float& ty )
 }
 
 
-void Drawable::moveTo( const float& x, const float& y )
+void Drawable::moveTo( int x, int y )
 {
     // Update the Sprite's position.
     boundaryBox.x = x;
     boundaryBox.y = y;
-}
-
-
-/***
- * 4. Collision test
- ***/
-
-bool Drawable::collide( const Drawable& b ) const
-{
-    const std::vector<Rect>* aRects = nullptr;
-    const std::vector<Rect>* bRects = nullptr;
-
-    const Rect* aBoundaryBox = getBoundaryBox();
-    const Rect* bBoundaryBox = b.getBoundaryBox();
-
-    if( !aBoundaryBox->collide( *bBoundaryBox ) ){
-        return false;
-    }
-
-    aRects = getCollisionRects();
-    bRects = b.getCollisionRects();
-
-    const glm::vec2 bPosition = b.getPosition();
-
-    Rect aRect, bRect;
-
-    for( unsigned int i=0; i<aRects->size(); i++ ){
-        aRect.x = ( (*aRects)[i] ).x + boundaryBox.x;
-        aRect.y = ( (*aRects)[i] ).y + boundaryBox.y;
-        aRect.width = ( (*aRects)[i] ).width;
-        aRect.height = ( (*aRects)[i] ).height;
-
-        for( unsigned int j=0; j<bRects->size(); j++ ){
-            bRect.x = ( (*bRects)[j] ).x + bPosition.x;
-            bRect.y = ( (*bRects)[j] ).y + bPosition.y;
-            bRect.width = ( (*bRects)[j] ).width;
-            bRect.height = ( (*bRects)[j] ).height;
-
-            if( aRect.collide( bRect ) ){
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-
-const Rect* Drawable::getBoundaryBox() const
-{
-    return &boundaryBox;
-}
-
-
-/***
- * 6. Auxiliar functions
- ***/
-
-void checkOpenGL( const char* str )
-{
-    char errorMsg[256];
-
-    GLenum errorCode = glGetError();
-
-    if( errorCode ){
-        sprintf( errorMsg, "OpenGL error code at [%s] - error code: %i (%s)", str, errorCode, gluErrorString( errorCode ) );
-        throw std::runtime_error( errorMsg );
-    }
 }
 
 } // namespace m2g

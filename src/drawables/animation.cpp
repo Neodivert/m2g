@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -26,8 +26,9 @@ namespace m2g {
  * 1. Initialization and destruction
  ***/
 
-Animation::Animation( AnimationDataPtr animationData ) :
-    Sprite( animationData->tileset )
+Animation::Animation( SDL_Renderer* renderer, AnimationDataPtr animationData ) :
+    Sprite( renderer, animationData->tileset() ),
+    lastFrameTick_( 0 )
 {
     setAnimationData( animationData );
 }
@@ -43,9 +44,15 @@ int Animation::getAnimationState() const
 }
 
 
-GLuint Animation::getFrame() const
+unsigned int Animation::getFrame() const
 {
     return getCurrentTile();
+}
+
+
+bool Animation::finished() const
+{
+    return animationFinished_;
 }
 
 
@@ -56,7 +63,7 @@ GLuint Animation::getFrame() const
 void Animation::setAnimationData( AnimationDataPtr animationData )
 {
     // Set static data.
-    setTileset( animationData->tileset );
+    setTileset( animationData->tileset() );
     this->animationData = animationData;
 
     // Reset current state.
@@ -67,7 +74,7 @@ void Animation::setAnimationData( AnimationDataPtr animationData )
 void Animation::setAnimationState( int newState )
 {
     // Get the new animation state's info.
-    std::array< int, 3 > state = animationData->states[ newState ];
+    std::array< int, 3 > state = animationData->state( newState );
 
     // Update the current animation state.
     currentState = newState;
@@ -75,6 +82,8 @@ void Animation::setAnimationState( int newState )
     // Update the current tile / frame so it is now the first of the
     // new state.
     setTile( state[FIRST_FRAME] );
+
+    animationFinished_ = false;
 }
 
 
@@ -84,21 +93,28 @@ void Animation::setAnimationState( int newState )
 
 void Animation::update()
 {
-    // Get the current animation state's info.
-    std::array< int, 3 > state = animationData->states[ currentState ];
+    Uint32 t = SDL_GetTicks();
 
-    // Get the current tile / frame.
-    GLint currentTile = getCurrentTile();
+    if( ( t - lastFrameTick_ ) > animationData->refreshRate() ){
+        // Get the current animation state's info.
+        std::array< int, 3 > state = animationData->state( currentState );
 
-    // Get the next tile / frame.
-    if( currentTile < state[LAST_FRAME] ){
-        currentTile++;
-    }else{
-        currentTile = state[BACK_FRAME];
+        // Get the current tile / frame.
+        unsigned int currentTile = getCurrentTile();
+
+        // Get the next tile / frame.
+        if( currentTile < static_cast< unsigned int >( state[LAST_FRAME] ) ){
+            currentTile++;
+        }else{
+            animationFinished_ = ( state[LAST_FRAME] == state[BACK_FRAME] );
+            currentTile = state[BACK_FRAME];
+        }
+
+        // Update the current tile / frame.
+        setTile( currentTile );
+
+        lastFrameTick_ = t;
     }
-
-    // Update the current tile / frame.
-    setTile( currentTile );
 }
 
 

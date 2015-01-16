@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -22,7 +22,7 @@
 
 #include "drawables/sprite.hpp"
 #include "drawables/animation_data.hpp"
-#include "dependencies/tinyxml2/tinyxml2.h"
+#include <tinyxml2.h>
 #include "drawables/animation.hpp"
 #include <string>
 
@@ -34,6 +34,7 @@ typedef std::vector< std::shared_ptr<AnimationData> > AnimationDataVector;
 class GraphicsLibrary
 {
     private:
+        SDL_Renderer* renderer_;
         tinyxml2::XMLDocument xmlFile_;
 
         TilesetsVector tilesets_;
@@ -43,7 +44,7 @@ class GraphicsLibrary
         /***
          * 1. Initialization and destruction.
          ***/
-        GraphicsLibrary();
+        GraphicsLibrary( SDL_Renderer* renderer );
 
 
         /***

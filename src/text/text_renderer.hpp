@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -20,37 +20,57 @@
 #ifndef TEXT_RENDERER_HPP
 #define TEXT_RENDERER_HPP
 
-#include "bitmap_font.hpp"
+#include "../drawables/sprite.hpp"
 #include <SDL2/SDL_ttf.h>
+#include <map>
+
+enum class TextAlign
+{
+    LEFT,
+    CENTER,
+    RIGHT
+};
 
 namespace m2g {
 
 class TextRenderer
 {
-    private:
-        std::vector< BitmapFontPtr > bitmapFonts;
-
-        GLint mvpMatrixLocation;
-        GLint samplerLocation;
-        GLint sliceLocation;
-
     public:
         /***
-         * 1. Initialization
+         * 1. Initialization and destruction
          ***/
-        TextRenderer();
+        TextRenderer( SDL_Renderer* renderer );
+        ~TextRenderer();
 
 
         /***
-         * 2. Loading
+         * 2. Fonts management
          ***/
-        unsigned int loadFont( const char* file, const unsigned int size, const SDL_Color& color );
+        unsigned int loadFont( const char* fontPath,
+                               int fontSize );
 
 
         /***
          * 3. Drawing
          ***/
-        void drawText( const glm::mat4& projectionMatrix, const char* text, unsigned int fontIndex, GLuint x = 0, GLuint y = 0 );
+        SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT );
+        void drawText( const char* text,
+                       unsigned int fontIndex,
+                       const SDL_Color& color,
+                       int x,
+                       int y,
+                       TextAlign textAlign = TextAlign::LEFT );
+
+
+        /***
+         * 4. Auxiliar methods
+         ***/
+    private:
+        void getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines );
+
+        SDL_Renderer *renderer_;
+        std::map< unsigned int, TTF_Font* > fonts_;
+        unsigned int nextFontID_;
 };
 
 } // namespace m2g

@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -18,63 +18,17 @@
 ***/
 
 #include "sprite.hpp"
-#include <iostream>
 
 namespace m2g {
-
-GLint Sprite::mvpMatrixLocation = -1;
-GLint Sprite::samplerLocation = -1;
-GLint Sprite::sliceLocation = -1;
 
 /***
  * 1. Initialization
  ***/
 
-Sprite::Sprite() :
+Sprite::Sprite( SDL_Renderer* renderer, TilesetPtr tileset_ ) :
+    Drawable( renderer ),
     currentTile( 0 )
 {
-    GLint currentProgram;
-
-    // If we still don't have the locations of the shader uniforms, we
-    // search them here.
-    if( mvpMatrixLocation == -1 ){
-        glGetIntegerv( GL_CURRENT_PROGRAM, &currentProgram );
-
-        mvpMatrixLocation = glGetUniformLocation( currentProgram, "mvpMatrix" );
-        samplerLocation = glGetUniformLocation( currentProgram, "tex" );
-        sliceLocation = glGetUniformLocation( currentProgram, "slice" );
-
-        checkOpenGL( "Sprite() - Setting uniform locations" );
-
-        currentTile = 0;
-    }
-
-    // Connect sampler to texture unit 0.
-    glUniform1i( samplerLocation, 0 );
-}
-
-Sprite::Sprite( TilesetPtr tileset_ ) :
-    currentTile( 0 )
-{
-    GLint currentProgram;
-
-    // If we still don't have the locations of the shader uniforms, we
-    // search them here.
-    if( mvpMatrixLocation == -1 ){
-        glGetIntegerv( GL_CURRENT_PROGRAM, &currentProgram );
-
-        mvpMatrixLocation = glGetUniformLocation( currentProgram, "mvpMatrix" );
-        samplerLocation = glGetUniformLocation( currentProgram, "tex" );
-        sliceLocation = glGetUniformLocation( currentProgram, "slice" );
-
-        checkOpenGL( "Sprite( tileset ) - Setting uniform locations" );
-
-        currentTile = 0;
-    }
-
-    // Connect sampler to texture unit 0.
-    glUniform1i( samplerLocation, 0 );
-
     // Share the tileset given as an argument.
     setTileset( tileset_ );
 }
@@ -90,9 +44,21 @@ TilesetPtr Sprite::getTileset()
 }
 
 
-GLuint Sprite::getCurrentTile() const
+unsigned int Sprite::getCurrentTile() const
 {
     return currentTile;
+}
+
+
+glm::ivec2 Sprite::getPosition() const
+{
+    return Drawable::getPosition();
+}
+
+
+Rect Sprite::getBoundaryBox() const
+{
+    return Drawable::getBoundaryBox();
 }
 
 
@@ -106,17 +72,18 @@ void Sprite::setTileset( TilesetPtr tileset )
     this->tileset = tileset;
 
     // Update the sprite's boundary box with the dimensions of a tile.
-    boundaryBox.width = tileset->tileWidth;
-    boundaryBox.height = tileset->tileHeight;
+    glm::ivec2 tileDimensions = tileset->tileDimensions();
+    boundaryBox.width = tileDimensions.x;
+    boundaryBox.height = tileDimensions.y;
 
     // Restart current tile.
     currentTile = 0;
 }
 
 
-void Sprite::setTile( const GLuint tile )
+void Sprite::setTile( unsigned int tile )
 {
-    if( tile < tileset->nTiles ){
+    if( tile < tileset->nTiles() ){
         currentTile = tile;
     }else{
         throw std::runtime_error( "ERROR: tile index out of limits" );
@@ -126,7 +93,7 @@ void Sprite::setTile( const GLuint tile )
 
 void Sprite::nextTile()
 {
-    if( currentTile < (tileset->nTiles - 1) ){
+    if( currentTile < (tileset->nTiles() - 1) ){
         currentTile++;
     }else{
         currentTile = 0;
@@ -139,7 +106,7 @@ void Sprite::previousTile()
     if( currentTile ){
         currentTile--;
     }else{
-        currentTile = tileset->nTiles - 1;
+        currentTile = tileset->nTiles() - 1;
     }
 }
 
@@ -150,7 +117,7 @@ void Sprite::previousTile()
 
 const std::vector<Rect>* Sprite::getCollisionRects() const
 {
-    return &( tileset->collisionRects[currentTile] );
+    return &( tileset->collisionRects( currentTile ) );
 }
 
 
@@ -158,32 +125,9 @@ const std::vector<Rect>* Sprite::getCollisionRects() const
  * 5. Drawing
  ***/
 
-void Sprite::draw( const glm::mat4& projectionMatrix ) const {
-    // Load the sprite's attributes for rendering.
-    glActiveTexture( GL_TEXTURE0 );
-    glBindTexture( GL_TEXTURE_2D_ARRAY, tileset->texture );
-
-    // Send current tile index to shader.
-    glUniform1ui( sliceLocation, currentTile );
-
-    // Send MVP matrix to shader.
-    sendMVPMatrixToShader( projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( boundaryBox.x, boundaryBox.y, 0.0f ) ) );
-
-    // Draw the sprite.
-    tileset->draw();
-
-    //glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
+void Sprite::draw() const {
+    const glm::ivec2 pos = getPosition();
+    tileset->drawTile( currentTile, pos.x, pos.y );
 }
-
-
-/***
- * 6. Auxiliar methods
- ***/
-
-void Sprite::sendMVPMatrixToShader( const glm::mat4& mvpMatrix ) const
-{
-    glUniformMatrix4fv( mvpMatrixLocation, 1, GL_FALSE, &mvpMatrix[0][0] );
-}
-
 
 } // Namespace m2g

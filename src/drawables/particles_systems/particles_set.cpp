@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -17,7 +17,12 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
+#include <SDL2/SDL.h>
+
 #include "particles_set.hpp"
+
 
 namespace m2g {
 
@@ -98,7 +103,7 @@ void ParticlesSet::generateTileset( const char* file,
     // Bind the off-screen framebuffer and check its status.
     psTilesetInfo.bindFramebuffer();
     if( glCheckFramebufferStatus( GL_DRAW_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE ){
-        std::cerr << "ERROR - Framebuffer not complete" << std::endl;
+        throw std::runtime_error( "ERROR - Framebuffer not complete" );
     }
     checkOpenGL( "ParticleSystem::geenerateTileset() - Checking off-screen framebuffer status" );
 

@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -23,7 +23,7 @@
 #include "tileset.hpp"
 #include <vector>
 #include <array>
-#include "../dependencies/tinyxml2/tinyxml2.h"
+#include <tinyxml2.h>
 
 namespace m2g {
 
@@ -31,27 +31,38 @@ const unsigned int FIRST_FRAME = 0;
 const unsigned int LAST_FRAME = 1;
 const unsigned int BACK_FRAME = 2;
 
-struct AnimationData
+class AnimationData
 {
-    // Tileset associated with this animation.
-    TilesetPtr tileset;
-
-    // Each state is a tuple (firstFrame, lastFrame, backFrame).
-    std::vector< std::array< int, 3 > >  states;
-
-
-    /*** Methods ***/
-
-    /***
-     * 1. Initialization and destruction
-     ***/
-    AnimationData( const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+    public:
+        /***
+         * 1. Initialization and destruction
+         ***/
+        AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
 
 
-    /***
-     * 2. Loading
-     ***/
-    void load( const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+        /***
+         * 2. Loading
+         ***/
+        void load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+
+
+        /***
+         * 3. Getters
+         ***/
+        TilesetPtr tileset() const;
+        unsigned int refreshRate() const;
+        std::array< int, 3 > state( unsigned int index ) const;
+
+    private:
+        // Tileset associated with this animation.
+        TilesetPtr tileset_;
+
+         // Refresh rate (ms).
+        unsigned int refreshRate_;
+
+        // Each state is a tuple (firstFrame, lastFrame, backFrame).
+        // TODO: Create a new struct AnimationState and make a vector of them.
+        std::vector< std::array< int, 3 > >  states_;
 };
 
 typedef std::shared_ptr< const AnimationData > AnimationDataPtr;

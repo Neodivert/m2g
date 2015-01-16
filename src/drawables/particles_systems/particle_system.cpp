@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -19,6 +19,9 @@
 
 #include "particle_system.hpp"
 #include <cmath>
+#include <glm/vec3.hpp>
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace m2g {
 
@@ -216,9 +219,6 @@ void ParticleSystem::loadXML( const char* file, const char*name )
     // particle system.
     boundaryBox.x = 0.0f;
     boundaryBox.y = 0.0f;
-
-    std::cout << "Base line: (" << baseLine_[0].x << ", " << baseLine_[0].y << ") - (" << baseLine_[1].x << ", " << baseLine_[1].y << ")" << std::endl;
-    std::cout << "Boundary box: " << boundaryBox.x << ", " << boundaryBox.y << ", " << boundaryBox.width << ", " << boundaryBox.height << ")" << std::endl << std::endl;
 
     // Unmap the VBO memory.
     glUnmapBuffer( GL_ARRAY_BUFFER );

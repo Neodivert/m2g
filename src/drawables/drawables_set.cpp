@@ -1,5 +1,9 @@
 /***
+<<<<<<< HEAD
  * Copyright 2013, 2014 Moises J. Bonilla Caraballo (Neodivert)
+=======
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
+>>>>>>> raw-opengl-removal
  *
  * This file is part of M2G.
  *
@@ -22,7 +26,16 @@
 namespace m2g {
 
 /***
- * 1. Drawables management
+ * 1. Construction
+ ***/
+
+DrawablesSet::DrawablesSet( SDL_Renderer *renderer ) :
+    Drawable( renderer )
+{}
+
+
+/***
+ * 2. Drawables management
  ***/
 
 DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable, float x, float y )
@@ -42,75 +55,55 @@ DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable, float x, float y
 }
 
 
-SpritePtr DrawablesSet::addSprite( TilesetPtr tileset, float x, float y )
-{
-    // Add the given sprite to the container.
-    return std::dynamic_pointer_cast<Sprite>(
-                addDrawable( DrawablePtr( new Sprite( tileset ) ),
-                             x,
-                             y )
-                );
-}
-
-
 /***
- * 2. Transformations
+ * 3. Transformations
  ***/
 
 void DrawablesSet::translate( const float& tx, const float& ty )
 {
-    DrawablesContainer::iterator currentDrawable;
-
-    // Translate all the drawables in the container.
-    for( currentDrawable = drawables_.begin(); currentDrawable != drawables_.end(); currentDrawable++ ){
-        (*currentDrawable)->translate( tx, ty );
+    for( DrawablePtr drawable : drawables_ ){
+        drawable->translate( tx, ty );
     }
 }
 
 
 void DrawablesSet::moveTo( const float& x, const float& y )
 {
-    DrawablesContainer::iterator currentDrawable;
-
-    // Move all the drawables in the container.
-    for( currentDrawable = drawables_.begin(); currentDrawable != drawables_.end(); currentDrawable++ ){
-        (*currentDrawable)->moveTo( x, y );
+    for( DrawablePtr drawable : drawables_ ){
+        drawable->moveTo( x, y );
     }
 }
 
 
 /***
- * 3. Drawing
+ * 4. Drawing
  ***/
 
-void DrawablesSet::draw( const glm::mat4& projectionMatrix ) const
+void DrawablesSet::draw() const
 {
-    DrawablesContainer::const_iterator currentDrawable;
-
-    // Draw all the drawables in the container.
-    for( currentDrawable = drawables_.begin(); currentDrawable != drawables_.end(); currentDrawable++ ){
-        (*currentDrawable)->draw( projectionMatrix );
+    for( DrawablePtr drawable : drawables_ ){
+        drawable->draw();
     }
 }
 
 
 /***
- * 4. Auxiliar methods.
+ * 5. Auxiliar methods.
  ***/
 
-void DrawablesSet::updateBoundaryBox( const Rect* newBoundaryBox )
+void DrawablesSet::updateBoundaryBox( const Rect& newBoundaryBox )
 {
-    if( newBoundaryBox->x < boundaryBox.x ){
-        boundaryBox.x = newBoundaryBox->x;
+    if( newBoundaryBox.x < boundaryBox.x ){
+        boundaryBox.x = newBoundaryBox.x;
     }
-    if( newBoundaryBox->y < boundaryBox.y ){
-        boundaryBox.y = newBoundaryBox->y;
+    if( newBoundaryBox.y < boundaryBox.y ){
+        boundaryBox.y = newBoundaryBox.y;
     }
-    if( newBoundaryBox->x + newBoundaryBox->width > boundaryBox.x + boundaryBox.width ){
-        boundaryBox.width = newBoundaryBox->width;
+    if( newBoundaryBox.x + newBoundaryBox.width > boundaryBox.x + boundaryBox.width ){
+        boundaryBox.width = newBoundaryBox.width;
     }
-    if( newBoundaryBox->y + newBoundaryBox->height > boundaryBox.y + boundaryBox.height ){
-        boundaryBox.height = newBoundaryBox->height;
+    if( newBoundaryBox.y + newBoundaryBox.height > boundaryBox.y + boundaryBox.height ){
+        boundaryBox.height = newBoundaryBox.height;
     }
 }
 

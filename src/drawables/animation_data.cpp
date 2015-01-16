@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -25,9 +25,9 @@ namespace m2g {
  * 1. Initialization and destruction
  ***/
 
-AnimationData::AnimationData( const tinyxml2::XMLNode* xmlNode, const char* folder )
+AnimationData::AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder )
 {
-    load( xmlNode, folder );
+    load( renderer, xmlNode, folder );
 }
 
 
@@ -35,16 +35,21 @@ AnimationData::AnimationData( const tinyxml2::XMLNode* xmlNode, const char* fold
  * 2. Loading
  ***/
 
-void AnimationData::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
+void AnimationData::load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder )
 {
     std::array< int, 3 > animationState;
+    unsigned int fps;
 
     const tinyxml2::XMLNode* tilesetNode = xmlNode->FirstChildElement( "tileset" );
     const tinyxml2::XMLNode* animationStatesNode = tilesetNode->NextSiblingElement( "animation_states" );
     const tinyxml2::XMLElement* animationStateNode = nullptr;
 
     // Load the tileset info.
-    tileset = std::shared_ptr< Tileset >( new Tileset( tilesetNode, folder ) );
+    tileset_ = std::shared_ptr< Tileset >( new Tileset( renderer, tilesetNode, folder ) );
+
+    // Load the fps and compute the refresh rate.
+    fps = ( dynamic_cast< const tinyxml2::XMLElement* >( xmlNode ) )->IntAttribute( "fps" );
+    refreshRate_ = 1.0f / (float)fps * 1000;
 
     // Access the XML node with the animation states info.
     animationStateNode = animationStatesNode->FirstChildElement();
@@ -56,11 +61,33 @@ void AnimationData::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
         animationState[BACK_FRAME] = animationStateNode->IntAttribute( "backFrame" );
 
         // Insert the new animation state in the vector.
-        states.push_back( animationState );
+        states_.push_back( animationState );
 
         // Go to next node.
         animationStateNode = animationStateNode->NextSiblingElement();
     }
+}
+
+
+/***
+ * 3. Getters
+ ***/
+
+TilesetPtr AnimationData::tileset() const
+{
+    return tileset_;
+}
+
+
+unsigned int AnimationData::refreshRate() const
+{
+    return refreshRate_;
+}
+
+
+std::array< int, 3 > AnimationData::state( unsigned int index ) const
+{
+    return states_[ index ];
 }
 
 } // namespace m2g

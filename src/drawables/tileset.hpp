@@ -1,5 +1,5 @@
 /***
- * Copyright 2013 Moises J. Bonilla Caraballo (Neodivert)
+ * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
  *
@@ -22,55 +22,19 @@
 
 #include "drawable.hpp"
 #include <memory>
-#include <iostream>
 #include <vector>
-#include "../utilities/tilesets_buffer.hpp"
-#include "../dependencies/tinyxml2/tinyxml2.h"
-#include <SDL2/SDL_ttf.h>
+#include <tinyxml2.h>
 
 namespace m2g {
 
-class Tileset {
-
+class Tileset
+{
     public:
-        // Common tilesets buffer for all tilesets and its corresponding references
-        // count.
-        static TilesetsBuffer* tilesetsBuffer;
-        static unsigned int refCount;
-
-        // Texture 2D array id (OpenGL).
-        GLuint texture;
-
-        // Tile dimensions.
-        GLuint tileWidth;
-        GLuint tileHeight;
-
-        // Image dimensions.
-        GLuint imageWidth;
-        GLuint imageHeight;
-
-        // Tileset number of elements.
-        GLuint nRows;
-        GLuint nColumns;
-        GLuint nTiles;
-
-        // Index of this tileset's vertex attributes in the tilesets buffer.
-        unsigned int bufferIndex;
-
-        // Name of the tileset's base image.
-        std::string name;
-
-        // We keep a vector of collision rects for each tile in the tileset.
-        std::vector< std::vector< Rect > > collisionRects;
-
-
-        /*** Methods ***/
-
         /***
          * 1. Initialization and destruction.
          ***/
-        Tileset( const tinyxml2::XMLNode* xmlNode, const char* folder );
-        Tileset( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight );
+        Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder );
+        Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
         ~Tileset();
 
 
@@ -78,21 +42,42 @@ class Tileset {
          * 2. Loading
          ***/
         void load( const tinyxml2::XMLNode* xmlNode, const char* folder );
-        void load( SDL_Surface* surface, GLuint tileWidth, GLuint tileHeight );
+        void load( SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
 
 
         /***
-         * 3. Drawing
+         * 3. Getters
          ***/
-        void draw() const ;
+        std::string name() const;
+        unsigned int nTiles() const;
+        glm::ivec2 tileDimensions() const;
+        const std::vector< Rect >& collisionRects( unsigned int tile ) const;
 
 
         /***
-         * 4. Auxiliar methods
+         * 4. Drawing
          ***/
-        static void bindBuffer();
+        void drawTile( unsigned int tile, int x, int y ) const;
+
+
     private:
-        void loadTexture( void* data, int pitch  );
+        // Tile dimensions.
+        unsigned int tileWidth;
+        unsigned int tileHeight;
+
+        // Tileset number of elements.
+        unsigned int nRows;
+        unsigned int nColumns;
+        unsigned int nTiles_;
+
+        // Name of the tileset's base image.
+        std::string name_;
+
+        // We keep a vector of collision rects for each tile in the tileset.
+        std::vector< std::vector< Rect > > collisionRects_;
+
+        SDL_Renderer* renderer_;
+        SDL_Texture* texture_;
 };
 
 typedef std::shared_ptr< const Tileset > TilesetPtr;
