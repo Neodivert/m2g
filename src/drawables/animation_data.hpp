@@ -54,6 +54,7 @@ class AnimationData
         unsigned int refreshRate_;
 
         // Each state is a tuple (firstFrame, lastFrame, backFrame).
+        // TODO: Create a new struct AnimationState and make a vector of them.
         std::vector< std::array< int, 3 > >  states_;
 };
 
