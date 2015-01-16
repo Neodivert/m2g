@@ -2,6 +2,12 @@
 
 A 2D graphic library based on OpenGL + SDL.
 
+
+## Current status
+
+Active. This project is being developed (branch "experimental") along with the [game JDB](https://github.com/moisesjbc/JDB).
+
+
 ## Building and installing from source (only tested on Ubuntu 14.04)
 
 1. Install the required dependencies 
