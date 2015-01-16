@@ -19,6 +19,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/drawables/collidable.cpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/sprite.cpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/animation_data.cpp"
+    "${PROJECT_SOURCE_DIR}/src/drawables/animation.cpp"
 )
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )

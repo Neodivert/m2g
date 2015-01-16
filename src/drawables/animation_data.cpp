@@ -73,6 +73,12 @@ void AnimationData::load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNo
  * 3. Getters
  ***/
 
+TilesetPtr AnimationData::tileset() const
+{
+    return tileset_;
+}
+
+
 unsigned int AnimationData::refreshRate() const
 {
     return refreshRate_;

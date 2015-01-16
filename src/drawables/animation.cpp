@@ -26,8 +26,8 @@ namespace m2g {
  * 1. Initialization and destruction
  ***/
 
-Animation::Animation( AnimationDataPtr animationData ) :
-    Sprite( animationData->tileset ),
+Animation::Animation( SDL_Renderer* renderer, AnimationDataPtr animationData ) :
+    Sprite( renderer, animationData->tileset() ),
     lastFrameTick_( 0 )
 {
     setAnimationData( animationData );
@@ -44,7 +44,7 @@ int Animation::getAnimationState() const
 }
 
 
-GLuint Animation::getFrame() const
+unsigned int Animation::getFrame() const
 {
     return getCurrentTile();
 }
@@ -63,7 +63,7 @@ bool Animation::finished() const
 void Animation::setAnimationData( AnimationDataPtr animationData )
 {
     // Set static data.
-    setTileset( animationData->tileset );
+    setTileset( animationData->tileset() );
     this->animationData = animationData;
 
     // Reset current state.
@@ -74,7 +74,7 @@ void Animation::setAnimationData( AnimationDataPtr animationData )
 void Animation::setAnimationState( int newState )
 {
     // Get the new animation state's info.
-    std::array< int, 3 > state = animationData->states[ newState ];
+    std::array< int, 3 > state = animationData->state( newState );
 
     // Update the current animation state.
     currentState = newState;
@@ -95,15 +95,15 @@ void Animation::update()
 {
     Uint32 t = SDL_GetTicks();
 
-    if( ( t - lastFrameTick_ ) > animationData->refreshRate ){
+    if( ( t - lastFrameTick_ ) > animationData->refreshRate() ){
         // Get the current animation state's info.
-        std::array< int, 3 > state = animationData->states[ currentState ];
+        std::array< int, 3 > state = animationData->state( currentState );
 
         // Get the current tile / frame.
-        GLint currentTile = getCurrentTile();
+        unsigned int currentTile = getCurrentTile();
 
         // Get the next tile / frame.
-        if( currentTile < state[LAST_FRAME] ){
+        if( currentTile < static_cast< unsigned int >( state[LAST_FRAME] ) ){
             currentTile++;
         }else{
             animationFinished_ = ( state[LAST_FRAME] == state[BACK_FRAME] );

@@ -49,6 +49,7 @@ class AnimationData
         /***
          * 3. Getters
          ***/
+        TilesetPtr tileset() const;
         unsigned int refreshRate() const;
         std::array< int, 3 > state( unsigned int index ) const;
 

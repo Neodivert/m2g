@@ -39,14 +39,14 @@ class Animation : public Sprite
         /***
          * 1. Initialization and destruction
          ***/
-        Animation( AnimationDataPtr animationData );
+        Animation( SDL_Renderer* renderer, AnimationDataPtr animationData );
 
 
         /***
          * 2. Getters
          ***/        
         int getAnimationState() const ;
-        GLuint getFrame() const ;
+        unsigned int getFrame() const ;
         bool finished() const;
 
 
