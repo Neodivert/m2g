@@ -38,6 +38,7 @@ struct Rect
     bool collide( const Rect& b ) const ;
 };
 
+// TODO: Move non-drawing methods to classes Collidable or Sprite.
 class Drawable
 {
     protected:
