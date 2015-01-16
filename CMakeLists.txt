@@ -34,7 +34,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/drawables/animation.hpp"
     "${PROJECT_SOURCE_DIR}/src/graphics_library.hpp"
     "${PROJECT_SOURCE_DIR}/src/m2g.hpp"
-    "${PROJECT_SOURCE_DIR}/src/text/text_renderer.cpp"
+    "${PROJECT_SOURCE_DIR}/src/text/text_renderer.hpp"
 )
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )
