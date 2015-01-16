@@ -48,11 +48,6 @@ pkg_search_module( SDL2TTF REQUIRED SDL2_ttf>=2.0.0 )
 include_directories( ${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2TTF_INCLUDE_DIRS} )
 set( LIBRARIES "${LIBRARIES};${SDL2IMAGE_LIBRARIES};${SDL2TTF_LIBRARIES};${SDL2_LIBRARIES}" )
 
-# Include library OpenGL.
-find_package( OpenGL REQUIRED )
-include_directories( ${OPENGL_INCLUDE_DIR} )
-set( LIBRARIES "${LIBRARIES};${OPENGL_LIBRARIES}" )
-
 # Include library tinyxml2
 set( LIBRARIES "${LIBRARIES};-ltinyxml2" )
 
