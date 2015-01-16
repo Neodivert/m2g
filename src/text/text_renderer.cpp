@@ -155,7 +155,6 @@ SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, cons
     SpritePtr textSprite( new Sprite( renderer_, textTileset ) );
 
     // Free resources.
-    TTF_CloseFont( font );
     SDL_FreeSurface( textSurface );
 
     // Return the text sprite.
