@@ -31,30 +31,30 @@ const unsigned int FIRST_FRAME = 0;
 const unsigned int LAST_FRAME = 1;
 const unsigned int BACK_FRAME = 2;
 
-struct AnimationData
+class AnimationData
 {
-    // Tileset associated with this animation.
-    TilesetPtr tileset;
-
-     // Refresh rate (ms).
-    unsigned int refreshRate;
-
-    // Each state is a tuple (firstFrame, lastFrame, backFrame).
-    std::vector< std::array< int, 3 > >  states;
+    public:
+        /***
+         * 1. Initialization and destruction
+         ***/
+        AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
 
 
-    /*** Methods ***/
-
-    /***
-     * 1. Initialization and destruction
-     ***/
-    AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+        /***
+         * 2. Loading
+         ***/
+        void load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
 
 
-    /***
-     * 2. Loading
-     ***/
-    void load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+    private:
+        // Tileset associated with this animation.
+        TilesetPtr tileset_;
+
+         // Refresh rate (ms).
+        unsigned int refreshRate_;
+
+        // Each state is a tuple (firstFrame, lastFrame, backFrame).
+        std::vector< std::array< int, 3 > >  states_;
 };
 
 typedef std::shared_ptr< const AnimationData > AnimationDataPtr;

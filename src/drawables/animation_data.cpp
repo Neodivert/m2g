@@ -45,11 +45,11 @@ void AnimationData::load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNo
     const tinyxml2::XMLElement* animationStateNode = nullptr;
 
     // Load the tileset info.
-    tileset = std::shared_ptr< Tileset >( new Tileset( renderer, tilesetNode, folder ) );
+    tileset_ = std::shared_ptr< Tileset >( new Tileset( renderer, tilesetNode, folder ) );
 
     // Load the fps and compute the refresh rate.
     fps = ( dynamic_cast< const tinyxml2::XMLElement* >( xmlNode ) )->IntAttribute( "fps" );
-    refreshRate = 1.0f / (float)fps * 1000;
+    refreshRate_ = 1.0f / (float)fps * 1000;
 
     // Access the XML node with the animation states info.
     animationStateNode = animationStatesNode->FirstChildElement();
@@ -61,7 +61,7 @@ void AnimationData::load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNo
         animationState[BACK_FRAME] = animationStateNode->IntAttribute( "backFrame" );
 
         // Insert the new animation state in the vector.
-        states.push_back( animationState );
+        states_.push_back( animationState );
 
         // Go to next node.
         animationStateNode = animationStateNode->NextSiblingElement();
