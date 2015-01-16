@@ -25,19 +25,46 @@ namespace m2g {
 
 
 /***
- * 1. Initialization
+ * 1. Initialization and destruction
  ***/
 
 TextRenderer::TextRenderer( SDL_Renderer *renderer ) :
-    renderer_( renderer )
+    renderer_( renderer ),
+    nextFontID_( 0 )
 {}
+
+
+TextRenderer::~TextRenderer()
+{
+    for( auto& font : fonts_ ){
+        TTF_CloseFont( font.second );
+    }
+}
+
+
+/***
+ * 2. Fonts management
+ ***/
+
+unsigned int TextRenderer::loadFont( const char *fontPath, int fontSize )
+{
+    TTF_Font* newFont =
+            TTF_OpenFont( fontPath, fontSize );
+    if( !newFont ){
+        throw std::runtime_error( TTF_GetError() );
+    }
+
+    fonts_[nextFontID_] = newFont;
+
+    return nextFontID_++;
+}
 
 
 /***
  * 3. Drawing
  ***/
 
-SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color, TextAlign textAlign )
+SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign )
 {
     TTF_Font* font = nullptr;
     TilesetPtr textTileset;
@@ -50,10 +77,7 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
     SDL_Rect dstRect = { 0, 0, 0, 0 };
 
     // Load the required font.
-    font = TTF_OpenFont( fontPath, fontSize );
-    if( font == nullptr ){
-        throw std::runtime_error( std::string( "ERROR opening font - " ) + TTF_GetError() );
-    }
+    font = fonts_.at( fontIndex );
 
     // Set the RGBA mask for the text surface.
     #if SDL_BYTEORDER == SDL_BIG_ENDIAN

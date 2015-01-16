@@ -22,6 +22,7 @@
 
 #include "../drawables/sprite.hpp"
 #include <SDL2/SDL_ttf.h>
+#include <map>
 
 enum class TextAlign
 {
@@ -36,15 +37,23 @@ class TextRenderer
 {
     public:
         /***
-         * 1. Initialization
+         * 1. Initialization and destruction
          ***/
         TextRenderer( SDL_Renderer* renderer );
+        ~TextRenderer();
 
 
         /***
-         * 2. Drawing
+         * 2. Fonts management
          ***/
-        SpritePtr drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT );
+        unsigned int loadFont( const char* fontPath,
+                               int fontSize );
+
+
+        /***
+         * 3. Drawing
+         ***/
+        SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT );
 
 
         /***
@@ -54,6 +63,8 @@ class TextRenderer
         void getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines );
 
         SDL_Renderer *renderer_;
+        std::map< unsigned int, TTF_Font* > fonts_;
+        unsigned int nextFontID_;
 };
 
 } // namespace m2g
