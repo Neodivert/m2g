@@ -78,6 +78,8 @@ set_target_properties(
 #target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
 
 # Instalation.
+# TODO: Install only header files AND THEIR DIRECTORIES listed
+# in $HEADER_FILES.
 install( FILES ${HEADER_FILES} DESTINATION include/m2g )
 install( TARGETS ${LIBRARY_NAME} DESTINATION lib )
 # TODO: Install samples.
