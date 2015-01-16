@@ -58,7 +58,7 @@ class Drawable
         glm::ivec2 getPosition() const ;
         unsigned int getWidth() const ;
         unsigned int getHeight() const ;
-        virtual const Rect* getBoundaryBox() const ;
+        Rect getBoundaryBox() const ;
 
 
         /***

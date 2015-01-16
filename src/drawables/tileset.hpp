@@ -46,7 +46,15 @@ class Tileset
 
 
         /***
-         * 3. Drawing
+         * 3. Getters
+         ***/
+        unsigned int nTiles() const;
+        glm::ivec2 tileDimensions() const;
+        const std::vector< Rect >& collisionRects( unsigned int tile ) const;
+
+
+        /***
+         * 4. Drawing
          ***/
         void drawTile( unsigned int tile, int x, int y ) const;
 
@@ -59,13 +67,13 @@ class Tileset
         // Tileset number of elements.
         unsigned int nRows;
         unsigned int nColumns;
-        unsigned int nTiles;
+        unsigned int nTiles_;
 
         // Name of the tileset's base image.
         std::string name;
 
         // We keep a vector of collision rects for each tile in the tileset.
-        std::vector< std::vector< Rect > > collisionRects;
+        std::vector< std::vector< Rect > > collisionRects_;
 
         SDL_Renderer* renderer_;
         SDL_Texture* texture_;

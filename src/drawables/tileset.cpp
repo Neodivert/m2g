@@ -32,7 +32,7 @@ Tileset::Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, cons
     tileHeight( 0 ),
     nRows( 0 ),
     nColumns( 0 ),
-    nTiles( 0 ),
+    nTiles_( 0 ),
     renderer_( renderer ),
     texture_( nullptr )
 {
@@ -97,7 +97,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     // Read tileset general info.
     nRows = ( image->h / tileHeight );
     nColumns = ( image->w / tileWidth );
-    nTiles = nRows * nColumns;
+    nTiles_ = nRows * nColumns;
 
     // Load the texture
     texture_ = SDL_CreateTextureFromSurface( renderer_, image );
@@ -106,7 +106,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
     SDL_FreeSurface( image );
 
     // Create an empty vector of collision rects for each tile in the tileset.
-    collisionRects.resize( nTiles );
+    collisionRects_.resize( nTiles_ );
 
     // Check if there is available collision info.
     if( collisionInfoNode ){
@@ -130,8 +130,8 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
             if( tilesStr == "all" ){
                 // The collision rect is present in all the tiles
                 // of the tileset.
-                for( unsigned int i=0; i<nTiles; i++ ){
-                    collisionRects[i].push_back( colRect );
+                for( unsigned int i=0; i<nTiles_; i++ ){
+                    collisionRects_[i].push_back( colRect );
                 }
             }else{
                 // The collision rect is present in a subset of
@@ -152,7 +152,7 @@ void Tileset::load( const tinyxml2::XMLNode* xmlNode, const char* folder )
                 // Add the collision rect to the requested tiles' collision
                 // info.
                 for( unsigned int i=firstTile; i<=lastTile; i++ ){
-                    collisionRects[i].push_back( colRect );
+                    collisionRects_[i].push_back( colRect );
                 }
             }
 
@@ -181,7 +181,7 @@ void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int t
     // Read tileset general info.
     nRows = ( surface->h / tileHeight );
     nColumns = ( surface->w / tileWidth );
-    nTiles = nRows * nColumns;
+    nTiles_ = nRows * nColumns;
 
     // Load the texture
     texture_ = SDL_CreateTextureFromSurface( renderer_, surface );
@@ -189,7 +189,29 @@ void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int t
 
 
 /***
- * 3. Drawing
+ * 3. Getters
+ ***/
+
+unsigned int Tileset::nTiles() const
+{
+    return nTiles_;
+}
+
+
+glm::ivec2 Tileset::tileDimensions() const
+{
+    return glm::ivec2( tileWidth, tileHeight );
+}
+
+
+const std::vector<Rect> &Tileset::collisionRects( unsigned int tile ) const
+{
+    return collisionRects_[tile];
+}
+
+
+/***
+ * 4. Drawing
  ***/
 
 void Tileset::drawTile( unsigned int tile, int x, int y ) const

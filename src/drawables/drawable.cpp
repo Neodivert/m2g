@@ -81,9 +81,9 @@ unsigned int Drawable::getHeight() const
 }
 
 
-const Rect* Drawable::getBoundaryBox() const
+Rect Drawable::getBoundaryBox() const
 {
-    return &boundaryBox;
+    return boundaryBox;
 }
 
 

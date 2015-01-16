@@ -28,13 +28,9 @@
 
 namespace m2g {
 
-class Sprite : public Collidable
+class Sprite : public Drawable, public Collidable
 {
     private:
-        static GLint mvpMatrixLocation;
-        static GLint samplerLocation;
-        static GLint sliceLocation;
-
         TilesetPtr tileset;
         GLuint currentTile;
 
@@ -42,15 +38,17 @@ class Sprite : public Collidable
         /***
          * 1. Initialization and destruction
          ***/
-        Sprite();
-        Sprite( TilesetPtr tileset );
+        Sprite( SDL_Renderer* renderer );
+        Sprite( SDL_Renderer* renderer, TilesetPtr tileset );
 
 
         /***
          * 2. Getters
          ***/
         TilesetPtr getTileset();
-        GLuint getCurrentTile() const ;
+        GLuint getCurrentTile() const;
+        virtual glm::ivec2 getPosition() const;
+        virtual Rect getBoundaryBox() const;
 
 
         /***
@@ -71,14 +69,7 @@ class Sprite : public Collidable
         /***
          * 5. Drawing
          ***/
-        virtual void draw( const glm::mat4& projectionMatrix ) const ;
-
-
-        /***
-         * 6. Auxiliar methods
-         ***/
-    private:
-        virtual void sendMVPMatrixToShader( const glm::mat4& mvpMatrix ) const ;
+        virtual void draw() const;
 };
 
 
