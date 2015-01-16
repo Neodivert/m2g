@@ -22,6 +22,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/drawables/animation.cpp"
     "${PROJECT_SOURCE_DIR}/src/graphics_library.cpp"
     "${PROJECT_SOURCE_DIR}/src/m2g.cpp"
+    "${PROJECT_SOURCE_DIR}/src/text/text_renderer.cpp"
 )
 set(
     HEADER_FILES
@@ -33,6 +34,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/drawables/animation.hpp"
     "${PROJECT_SOURCE_DIR}/src/graphics_library.hpp"
     "${PROJECT_SOURCE_DIR}/src/m2g.hpp"
+    "${PROJECT_SOURCE_DIR}/src/text/text_renderer.cpp"
 )
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )

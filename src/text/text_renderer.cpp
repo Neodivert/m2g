@@ -28,80 +28,19 @@ namespace m2g {
  * 1. Initialization
  ***/
 
-TextRenderer::TextRenderer()
-{
-    GLint currentProgram;
-
-    // Get the uniforms locations.
-    glGetIntegerv( GL_CURRENT_PROGRAM, &currentProgram );
-
-    mvpMatrixLocation = glGetUniformLocation( currentProgram, "mvpMatrix" );
-    samplerLocation = glGetUniformLocation( currentProgram, "tex" );
-    sliceLocation = glGetUniformLocation( currentProgram, "slice" );
-
-    checkOpenGL( "TextRenderer - Getting uniform locations" );
-
-    // Connect sampler to texture unit 0.
-    glUniform1i( samplerLocation, 0 );
-}
-
-/***
- * 2. Loading
- ***/
-
-unsigned int TextRenderer::loadFont( const char* file, const unsigned int size, const SDL_Color& color )
-{
-    std::shared_ptr< m2g::BitmapFont > bitmapFont = std::shared_ptr< m2g::BitmapFont >( new m2g::BitmapFont );
-
-    // Generate the bitmap font from the TrueType one.
-    bitmapFont->load( file, size, color );
-
-    // Insert the new bitmap font in the bitmap fonts vector.
-    bitmapFonts.push_back( bitmapFont );
-
-    // Return the index of the just added font.
-    return bitmapFonts.size() - 1;
-}
+TextRenderer::TextRenderer( SDL_Renderer *renderer ) :
+    renderer_( renderer )
+{}
 
 
 /***
  * 3. Drawing
  ***/
 
-void TextRenderer::drawText( const glm::mat4& projectionMatrix, const char* text, unsigned int fontIndex, GLuint x, GLuint y )
-{
-    unsigned int i = 0;
-    glm::mat4 transformationMatrix;
-
-    // Bind the bitmap font (its VAO, VBO and texture) as the active one.
-    bitmapFonts[fontIndex]->bind();
-
-    // Send current 0 index to shader.
-    glUniform1ui( sliceLocation, 0 );
-
-    for( ; i < strlen( text ); i++ ){
-        // Set MVP matrix.
-        transformationMatrix = projectionMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( x, y, 0.0f ) );
-
-        // Send the MVP matrix to the shader.
-        glUniformMatrix4fv( mvpMatrixLocation, 1, GL_FALSE, &transformationMatrix[0][0] );
-
-        // Draw the current character.
-        glUniform1ui( sliceLocation, text[i]-' ' );
-        bitmapFonts[fontIndex]->drawCharacter( text[i] );
-
-        x += bitmapFonts[fontIndex]->getCharacterWidth( text[i] );
-
-        //transformationMatrix = transformationMatrix * glm::translate( glm::mat4( 1.0f ), glm::vec3( bitmapFonts[fontIndex]->getCharacterWidth( text[i] - ' ' ) * 2, 0.0f, 0.0f ) );
-    }
-}
-
-
 SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color, TextAlign textAlign )
 {
     TTF_Font* font = nullptr;
     TilesetPtr textTileset;
-    SpritePtr textSprite( new Sprite );
     SDL_Surface* lineSurface = nullptr;
     SDL_Surface* textSurface = nullptr;
     int textWidth, textHeight;
@@ -184,18 +123,16 @@ SpritePtr TextRenderer::drawText( const char* text, const char* fontPath, unsign
     }
 
     // Generate a tileset from the text surface.
-    textTileset = TilesetPtr( new Tileset( textSurface, textWidth, textHeight ) );
+    textTileset = TilesetPtr( new Tileset( renderer_, textSurface, textWidth, textHeight ) );
 
     //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
 
     // Create the final sprite from the previous tileset.
-    textSprite->setTileset( textTileset );
+    SpritePtr textSprite( new Sprite( renderer_, textTileset ) );
 
     // Free resources.
     TTF_CloseFont( font );
     SDL_FreeSurface( textSurface );
-
-    checkOpenGL( "TextRenderer::draw" );
 
     // Return the text sprite.
     return textSprite;

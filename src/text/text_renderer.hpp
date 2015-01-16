@@ -20,7 +20,6 @@
 #ifndef TEXT_RENDERER_HPP
 #define TEXT_RENDERER_HPP
 
-#include "bitmap_font.hpp"
 #include "../drawables/sprite.hpp"
 #include <SDL2/SDL_ttf.h>
 
@@ -35,30 +34,16 @@ namespace m2g {
 
 class TextRenderer
 {
-    private:
-        std::vector< BitmapFontPtr > bitmapFonts;
-
-        GLint mvpMatrixLocation;
-        GLint samplerLocation;
-        GLint sliceLocation;
-
     public:
         /***
          * 1. Initialization
          ***/
-        TextRenderer();
+        TextRenderer( SDL_Renderer* renderer );
 
 
         /***
-         * 2. Loading
+         * 2. Drawing
          ***/
-        unsigned int loadFont( const char* file, const unsigned int size, const SDL_Color& color );
-
-
-        /***
-         * 3. Drawing
-         ***/
-        void drawText( const glm::mat4& projectionMatrix, const char* text, unsigned int fontIndex, GLuint x = 0, GLuint y = 0 );
         SpritePtr drawText( const char* text, const char* fontPath, unsigned int fontSize, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT );
 
 
@@ -67,6 +52,8 @@ class TextRenderer
          ***/
     private:
         void getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines );
+
+        SDL_Renderer *renderer_;
 };
 
 } // namespace m2g
