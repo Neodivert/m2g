@@ -49,7 +49,7 @@ TilesetPtr Sprite::getTileset()
 }
 
 
-GLuint Sprite::getCurrentTile() const
+unsigned int Sprite::getCurrentTile() const
 {
     return currentTile;
 }
@@ -86,7 +86,7 @@ void Sprite::setTileset( TilesetPtr tileset )
 }
 
 
-void Sprite::setTile( const GLuint tile )
+void Sprite::setTile( unsigned int tile )
 {
     if( tile < tileset->nTiles() ){
         currentTile = tile;

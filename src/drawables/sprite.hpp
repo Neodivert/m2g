@@ -21,7 +21,6 @@
 #define SPRITE_HPP
 
 #include "tileset.hpp"
-#include "../utilities/tilesets_buffer.hpp"
 #include <memory>
 #include "collidable.hpp"
 #include <vector>
@@ -32,7 +31,7 @@ class Sprite : public Drawable, public Collidable
 {
     private:
         TilesetPtr tileset;
-        GLuint currentTile;
+        unsigned int currentTile;
 
     public:
         /***
@@ -46,7 +45,7 @@ class Sprite : public Drawable, public Collidable
          * 2. Getters
          ***/
         TilesetPtr getTileset();
-        GLuint getCurrentTile() const;
+        unsigned int getCurrentTile() const;
         virtual glm::ivec2 getPosition() const;
         virtual Rect getBoundaryBox() const;
 
@@ -55,7 +54,7 @@ class Sprite : public Drawable, public Collidable
          * 3. Setters
          ***/
         virtual void setTileset( TilesetPtr tileset );
-        virtual void setTile( const GLuint tile );
+        virtual void setTile( unsigned int tile );
         virtual void nextTile();
         virtual void previousTile();
 
