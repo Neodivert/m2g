@@ -21,6 +21,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/drawables/animation_data.cpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/animation.cpp"
     "${PROJECT_SOURCE_DIR}/src/graphics_library.cpp"
+    "${PROJECT_SOURCE_DIR}/src/m2g.cpp"
 )
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )
