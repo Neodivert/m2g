@@ -52,7 +52,7 @@ class Sprite : public Drawable, public Collidable
         /***
          * 3. Setters
          ***/
-        virtual void setTileset( TilesetPtr tileset );
+        void setTileset( TilesetPtr tileset );
         virtual void setTile( unsigned int tile );
         virtual void nextTile();
         virtual void previousTile();
