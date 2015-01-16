@@ -29,10 +29,6 @@ typedef std::list< DrawablePtr > DrawablesContainer;
 
 class DrawablesSet : public Drawable
 {
-    private:
-        // Drawables container.
-        DrawablesContainer drawables_;
-
     public:
         /***
          * 1. Drawables management
@@ -57,6 +53,10 @@ class DrawablesSet : public Drawable
          * 4. Auxiliar methods.
          ***/
         void updateBoundaryBox( const Rect& newBoundaryBox );
+
+
+    private:
+        DrawablesContainer drawables_;
 };
 
 } // namespace m2g
