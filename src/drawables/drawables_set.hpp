@@ -21,7 +21,6 @@
 #define DRAWABLES_SET_HPP
 
 #include "drawable.hpp"
-#include "sprite.hpp"
 #include <list>
 
 namespace m2g {
@@ -39,7 +38,6 @@ class DrawablesSet : public Drawable
          * 1. Drawables management
          ***/
         DrawablePtr addDrawable( DrawablePtr newDrawable, float x = 0.0f, float y = 0.0f );
-        SpritePtr addSprite( TilesetPtr tileset, float x = 0.0f, float y = 0.0f );
 
 
         /***
@@ -52,13 +50,13 @@ class DrawablesSet : public Drawable
         /***
          * 3. Drawing
          ***/
-        virtual void draw( const glm::mat4& projectionMatrix ) const ;
+        virtual void draw() const;
 
 
         /***
          * 4. Auxiliar methods.
          ***/
-        void updateBoundaryBox( const Rect* newBoundaryBox );
+        void updateBoundaryBox( const Rect& newBoundaryBox );
 };
 
 } // namespace m2g
