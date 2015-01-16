@@ -25,13 +25,15 @@
 
 namespace m2g {
 
-class Collidable : public Drawable
+class Collidable
 {
     public:
         /***
          * 1. Collision test
          ***/
-        virtual bool collide( const Collidable& b ) const ;
+        virtual bool collide( const Collidable& b ) const;
+        virtual glm::ivec2 getPosition() const = 0;
+        virtual Rect getBoundaryBox() const = 0;
         virtual const std::vector<Rect>* getCollisionRects() const = 0;
 };
 

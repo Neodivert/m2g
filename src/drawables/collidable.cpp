@@ -30,10 +30,10 @@ bool Collidable::collide( const Collidable& b ) const
     const std::vector<Rect>* aRects = nullptr;
     const std::vector<Rect>* bRects = nullptr;
 
-    const Rect* aBoundaryBox = getBoundaryBox();
-    const Rect* bBoundaryBox = b.getBoundaryBox();
+    const Rect aBoundaryBox = getBoundaryBox();
+    const Rect bBoundaryBox = b.getBoundaryBox();
 
-    if( !aBoundaryBox->collide( *bBoundaryBox ) ){
+    if( !aBoundaryBox.collide( bBoundaryBox ) ){
         return false;
     }
 
@@ -45,8 +45,8 @@ bool Collidable::collide( const Collidable& b ) const
     Rect aRect, bRect;
 
     for( unsigned int i=0; i<aRects->size(); i++ ){
-        aRect.x = ( (*aRects)[i] ).x + boundaryBox.x;
-        aRect.y = ( (*aRects)[i] ).y + boundaryBox.y;
+        aRect.x = ( (*aRects)[i] ).x + aBoundaryBox.x;
+        aRect.y = ( (*aRects)[i] ).y + aBoundaryBox.y;
         aRect.width = ( (*aRects)[i] ).width;
         aRect.height = ( (*aRects)[i] ).height;
 
