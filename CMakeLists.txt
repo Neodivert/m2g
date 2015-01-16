@@ -78,9 +78,15 @@ set_target_properties(
 #target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
 
 # Instalation.
-# TODO: Install only header files AND THEIR DIRECTORIES listed
-# in $HEADER_FILES.
-install( FILES ${HEADER_FILES} DESTINATION include/m2g )
+foreach( header_file ${HEADER_FILES})
+    string(
+        REGEX REPLACE ".*/([^/]*.hpp)" "\\1"
+        header_filename
+        ${header_file}
+    )
+    message( "header_filename: [${header_filename}]" )
+    install( DIRECTORY src/ DESTINATION include/m2g FILES_MATCHING PATTERN "${header_filename}" )
+endforeach( header_file )
 install( TARGETS ${LIBRARY_NAME} DESTINATION lib )
 # TODO: Install samples.
 
