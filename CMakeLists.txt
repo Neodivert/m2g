@@ -23,6 +23,17 @@ set(
     "${PROJECT_SOURCE_DIR}/src/graphics_library.cpp"
     "${PROJECT_SOURCE_DIR}/src/m2g.cpp"
 )
+set(
+    HEADER_FILES
+    "${PROJECT_SOURCE_DIR}/src/drawables/drawable.hpp"
+    "${PROJECT_SOURCE_DIR}/src/drawables/tileset.hpp"
+    "${PROJECT_SOURCE_DIR}/src/drawables/collidable.hpp"
+    "${PROJECT_SOURCE_DIR}/src/drawables/sprite.hpp"
+    "${PROJECT_SOURCE_DIR}/src/drawables/animation_data.hpp"
+    "${PROJECT_SOURCE_DIR}/src/drawables/animation.hpp"
+    "${PROJECT_SOURCE_DIR}/src/graphics_library.hpp"
+    "${PROJECT_SOURCE_DIR}/src/m2g.hpp"
+)
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )
 
@@ -72,7 +83,7 @@ set_target_properties(
 #target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
 
 # Instalation.
-install( DIRECTORY src/ DESTINATION include/m2g FILES_MATCHING PATTERN "*.hpp" )
+install( FILES ${HEADER_FILES} DESTINATION include/m2g )
 install( TARGETS ${LIBRARY_NAME} DESTINATION lib )
 # TODO: Install samples.
 
