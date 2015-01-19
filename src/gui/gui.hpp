@@ -52,6 +52,15 @@ class GUI : public Widget {
 
 
     private:
+        /***
+         * 5. Layout
+         ***/
+        void updateLayout();
+
+
+        /***
+         * Attributes
+         ***/
         std::list< WidgetPtr > widgets_;
 };
 

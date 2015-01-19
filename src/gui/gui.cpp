@@ -41,6 +41,7 @@ GUI::GUI(SDL_Renderer *renderer, const Rect& boundaryRect) :
 void GUI::addWidget( WidgetPtr widget )
 {
     widgets_.push_back( std::move( widget ) );
+    updateLayout();
 }
 
 
@@ -67,6 +68,23 @@ void GUI::draw() const
 {
     for( const WidgetPtr& widget : widgets_ ){
         widget->draw();
+    }
+}
+
+
+/***
+ * 5. Layout
+ ***/
+
+void GUI::updateLayout()
+{
+    // TODO: Implement according to GUI's vertical and horizontal align.
+    unsigned int y = 0;
+
+    for( WidgetPtr& widget : widgets_ ){
+        widget->moveTo( boundaryBox.x + ( ( boundaryBox.width - widget->getWidth() ) >> 1 ),
+                        y );
+        y += widget->getHeight();
     }
 }
 
