@@ -89,7 +89,7 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
 {
     TextRenderer textRenderer( renderer );
     std::array< unsigned int, 3 > fontIndices;
-    std::array< int, 3 > fontSize = { 30, 40, 40 };
+    std::array< int, 3 > fontSize = { 30, 35, 40 };
     char fontPath[] = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf";
     unsigned int i = 0;
     SDL_Surface* textSurfaces[3];
