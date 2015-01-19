@@ -190,10 +190,10 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
     for( i = 0; i < 3; i++ ){
         Rect rect =
         {
-            0,
-            0,
-            ( pow2width - maxWidth ) << 1,
-            ( pow2height - maxHeight ) << 1
+            static_cast< int >( ( pow2width - maxWidth ) << 1 ),
+            static_cast< int >( ( pow2height - maxHeight ) << 1 ),
+            maxWidth,
+            maxHeight
         };
         buttonTileset->addCollisionRect( i, rect );
     }
