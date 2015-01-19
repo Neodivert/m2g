@@ -85,6 +85,8 @@ class TextButton : public Widget, public Sprite
         ButtonCallback onPressCallback_;
 };
 
+typedef std::unique_ptr< TextButton > TextButtonPtr;
+
 } // namespace m2g
 
 #endif // TEXT_BUTTON_HPP
