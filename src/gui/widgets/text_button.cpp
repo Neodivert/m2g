@@ -135,8 +135,8 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
     TilesetPtr buttonTileset(
                 new Tileset( renderer,
                              buttonSurface,
-                             buttonSurface->w,
-                             buttonSurface->h ) );
+                             pow2width,
+                             pow2height ) );
 
     // Free resources.
     for( i = 0; i < 3; i++ ){
