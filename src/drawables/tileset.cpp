@@ -185,6 +185,10 @@ void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int t
 
     // Load the texture
     texture_ = SDL_CreateTextureFromSurface( renderer_, surface );
+
+    // Generate an empty vector of collisions rects for every tile in the
+    // tileset.
+    collisionRects_.resize( nTiles_ );
 }
 
 
