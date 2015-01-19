@@ -224,9 +224,6 @@ void TextRenderer::getTextDimensions( TTF_Font* font, const char* text, int& tex
         if( lineWidth > textWidth ){
             textWidth = lineWidth;
         }
-
-        // Go for next line.
-        text++;
     }
 
     // Compute the text height by multiplying the font height by the numer of
