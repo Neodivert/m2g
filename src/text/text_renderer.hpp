@@ -60,6 +60,10 @@ class TextRenderer
                        int x,
                        int y,
                        TextAlign textAlign = TextAlign::LEFT );
+        SDL_Surface* renderTextToSurface( const char* text,
+                                          unsigned int fontIndex,
+                                          const SDL_Color& color,
+                                          TextAlign textAlign = TextAlign::LEFT );
 
 
         /***

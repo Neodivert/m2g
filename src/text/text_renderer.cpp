@@ -66,18 +66,51 @@ unsigned int TextRenderer::loadFont( const char *fontPath, int fontSize )
 
 SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign )
 {
-    TTF_Font* font = nullptr;
     TilesetPtr textTileset;
+
+    SDL_Surface* textSurface = renderTextToSurface( text, fontIndex, color, textAlign );
+
+    // Generate a tileset from the text surface.
+    textTileset = TilesetPtr( new Tileset( renderer_, textSurface, textSurface->w, textSurface->h ) );
+
+    //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
+
+    // Create the final sprite from the previous tileset.
+    SpritePtr textSprite( new Sprite( renderer_, textTileset ) );
+
+    // Free resources.
+    SDL_FreeSurface( textSurface );
+
+    // Return the text sprite.
+    return textSprite;
+}
+
+
+void TextRenderer::drawText( const char *text,
+                             unsigned int fontIndex,
+                             const SDL_Color &color,
+                             int x,
+                             int y,
+                             TextAlign textAlign )
+{
+    SpritePtr textSprite = drawText( text, fontIndex, color , textAlign );
+    textSprite->moveTo( x, y );
+    textSprite->draw();
+}
+
+
+SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
+                                                unsigned int fontIndex,
+                                                const SDL_Color &color,
+                                                TextAlign textAlign )
+{
+    TTF_Font* font = nullptr;
     SDL_Surface* lineSurface = nullptr;
     SDL_Surface* textSurface = nullptr;
-    int textWidth, textHeight;
     int pow2;
-    unsigned int i;
     std::vector< std::string > lines;
     SDL_Rect dstRect = { 0, 0, 0, 0 };
-
-    // Load the required font.
-    font = fonts_.at( fontIndex );
+    int textWidth, textHeight;
 
     // Set the RGBA mask for the text surface.
     #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -91,6 +124,9 @@ SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, cons
         const Uint32 bmask = 0x00ff0000;
         const Uint32 amask = 0xff000000;
     #endif
+
+    // Load the required font.
+    font = fonts_.at( fontIndex );
 
     // Get the text dimensions.
     getTextDimensions( font, text, textWidth, textHeight, lines );
@@ -118,9 +154,9 @@ SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, cons
     SDL_SetSurfaceBlendMode( lineSurface, SDL_BLENDMODE_NONE );
 
     // Render every line and blit it to the final surface.
-    for( i = 0; i < lines.size(); i++ ){
+    for( const std::string& line : lines ){
         // Generate a surface with the text line.
-        lineSurface = TTF_RenderText_Blended( font, lines[i].c_str(), color );
+        lineSurface = TTF_RenderText_Blended( font, line.c_str(), color );
 
         // Give the text the given align.
         // TODO: Change so the switch is executed only once.
@@ -146,32 +182,7 @@ SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, cons
         SDL_FreeSurface( lineSurface );
     }
 
-    // Generate a tileset from the text surface.
-    textTileset = TilesetPtr( new Tileset( renderer_, textSurface, textWidth, textHeight ) );
-
-    //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
-
-    // Create the final sprite from the previous tileset.
-    SpritePtr textSprite( new Sprite( renderer_, textTileset ) );
-
-    // Free resources.
-    SDL_FreeSurface( textSurface );
-
-    // Return the text sprite.
-    return textSprite;
-}
-
-
-void TextRenderer::drawText( const char *text,
-                             unsigned int fontIndex,
-                             const SDL_Color &color,
-                             int x,
-                             int y,
-                             TextAlign textAlign)
-{
-    SpritePtr textSprite = drawText( text, fontIndex, color , textAlign );
-    textSprite->moveTo( x, y );
-    textSprite->draw();
+    return textSurface;
 }
 
 
