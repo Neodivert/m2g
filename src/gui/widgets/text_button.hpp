@@ -17,6 +17,9 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
+#ifndef TEXT_BUTTON_HPP
+#define TEXT_BUTTON_HPP
+
 #include "widget.hpp"
 #include "../../drawables/animation.hpp"
 #include <functional>
@@ -83,3 +86,5 @@ class TextButton : public Widget, public Sprite
 };
 
 } // namespace m2g
+
+#endif // TEXT_BUTTON_HPP

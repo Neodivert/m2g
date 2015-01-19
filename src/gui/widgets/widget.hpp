@@ -17,6 +17,9 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
+#ifndef WIDGET_HPP
+#define WIDGET_HPP
+
 #include "../interfaces/event_listener.hpp"
 #include "../../drawables/drawable.hpp"
 #include <memory>
@@ -35,3 +38,5 @@ class Widget : public EventListener, public virtual Drawable
 typedef std::unique_ptr< Widget > WidgetPtr;
 
 }
+
+#endif // WIDGET_HPP

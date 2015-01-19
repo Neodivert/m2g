@@ -17,6 +17,9 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
+#ifndef GUI_HPP
+#define GUI_HPP
+
 #include "widgets/widget.hpp"
 #include <list>
 
@@ -53,3 +56,5 @@ class GUI : public Widget {
 };
 
 } // namespace m2g
+
+#endif // GUI_HPP
