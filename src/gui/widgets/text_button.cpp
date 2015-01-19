@@ -45,7 +45,17 @@ ButtonStatus TextButton::status() const
 
 
 /***
- * 3. Event handling
+ * 3. Setters
+ ***/
+
+void TextButton::setPressCallback( ButtonCallback onPressCallback )
+{
+    onPressCallback_ = onPressCallback;
+}
+
+
+/***
+ * 4. Event handling
  ***/
 
 bool TextButton::handleEvent( const SDL_Event &event )
@@ -65,6 +75,9 @@ bool TextButton::handleEvent( const SDL_Event &event )
     }else if( ( event.type == SDL_MOUSEBUTTONUP ) ){
         if( posHover( event.button.x, event.button.y ) ){
             setStatus( ButtonStatus::HOVER );
+            if( onPressCallback_ ){
+                onPressCallback_();
+            }
         }else{
             setStatus( ButtonStatus::NORMAL );
         }
@@ -107,7 +120,7 @@ bool TextButton::checkMouseFocus( int mouseX, int mouseY )
 
 
 /***
- * 4. Initialization
+ * 5. Initialization
  ***/
 
 TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::string &text )
@@ -223,7 +236,7 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
 
 
 /***
- * 5. Private setters
+ * 6. Private setters
  ***/
 
 void TextButton::setStatus( ButtonStatus newStatus )

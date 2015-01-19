@@ -19,6 +19,7 @@
 
 #include "widget.hpp"
 #include "../../drawables/animation.hpp"
+#include <functional>
 
 namespace m2g {
 
@@ -28,6 +29,8 @@ enum class ButtonStatus
     HOVER,
     PRESSED
 };
+
+typedef std::function< void( void ) > ButtonCallback;
 
 class TextButton : public Widget, public Sprite
 {
@@ -46,7 +49,13 @@ class TextButton : public Widget, public Sprite
 
 
         /***
-         * 3. Event handling
+         * 3. Setters
+         ***/
+        void setPressCallback( ButtonCallback onPressCallback );
+
+
+        /***
+         * 4. Event handling
          ***/
         virtual bool handleEvent( const SDL_Event &event );
         bool posHover( int x, int y ) const; // TODO: Move to a parent class.
@@ -55,13 +64,13 @@ class TextButton : public Widget, public Sprite
 
     private:
         /***
-         * 4. Initialization
+         * 5. Initialization
          ***/
         static TilesetPtr generateTileset( SDL_Renderer* renderer, const std::string& text );
 
 
         /***
-         * 5. Private setters
+         * 6. Private setters
          ***/
         void setStatus( ButtonStatus newStatus );
 
@@ -70,6 +79,7 @@ class TextButton : public Widget, public Sprite
          * Attributes
          ***/
         ButtonStatus status_;
+        ButtonCallback onPressCallback_;
 };
 
 } // namespace m2g
