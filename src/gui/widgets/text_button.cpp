@@ -50,10 +50,24 @@ ButtonStatus TextButton::status() const
 
 bool TextButton::handleEvent( const SDL_Event &event )
 {
-    if( ( event.type == SDL_MOUSEBUTTONDOWN ) &&
-        posHover( event.button.x, event.button.y ) ){
+    if( event.type == SDL_MOUSEMOTION ){
+        if( posHover( event.button.x, event.button.y ) &&
+            ( status() == ButtonStatus::NORMAL ) &&
+            ( !( event.button.button & SDL_BUTTON_LEFT ) ) ){
+            setStatus( ButtonStatus::HOVER );
+        }else if( !posHover( event.button.x, event.button.y ) ){
+            setStatus( ButtonStatus::NORMAL );
+        }
+    }else if( ( event.type == SDL_MOUSEBUTTONDOWN ) &&
+              posHover( event.button.x, event.button.y ) ){
         setStatus( ButtonStatus::PRESSED );
         return true;
+    }else if( ( event.type == SDL_MOUSEBUTTONUP ) ){
+        if( posHover( event.button.x, event.button.y ) ){
+            setStatus( ButtonStatus::HOVER );
+        }else{
+            setStatus( ButtonStatus::NORMAL );
+        }
     }
 
     return false;
