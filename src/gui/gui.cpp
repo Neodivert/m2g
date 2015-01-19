@@ -17,15 +17,18 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "../interfaces/event_listener.hpp"
-#include <memory>
+#include <tinyxml2.h>
+#include "gui.hpp"
 
 namespace m2g {
 
-class Widget : public EventListener
+/***
+ * 1. Widgets management
+ ***/
+
+void GUI::addWidget( WidgetPtr widget )
 {
-};
-
-typedef std::unique_ptr< Widget > WidgetPtr;
-
+    widgets_.push_back( std::move( widget ) );
 }
+
+} // namespace m2g

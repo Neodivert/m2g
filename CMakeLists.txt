@@ -25,6 +25,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/m2g.cpp"
     "${PROJECT_SOURCE_DIR}/src/text/text_renderer.cpp"
     "${PROJECT_SOURCE_DIR}/src/gui/widgets/text_button.cpp"
+    "${PROJECT_SOURCE_DIR}/src/gui/gui.cpp"
 )
 set(
     HEADER_FILES
@@ -41,6 +42,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/gui/interfaces/event_listener.hpp"
     "${PROJECT_SOURCE_DIR}/src/gui/interfaces/widget.hpp"
     "${PROJECT_SOURCE_DIR}/src/gui/widgets/text_button.hpp"
+    "${PROJECT_SOURCE_DIR}/src/gui/gui.hpp"
 )
 
 include_directories( "${PROJECT_SOURCE_DIR}/src" )

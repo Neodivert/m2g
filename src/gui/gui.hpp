@@ -17,16 +17,21 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include <gui/widgets/text_button.hpp>
+#include <gui/widgets/widget.hpp>
+#include <list>
 
 namespace m2g {
 
 class GUI {
     public:
         /***
-         * 1. Construction
+         * 1. Widgets management
          ***/
-        GUI( const char* filePath );
+        void addWidget( WidgetPtr widget );
+
+
+    private:
+        std::list< WidgetPtr > widgets_;
 };
 
 } // namespace m2g
