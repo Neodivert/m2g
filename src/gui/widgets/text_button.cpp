@@ -18,6 +18,8 @@
 ***/
 
 #include "text_button.hpp"
+#include <text/text_renderer.hpp>
+#include <array>
 
 namespace m2g {
 
@@ -26,7 +28,7 @@ namespace m2g {
  ***/
 
 TextButton::TextButton( SDL_Renderer* renderer, const std::string& text ) :
-    Sprite( renderer, generateTileset( text ) )
+    Sprite( renderer, generateTileset( renderer, text ) )
 {
     setStatus( ButtonStatus::NORMAL );
 }
@@ -46,10 +48,103 @@ bool TextButton::handleEvent( const SDL_Event &event )
  * 3. Initialization
  ***/
 
-TilesetPtr TextButton::generateTileset( const std::string &text )
+TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::string &text )
 {
-    (void)( text );
-    return nullptr;
+    TextRenderer textRenderer( renderer );
+    std::array< unsigned int, 3 > fontIndices;
+    std::array< int, 3 > fontSize = { 30, 40, 40 };
+    char fontPath[] = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf";
+    unsigned int i = 0;
+    SDL_Surface* textSurfaces[3];
+    unsigned int maxWidth = 0, maxHeight = 0;
+    unsigned int pow2width, pow2height;
+
+    // Render the text associated to every button's state to its own surface
+    // and compute the maximum width and height.
+    for( i = 0; i < 3; i++ ){
+        fontIndices[i] =
+                textRenderer.loadFont(
+                    fontPath,
+                    fontSize[0] );
+
+        const SDL_Color color =
+        {
+            static_cast< Uint8 >( 100 + 50 * i ),
+            0,
+            0,
+            255
+        };
+
+        textSurfaces[i] =
+                textRenderer.renderTextToSurface( text.c_str(),
+                                                  fontIndices[i],
+                                                  color,
+                                                  TextAlign::CENTER );
+        if( textSurfaces[i]->w > static_cast< int >( maxWidth ) ){
+            maxWidth = textSurfaces[i]->w;
+        }
+        if( textSurfaces[i]->h > static_cast< int >( maxHeight ) ){
+            maxHeight = textSurfaces[i]->h;
+        }
+    }
+
+    // Round the maximum width and height to the maximum pow of two.
+    pow2width = 1;
+    while( pow2width < maxWidth ){
+        pow2width <<= 1;
+    }
+    pow2height = 1;
+    while( pow2height < maxHeight ){
+        pow2height <<= 1;
+    }
+
+    // Set the RGBA mask for the text surface.
+    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        const Uint32 rmask = 0xff000000;
+        const Uint32 gmask = 0x00ff0000;
+        const Uint32 bmask = 0x0000ff00;
+        const Uint32 amask = 0x000000ff;
+    #else
+        const Uint32 rmask = 0x000000ff;
+        const Uint32 gmask = 0x0000ff00;
+        const Uint32 bmask = 0x00ff0000;
+        const Uint32 amask = 0xff000000;
+    #endif
+
+    // Generate the button's surface.
+    SDL_Surface* buttonSurface =
+            SDL_CreateRGBSurface( 0,
+                                  pow2width,
+                                  pow2height * 3,
+                                  32,
+                                  rmask,
+                                  gmask,
+                                  bmask,
+                                  amask );
+    for( i = 0; i < 3; i++ ){
+        SDL_Rect dstRect =
+        {
+            ( buttonSurface->w - textSurfaces[i]->w ) >> 1,
+            static_cast< int >( buttonSurface->h * i + ( ( buttonSurface->h - textSurfaces[i]->h ) >> 1 ) ),
+            textSurfaces[i]->w,
+            textSurfaces[i]->h
+        };
+        SDL_BlitSurface( textSurfaces[i], nullptr, buttonSurface, &dstRect );
+    }
+
+    TilesetPtr buttonTileset(
+                new Tileset( renderer,
+                             buttonSurface,
+                             buttonSurface->w,
+                             buttonSurface->h ) );
+
+    // Free resources.
+    for( i = 0; i < 3; i++ ){
+        SDL_FreeSurface( textSurfaces[i] );
+    }
+    SDL_FreeSurface( buttonSurface );
+
+    return buttonTileset;
 }
 
 

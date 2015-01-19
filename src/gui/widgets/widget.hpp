@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include <gui/interfaces/event_listener.hpp>
+#include "../interfaces/event_listener.hpp"
 
 namespace m2g {
 

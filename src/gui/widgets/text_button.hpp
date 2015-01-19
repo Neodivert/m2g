@@ -18,7 +18,7 @@
 ***/
 
 #include "widget.hpp"
-#include <drawables/animation.hpp>
+#include "../../drawables/animation.hpp"
 
 namespace m2g {
 
@@ -49,7 +49,7 @@ class TextButton : public Widget, public Sprite
         /***
          * 3. Initialization
          ***/
-        static TilesetPtr generateTileset( const std::string& text );
+        static TilesetPtr generateTileset( SDL_Renderer* renderer, const std::string& text );
 
 
         /***
