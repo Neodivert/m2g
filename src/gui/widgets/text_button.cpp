@@ -113,7 +113,7 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
         fontIndices[i] =
                 textRenderer.loadFont(
                     fontPath,
-                    fontSize[0] );
+                    fontSize[i] );
 
         const SDL_Color color =
         {
