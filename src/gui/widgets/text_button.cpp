@@ -35,7 +35,17 @@ TextButton::TextButton( SDL_Renderer* renderer, const std::string& text ) :
 
 
 /***
- * 2. Event handling
+ * 2. Getters
+ ***/
+
+ButtonStatus TextButton::status() const
+{
+    return status_;
+}
+
+
+/***
+ * 3. Event handling
  ***/
 
 bool TextButton::handleEvent( const SDL_Event &event )
@@ -82,7 +92,7 @@ bool TextButton::checkMouseFocus( int mouseX, int mouseY )
 
 
 /***
- * 3. Initialization
+ * 4. Initialization
  ***/
 
 TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::string &text )
@@ -198,7 +208,7 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
 
 
 /***
- * 4. Private setters
+ * 5. Private setters
  ***/
 
 void TextButton::setStatus( ButtonStatus newStatus )

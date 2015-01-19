@@ -40,7 +40,13 @@ class TextButton : public Widget, public Sprite
 
 
         /***
-         * 2. Event handling
+         * 2. Getters
+         ***/
+        ButtonStatus status() const;
+
+
+        /***
+         * 3. Event handling
          ***/
         virtual bool handleEvent( const SDL_Event &event );
         bool posHover( int x, int y ) const; // TODO: Move to a parent class.
@@ -49,13 +55,13 @@ class TextButton : public Widget, public Sprite
 
     private:
         /***
-         * 3. Initialization
+         * 4. Initialization
          ***/
         static TilesetPtr generateTileset( SDL_Renderer* renderer, const std::string& text );
 
 
         /***
-         * 4. Private setters
+         * 5. Private setters
          ***/
         void setStatus( ButtonStatus newStatus );
 
