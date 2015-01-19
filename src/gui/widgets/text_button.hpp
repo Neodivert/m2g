@@ -36,7 +36,7 @@ class TextButton : public Widget, public Sprite
          * 1. Construction
          ***/
         // TODO: Use UTF-8 / UTF-16 for text.
-        TextButton( const std::string& text );
+        TextButton( SDL_Renderer* renderer, const std::string& text );
 
 
         /***
