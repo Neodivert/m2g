@@ -23,12 +23,51 @@
 namespace m2g {
 
 /***
+ * 1. Construction
+ ***/
+
+GUI::GUI(SDL_Renderer *renderer, const Rect& boundaryRect) :
+    Drawable( renderer ),
+    Widget( renderer )
+{
+    this->boundaryBox = boundaryRect;
+}
+
+
+/***
  * 1. Widgets management
  ***/
 
 void GUI::addWidget( WidgetPtr widget )
 {
     widgets_.push_back( std::move( widget ) );
+}
+
+
+/***
+ * 2. Event handling
+ ***/
+
+bool GUI::handleEvent( const SDL_Event &event )
+{
+    for( WidgetPtr& widget : widgets_ ){
+        if( widget->handleEvent( event ) ){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+/***
+ * 3. Drawing
+ ***/
+
+void GUI::draw() const
+{
+    for( const WidgetPtr& widget : widgets_ ){
+        widget->draw();
+    }
 }
 
 } // namespace m2g

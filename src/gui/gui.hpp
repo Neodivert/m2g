@@ -17,17 +17,35 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include <gui/widgets/widget.hpp>
+#include "widgets/widget.hpp"
 #include <list>
 
 namespace m2g {
 
-class GUI {
+class GUI : public Widget {
     public:
         /***
-         * 1. Widgets management
+         * 1. Construction
+         ***/
+        GUI( SDL_Renderer* renderer, const Rect& boundaryRect );
+
+
+        /***
+         * 2. Widgets management
          ***/
         void addWidget( WidgetPtr widget );
+
+
+        /***
+         * 3. Event handling
+         ***/
+        virtual bool handleEvent( const SDL_Event &event );
+
+
+        /***
+         * 4. Drawing
+         ***/
+        virtual void draw() const;
 
 
     private:
