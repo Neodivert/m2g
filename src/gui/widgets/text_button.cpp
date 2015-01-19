@@ -132,11 +132,23 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
         SDL_BlitSurface( textSurfaces[i], nullptr, buttonSurface, &dstRect );
     }
 
-    TilesetPtr buttonTileset(
+    std::shared_ptr< Tileset > buttonTileset(
                 new Tileset( renderer,
                              buttonSurface,
                              pow2width,
                              pow2height ) );
+
+    // Generate collision rects
+    for( i = 0; i < 3; i++ ){
+        Rect rect =
+        {
+            0,
+            0,
+            ( pow2width - maxWidth ) << 1,
+            ( pow2height - maxHeight ) << 1
+        };
+        buttonTileset->addCollisionRect( i, rect );
+    }
 
     // Free resources.
     for( i = 0; i < 3; i++ ){
