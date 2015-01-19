@@ -18,12 +18,18 @@
 ***/
 
 #include "../interfaces/event_listener.hpp"
+#include "../../drawables/drawable.hpp"
 #include <memory>
 
 namespace m2g {
 
-class Widget : public EventListener
+class Widget : public EventListener, public virtual Drawable
 {
+    public:
+        /***
+         * 1. Construction
+         ***/
+        Widget( SDL_Renderer* renderer );
 };
 
 typedef std::unique_ptr< Widget > WidgetPtr;

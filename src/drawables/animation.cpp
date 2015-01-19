@@ -27,6 +27,7 @@ namespace m2g {
  ***/
 
 Animation::Animation( SDL_Renderer* renderer, AnimationDataPtr animationData ) :
+    Drawable( renderer ),
     Sprite( renderer, animationData->tileset() ),
     lastFrameTick_( 0 )
 {

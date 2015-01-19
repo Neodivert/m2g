@@ -23,6 +23,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/drawables/animation.cpp"
     "${PROJECT_SOURCE_DIR}/src/graphics_library.cpp"
     "${PROJECT_SOURCE_DIR}/src/m2g.cpp"
+    "${PROJECT_SOURCE_DIR}/src/gui/widgets/widget.cpp"
     "${PROJECT_SOURCE_DIR}/src/text/text_renderer.cpp"
     "${PROJECT_SOURCE_DIR}/src/gui/widgets/text_button.cpp"
     "${PROJECT_SOURCE_DIR}/src/gui/gui.cpp"
@@ -40,7 +41,7 @@ set(
     "${PROJECT_SOURCE_DIR}/src/m2g.hpp"
     "${PROJECT_SOURCE_DIR}/src/text/text_renderer.hpp"
     "${PROJECT_SOURCE_DIR}/src/gui/interfaces/event_listener.hpp"
-    "${PROJECT_SOURCE_DIR}/src/gui/interfaces/widget.hpp"
+    "${PROJECT_SOURCE_DIR}/src/gui/widgets/widget.hpp"
     "${PROJECT_SOURCE_DIR}/src/gui/widgets/text_button.hpp"
     "${PROJECT_SOURCE_DIR}/src/gui/gui.hpp"
 )

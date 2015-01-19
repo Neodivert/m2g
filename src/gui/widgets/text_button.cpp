@@ -28,6 +28,8 @@ namespace m2g {
  ***/
 
 TextButton::TextButton( SDL_Renderer* renderer, const std::string& text ) :
+    Drawable( renderer ),
+    Widget( renderer ),
     Sprite( renderer, generateTileset( renderer, text ) )
 {
     setStatus( ButtonStatus::NORMAL );

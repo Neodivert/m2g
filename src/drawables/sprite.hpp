@@ -27,7 +27,7 @@
 
 namespace m2g {
 
-class Sprite : public Drawable, public Collidable
+class Sprite : public virtual Drawable, public Collidable
 {
     private:
         TilesetPtr tileset;

@@ -39,6 +39,9 @@ struct Rect
 };
 
 // TODO: Move non-drawing methods to classes Collidable or Sprite.
+// TODO: Remove attributes and use a default constructor so
+// users of virtually-derived classes doesn't have to call the
+// constructor explicitlly.
 class Drawable
 {
     protected:
