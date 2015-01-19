@@ -214,6 +214,7 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
 void TextButton::setStatus( ButtonStatus newStatus )
 {
     status_ = newStatus;
+    setTile( static_cast< int >( status_ ) );
 }
 
 } // namespace m2g
