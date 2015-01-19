@@ -44,6 +44,26 @@ bool TextButton::handleEvent( const SDL_Event &event )
 }
 
 
+bool TextButton::posHover( int x, int y ) const
+{
+    const std::vector<Rect>* colRects = this->getCollisionRects();
+
+    for( Rect rect : *colRects ){
+        rect.x += getBoundaryBox().x;
+        rect.y += getBoundaryBox().y;
+
+        if( ( x > rect.x ) &&
+            ( y > rect.y ) &&
+            ( x < static_cast< int >( rect.x + rect.width ) ) &&
+            ( y < static_cast< int >( rect.y + rect.height ) ) ){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 /***
  * 3. Initialization
  ***/

@@ -43,6 +43,7 @@ class TextButton : public Widget, public Sprite
          * 2. Event handling
          ***/
         virtual bool handleEvent( const SDL_Event &event );
+        bool posHover( int x, int y ) const; // TODO: Move to a parent class.
 
 
     private:
