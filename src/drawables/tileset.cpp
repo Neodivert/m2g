@@ -187,10 +187,20 @@ void Tileset::load( SDL_Surface* surface, unsigned int tileWidth, unsigned int t
     texture_ = SDL_CreateTextureFromSurface( renderer_, surface );
 }
 
+
 /***
- * 3. Getters
+ * 3. Collision rects management
  ***/
 
+void Tileset::addCollisionRect( unsigned int tile, const Rect &rect )
+{
+    collisionRects_[tile].push_back( rect );
+}
+
+
+/***
+ * 4. Getters
+ ***/
 
 std::string Tileset::name() const
 {
@@ -217,7 +227,7 @@ const std::vector<Rect> &Tileset::collisionRects( unsigned int tile ) const
 
 
 /***
- * 4. Drawing
+ * 5. Drawing
  ***/
 
 void Tileset::drawTile( unsigned int tile, int x, int y ) const

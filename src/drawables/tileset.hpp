@@ -46,7 +46,14 @@ class Tileset
 
 
         /***
-         * 3. Getters
+         * 3. Collision rects management
+         ***/
+        void addCollisionRect( unsigned int tile,
+                               const Rect& rect );
+
+
+        /***
+         * 4. Getters
          ***/
         std::string name() const;
         unsigned int nTiles() const;
@@ -55,7 +62,7 @@ class Tileset
 
 
         /***
-         * 4. Drawing
+         * 5. Drawing
          ***/
         void drawTile( unsigned int tile, int x, int y ) const;
 
