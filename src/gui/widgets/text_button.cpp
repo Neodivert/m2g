@@ -171,8 +171,8 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
     for( i = 0; i < 3; i++ ){
         SDL_Rect dstRect =
         {
-            ( buttonSurface->w - textSurfaces[i]->w ) >> 1,
-            static_cast< int >( buttonSurface->h * i + ( ( buttonSurface->h - textSurfaces[i]->h ) >> 1 ) ),
+            static_cast< int >( ( pow2width - textSurfaces[i]->w ) >> 1 ),
+            static_cast< int >( pow2height * i + ( ( pow2height - textSurfaces[i]->h ) >> 1 ) ),
             textSurfaces[i]->w,
             textSurfaces[i]->h
         };
