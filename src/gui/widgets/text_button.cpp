@@ -40,6 +40,11 @@ TextButton::TextButton( SDL_Renderer* renderer, const std::string& text ) :
 
 bool TextButton::handleEvent( const SDL_Event &event )
 {
+    if( ( event.type == SDL_MOUSEBUTTONDOWN ) &&
+        posHover( event.button.x, event.button.y ) ){
+        setStatus( ButtonStatus::PRESSED );
+    }
+
     return false;
 }
 
