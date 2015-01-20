@@ -209,6 +209,7 @@ void TextRenderer::getTextDimensions( TTF_Font* font, const char* text, int& tex
         // Extract the next line and insert it in the vector of lines.
         i = 0;
         while( *text && ( *text != '\n' ) ){
+            // TODO: Process also character "\ " for multiple lines (CR).
             textLine[i] = *text;
 
             text++;
