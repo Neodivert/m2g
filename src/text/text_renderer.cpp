@@ -64,7 +64,7 @@ unsigned int TextRenderer::loadFont( const char *fontPath, int fontSize )
  * 3. Drawing
  ***/
 
-SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign )
+SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign ) const
 {
     TilesetPtr textTileset;
 
@@ -91,7 +91,7 @@ void TextRenderer::drawText( const char *text,
                              const SDL_Color &color,
                              int x,
                              int y,
-                             TextAlign textAlign )
+                             TextAlign textAlign ) const
 {
     SpritePtr textSprite = drawText( text, fontIndex, color , textAlign );
     textSprite->moveTo( x, y );
@@ -102,7 +102,7 @@ void TextRenderer::drawText( const char *text,
 SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
                                                 unsigned int fontIndex,
                                                 const SDL_Color &color,
-                                                TextAlign textAlign )
+                                                TextAlign textAlign ) const
 {
     TTF_Font* font = nullptr;
     SDL_Surface* lineSurface = nullptr;
@@ -190,7 +190,7 @@ SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
  * 4. Auxiliar methods
  ***/
 
-void TextRenderer::getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines )
+void TextRenderer::getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines ) const
 {
     char textLine[128];
     int lineWidth;

@@ -53,24 +53,24 @@ class TextRenderer
         /***
          * 3. Drawing
          ***/
-        SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT );
+        SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT ) const;
         void drawText( const char* text,
                        unsigned int fontIndex,
                        const SDL_Color& color,
                        int x,
                        int y,
-                       TextAlign textAlign = TextAlign::LEFT );
+                       TextAlign textAlign = TextAlign::LEFT ) const;
         SDL_Surface* renderTextToSurface( const char* text,
                                           unsigned int fontIndex,
                                           const SDL_Color& color,
-                                          TextAlign textAlign = TextAlign::LEFT );
+                                          TextAlign textAlign = TextAlign::LEFT ) const;
 
 
         /***
          * 4. Auxiliar methods
          ***/
     private:
-        void getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines );
+        void getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines ) const;
 
         SDL_Renderer *renderer_;
         std::map< unsigned int, TTF_Font* > fonts_;
