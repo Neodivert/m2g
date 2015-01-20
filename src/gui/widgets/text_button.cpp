@@ -27,10 +27,12 @@ namespace m2g {
  * 1. Construction
  ***/
 
-TextButton::TextButton( SDL_Renderer* renderer, const std::string& text ) :
+TextButton::TextButton( SDL_Renderer* renderer,
+                        const std::string& text,
+                        const std::array< FontInfo, 3 >& fontsInfo ) :
     Drawable( renderer ),
     Widget( renderer ),
-    Sprite( renderer, generateTileset( renderer, text ) )
+    Sprite( renderer, generateTileset( renderer, text, fontsInfo ) )
 {
     setStatus( ButtonStatus::NORMAL );
 }
@@ -113,12 +115,12 @@ bool TextButton::posHover( int x, int y ) const
  * 5. Initialization
  ***/
 
-TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::string &text )
+TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer,
+                                        const std::string &text,
+                                        const std::array< FontInfo, 3 >& fontsInfo )
 {
     TextRenderer textRenderer( renderer );
     std::array< unsigned int, 3 > fontIndices;
-    std::array< int, 3 > fontSize = { 30, 35, 40 };
-    char fontPath[] = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf";
     unsigned int i = 0;
     SDL_Surface* textSurfaces[3];
     unsigned int maxWidth = 0, maxHeight = 0;
@@ -129,21 +131,13 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer, const std::strin
     for( i = 0; i < 3; i++ ){
         fontIndices[i] =
                 textRenderer.loadFont(
-                    fontPath,
-                    fontSize[i] );
-
-        const SDL_Color color =
-        {
-            static_cast< Uint8 >( 100 + 50 * i ),
-            0,
-            0,
-            255
-        };
+                    fontsInfo[i].path.c_str(),
+                    fontsInfo[i].size );
 
         textSurfaces[i] =
                 textRenderer.renderTextToSurface( text.c_str(),
                                                   fontIndices[i],
-                                                  color,
+                                                  fontsInfo[i].color,
                                                   TextAlign::CENTER );
         if( textSurfaces[i]->w > static_cast< int >( maxWidth ) ){
             maxWidth = textSurfaces[i]->w;

@@ -33,6 +33,13 @@ enum class ButtonStatus
     PRESSED
 };
 
+struct FontInfo
+{
+    std::string path;
+    int size;
+    SDL_Color color;
+};
+
 typedef std::function< void( void ) > ButtonCallback;
 
 class TextButton : public Widget, public Sprite
@@ -42,7 +49,9 @@ class TextButton : public Widget, public Sprite
          * 1. Construction
          ***/
         // TODO: Use UTF-8 / UTF-16 for text.
-        TextButton( SDL_Renderer* renderer, const std::string& text );
+        TextButton( SDL_Renderer* renderer,
+                    const std::string& text,
+                    const std::array< FontInfo, 3 >& fontsInfo );
 
 
         /***
@@ -68,7 +77,9 @@ class TextButton : public Widget, public Sprite
         /***
          * 5. Initialization
          ***/
-        static TilesetPtr generateTileset( SDL_Renderer* renderer, const std::string& text );
+        static TilesetPtr generateTileset( SDL_Renderer* renderer,
+                                           const std::string& text,
+                                           const std::array< FontInfo, 3 >& fontsInfo );
 
 
         /***
