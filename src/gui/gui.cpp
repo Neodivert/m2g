@@ -79,20 +79,28 @@ void GUI::draw() const
 void GUI::updateLayout()
 {
     // TODO: Implement according to GUI's vertical and horizontal align.
+    unsigned int x = 0;
     unsigned int y = 0;
-    unsigned int guiHight = 0;
+    unsigned int guiHeight = 0;
 
     // Get the total height of the widgets in the GUI. Use this to set a
     // central vertical align.
     for( const WidgetPtr& widget : widgets_ ){
-        guiHight += widget->getHeight();
+        guiHeight += widget->getHeight();
     }
-    y = boundaryBox.y + ( ( boundaryBox.height - guiHight ) >> 1 );
+    y = boundaryBox.y;
+    if( boundaryBox.height > guiHeight ){
+        y += ( ( boundaryBox.height - guiHeight ) >> 1 );
+    }
+
 
     // Update the position of every widget in the GUI.
     for( WidgetPtr& widget : widgets_ ){
-        widget->moveTo( boundaryBox.x + ( ( boundaryBox.width - widget->getWidth() ) >> 1 ),
-                        y );
+        x = boundaryBox.x;
+        if( boundaryBox.width > widget->getWidth() ){
+            x += ( ( boundaryBox.width - widget->getWidth() ) >> 1 );
+        }
+        widget->moveTo( x, y );
         y += widget->getHeight();
     }
 }
