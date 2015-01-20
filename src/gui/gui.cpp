@@ -80,7 +80,16 @@ void GUI::updateLayout()
 {
     // TODO: Implement according to GUI's vertical and horizontal align.
     unsigned int y = 0;
+    unsigned int guiHight = 0;
 
+    // Get the total height of the widgets in the GUI. Use this to set a
+    // central vertical align.
+    for( const WidgetPtr& widget : widgets_ ){
+        guiHight += widget->getHeight();
+    }
+    y = boundaryBox.y + ( ( boundaryBox.height - guiHight ) >> 1 );
+
+    // Update the position of every widget in the GUI.
     for( WidgetPtr& widget : widgets_ ){
         widget->moveTo( boundaryBox.x + ( ( boundaryBox.width - widget->getWidth() ) >> 1 ),
                         y );
