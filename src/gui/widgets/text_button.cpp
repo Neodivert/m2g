@@ -109,18 +109,6 @@ bool TextButton::posHover( int x, int y ) const
 }
 
 
-bool TextButton::checkMouseFocus( int mouseX, int mouseY )
-{
-    if( posHover( mouseX, mouseY ) ){
-        setStatus( ButtonStatus::HOVER );
-        return true;
-    }else{
-        setStatus( ButtonStatus::NORMAL );
-        return false;
-    }
-}
-
-
 /***
  * 5. Initialization
  ***/

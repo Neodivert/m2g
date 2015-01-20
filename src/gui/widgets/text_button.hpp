@@ -62,7 +62,6 @@ class TextButton : public Widget, public Sprite
          ***/
         virtual bool handleEvent( const SDL_Event &event );
         bool posHover( int x, int y ) const; // TODO: Move to a parent class.
-        bool checkMouseFocus( int mouseX, int mouseY );
 
 
     private:
