@@ -32,6 +32,7 @@ set(
 )
 set(
     HEADER_FILES
+    "${PROJECT_SOURCE_DIR}/src/utilities/alignment.hpp"
     "${PROJECT_SOURCE_DIR}/src/utilities/rect.hpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/drawable.hpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/drawables_set.hpp"

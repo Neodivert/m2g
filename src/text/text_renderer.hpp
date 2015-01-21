@@ -23,20 +23,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <map>
 #include <vector>
-
-enum class TextHorizontalAlign
-{
-    LEFT,
-    CENTER,
-    RIGHT
-};
-
-enum class TextVerticalAlign
-{
-    TOP,
-    MIDDLE,
-    BOTTOM
-};
+#include "../utilities/alignment.hpp"
 
 namespace m2g {
 
