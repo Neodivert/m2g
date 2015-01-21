@@ -23,10 +23,10 @@ namespace m2g {
 
 void Rect::loadFromXML( tinyxml2::XMLElement* xmlElement )
 {
-    x = xmlElement->FloatAttribute( "x" );
-    y = xmlElement->FloatAttribute( "y" );
-    width = xmlElement->FloatAttribute( "w" );
-    height = xmlElement->FloatAttribute( "h" );
+    x = xmlElement->IntAttribute( "x" );
+    y = xmlElement->IntAttribute( "y" );
+    width = xmlElement->IntAttribute( "w" );
+    height = xmlElement->IntAttribute( "h" );
 }
 
 
