@@ -93,9 +93,85 @@ void TextRenderer::drawText( const char *text,
                              int y,
                              TextHorizontalAlign textAlign ) const
 {
-    SpritePtr textSprite = drawText( text, fontIndex, color , textAlign );
+    SpritePtr textSprite = drawText( text, fontIndex, color, textAlign );
     textSprite->moveTo( x, y );
     textSprite->draw();
+}
+
+
+void TextRenderer::renderTextToSurface( const char *text,
+                                        unsigned int fontIndex,
+                                        const SDL_Color &color,
+                                        SDL_Surface *textSurface,
+                                        const SDL_Rect &textRect,
+                                        TextHorizontalAlign horizontalAlign,
+                                        TextVerticalAlign verticalAlign ) const
+{
+    TTF_Font* font = nullptr;
+    SDL_Surface* lineSurface = nullptr;
+    std::vector< std::string > lines;
+    SDL_Rect dstRect = { 0, 0, 0, 0 };
+    int textWidth, textHeight;
+
+    // Load the required font.
+    font = fonts_.at( fontIndex );
+
+    // Get the text dimensions.
+    getTextDimensions( font, text, textWidth, textHeight, lines );
+
+    //auxTextSurface = SDL_ConvertSurface( auxTextSurface, textSurface->format, textSurface->flags );
+
+    // Prepare the final text surface for the blitting.
+    SDL_FillRect( textSurface, nullptr, 0 );
+    SDL_SetSurfaceBlendMode( lineSurface, SDL_BLENDMODE_NONE );
+
+    // Give the text the given align.
+    dstRect.y = textRect.y;
+    switch( verticalAlign ){
+        case TextVerticalAlign::TOP:
+        break;
+        case TextVerticalAlign::MIDDLE:
+            // FIXME: Check when textSurface->h > textHeight.
+            dstRect.y += ( textSurface->h - textHeight ) >> 1;
+        break;
+        case TextVerticalAlign::BOTTOM:
+            // FIXME: Check when textSurface->h > textHeight.
+            dstRect.y += textSurface->h - textHeight;
+        break;
+    }
+
+    // Render every line and blit it to the final surface.
+    for( const std::string& line : lines ){
+        // Generate a surface with the text line.
+        lineSurface = TTF_RenderText_Blended( font, line.c_str(), color );
+
+        // Give the text the given align.
+        // TODO: Change so the switch is executed only once.
+
+        switch( horizontalAlign ){
+            case TextHorizontalAlign::LEFT:
+                dstRect.x = 0;
+            break;
+            case TextHorizontalAlign::CENTER:
+                // FIXME: Check when textWidth > lineSurface.
+                dstRect.x = (textWidth >> 1) - (lineSurface->w >> 1);
+            break;
+            case TextHorizontalAlign::RIGHT:
+                // FIXME: Check when textWidth > lineSurface.
+                dstRect.x = textWidth - lineSurface->w;
+            break;
+        }
+        dstRect.x += textRect.x;
+
+        // Blit the line surface to its final surface.
+        // FIXME: Check when line's width > textRect.w.
+        // FIXME: Check when line's heigh > textRect.h.
+        // (*) Update dstRect.w and dst.Rect.h
+        SDL_BlitSurface( lineSurface, nullptr, textSurface, &dstRect );
+
+        //
+        dstRect.y += TTF_FontHeight( font );
+    }
 }
 
 
@@ -104,13 +180,9 @@ SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
                                                 const SDL_Color &color,
                                                 TextHorizontalAlign textAlign ) const
 {
-    TTF_Font* font = nullptr;
-    SDL_Surface* lineSurface = nullptr;
-    SDL_Surface* textSurface = nullptr;
-    int pow2;
     std::vector< std::string > lines;
-    SDL_Rect dstRect = { 0, 0, 0, 0 };
     int textWidth, textHeight;
+    int pow2;
 
     // Set the RGBA mask for the text surface.
     #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -125,13 +197,12 @@ SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
         const Uint32 amask = 0xff000000;
     #endif
 
-    // Load the required font.
-    font = fonts_.at( fontIndex );
+    // Load font.
+    TTF_Font* font = fonts_.at( fontIndex );
 
     // Get the text dimensions.
+    // FIXME: Duplicated code (in next call to renderTextToSurface.
     getTextDimensions( font, text, textWidth, textHeight, lines );
-
-    //auxTextSurface = SDL_ConvertSurface( auxTextSurface, textSurface->format, textSurface->flags );
 
     // Round text dimensions to nearest upper pow of two.
     pow2 = 1;
@@ -147,40 +218,23 @@ SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
     textHeight = pow2;
 
     // Create the final text surface with the power-of-two dimensions.
-    textSurface = SDL_CreateRGBSurface( 0, textWidth, textHeight, 32, rmask, gmask, bmask, amask );
+    SDL_Surface* textSurface =
+            SDL_CreateRGBSurface( 0, textWidth, textHeight, 32, rmask, gmask, bmask, amask );
 
-    // Prepare the final text surface for the blitting.
-    SDL_FillRect( textSurface, nullptr, 0 );
-    SDL_SetSurfaceBlendMode( lineSurface, SDL_BLENDMODE_NONE );
+    SDL_Rect rect =
+    {
+        0,
+        0,
+        textWidth,
+        textHeight
+    };
 
-    // Render every line and blit it to the final surface.
-    for( const std::string& line : lines ){
-        // Generate a surface with the text line.
-        lineSurface = TTF_RenderText_Blended( font, line.c_str(), color );
-
-        // Give the text the given align.
-        // TODO: Change so the switch is executed only once.
-        switch( textAlign ){
-            case TextHorizontalAlign::LEFT:
-                dstRect.x = 0;
-            break;
-            case TextHorizontalAlign::CENTER:
-                dstRect.x = (textWidth >> 1) - (lineSurface->w >> 1);
-            break;
-            case TextHorizontalAlign::RIGHT:
-                dstRect.x = textWidth - lineSurface->w;
-            break;
-        }
-
-        // Blit the line surface to its final surface.
-        SDL_BlitSurface( lineSurface, nullptr, textSurface, &dstRect );
-
-        //
-        dstRect.y += TTF_FontHeight( font );
-
-        // Free the line surface.
-        SDL_FreeSurface( lineSurface );
-    }
+    renderTextToSurface( text,
+                         fontIndex,
+                         color,
+                         textSurface,
+                         rect,
+                         textAlign );
 
     return textSurface;
 }
