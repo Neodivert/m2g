@@ -37,6 +37,12 @@ class TextArea : public Drawable
 
 
         /***
+         * 2. Loading
+         ***/
+        void loadFromXML( tinyxml2::XMLElement* xmlElement );
+
+
+        /***
          * 3. Drawing
          ***/
         virtual void draw() const;

@@ -31,6 +31,24 @@ TextArea::TextArea( SDL_Renderer *renderer ) :
 
 
 /***
+ * 2. Loading
+ ***/
+
+void TextArea::loadFromXML( tinyxml2::XMLElement *xmlElement )
+{
+    name_ = xmlElement->Attribute( "name" );
+    rect_.loadFromXML( xmlElement->FirstChildElement( "rect" ) );
+    horizontalAlign_ =
+            readHorizontalAligmentFromXML( xmlElement->FirstChildElement( "horizontal_align" ) );
+    verticalAlign_ =
+            readVerticalAligmentFromXML( xmlElement->FirstChildElement( "vertical_align" ) );
+    if( xmlElement->FirstChildElement( "text" ) ){
+        text_ = xmlElement->FirstChildElement( "text" )->GetText();
+    }
+}
+
+
+/***
  * 3. Drawing
  ***/
 

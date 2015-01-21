@@ -14,6 +14,7 @@ set( PROJECT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${
 #list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
 set(
     SOURCE_FILES
+    "${PROJECT_SOURCE_DIR}/src/utilities/alignment.cpp"
     "${PROJECT_SOURCE_DIR}/src/utilities/rect.cpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/drawable.cpp"
     "${PROJECT_SOURCE_DIR}/src/drawables/drawables_set.cpp"

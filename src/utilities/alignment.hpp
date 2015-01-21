@@ -20,6 +20,8 @@
 #ifndef ALIGNMENT_HPP
 #define ALIGNMENT_HPP
 
+#include <tinyxml2.h>
+
 namespace m2g {
 
 enum class HorizontalAlign
@@ -35,6 +37,9 @@ enum class VerticalAlign
     MIDDLE,
     BOTTOM
 };
+
+HorizontalAlign readHorizontalAligmentFromXML( tinyxml2::XMLElement* xmlElement );
+VerticalAlign readVerticalAligmentFromXML( tinyxml2::XMLElement* xmlElement );
 
 } // namespace m2g
 
