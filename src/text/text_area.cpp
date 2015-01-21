@@ -17,8 +17,28 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
+#include "text_area.hpp"
+
 namespace m2g {
 
+/***
+ * 1. Construction
+ ***/
+
+TextArea::TextArea( SDL_Renderer *renderer ) :
+    Drawable( renderer )
+{}
+
+
+/***
+ * 3. Drawing
+ ***/
+
+void TextArea::draw() const
+{
+    const SDL_Rect dstRect = boundaryBox.sdlRect();
+    SDL_RenderCopy( renderer_, texture_, nullptr, &dstRect );
+}
 
 } // namespace m2g
 

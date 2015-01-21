@@ -23,16 +23,33 @@
 #include <string>
 #include "../utilities/rect.hpp"
 #include "../utilities/alignment.hpp"
+#include "../drawables/drawable.hpp"
 
 namespace m2g {
 
-struct TextArea
+class TextArea : public Drawable
 {
-    std::string name;
-    std::string text;
-    Rect rect;
-    VerticalAlign verticalAlign;
-    HorizontalAlign horizontalAlign;
+    public:
+        /***
+         * 1. Construction
+         ***/
+        TextArea( SDL_Renderer* renderer );
+
+
+        /***
+         * 3. Drawing
+         ***/
+        virtual void draw() const;
+
+
+    private:
+        std::string name_;
+        std::string text_;
+        Rect rect_;
+        VerticalAlign verticalAlign_;
+        HorizontalAlign horizontalAlign_;
+
+        SDL_Texture* texture_;
 };
 
 } // namespace m2g

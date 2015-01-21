@@ -37,7 +37,20 @@ bool Rect::collide( const Rect& b ) const
         ( ( x + static_cast< int >( width ) ) > b.x ) &&
         ( y < ( b.y + static_cast< int >( b.height ) ) ) &&
         ( ( y + static_cast< int >( height ) ) > b.y )
-            );
+                );
+}
+
+
+SDL_Rect Rect::sdlRect() const
+{
+    SDL_Rect rect =
+    {
+        x,
+        y,
+        static_cast<int>( width ),
+        static_cast<int>( height )
+    };
+    return rect;
 }
 
 } // namespace m2g

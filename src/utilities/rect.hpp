@@ -21,6 +21,7 @@
 #define RECT_HPP
 
 #include <tinyxml2.h>
+#include <SDL2/SDL.h>
 
 namespace m2g {
 
@@ -33,6 +34,7 @@ struct Rect
 
     void loadFromXML( tinyxml2::XMLElement* xmlElement );
     bool collide( const Rect& b ) const ;
+    SDL_Rect sdlRect() const;
 };
 
 } // namespace m2g
