@@ -64,28 +64,6 @@ unsigned int TextRenderer::loadFont( const char *fontPath, int fontSize )
  * 3. Drawing
  ***/
 
-SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextHorizontalAlign textAlign ) const
-{
-    TilesetPtr textTileset;
-
-    SDL_Surface* textSurface = renderTextToSurface( text, fontIndex, color, textAlign );
-
-    // Generate a tileset from the text surface.
-    textTileset = TilesetPtr( new Tileset( renderer_, textSurface, textSurface->w, textSurface->h ) );
-
-    //textTileset = TilesetPtr( new Tileset( auxTextSurface, auxTextSurface->w, auxTextSurface->h ) );
-
-    // Create the final sprite from the previous tileset.
-    SpritePtr textSprite( new Sprite( renderer_, textTileset ) );
-
-    // Free resources.
-    SDL_FreeSurface( textSurface );
-
-    // Return the text sprite.
-    return textSprite;
-}
-
-
 void TextRenderer::drawText( const char *text,
                              unsigned int fontIndex,
                              const SDL_Color &color,
@@ -93,9 +71,24 @@ void TextRenderer::drawText( const char *text,
                              int y,
                              TextHorizontalAlign textAlign ) const
 {
-    SpritePtr textSprite = drawText( text, fontIndex, color, textAlign );
-    textSprite->moveTo( x, y );
-    textSprite->draw();
+    SDL_Surface* textSurface =
+            renderTextToSurface( text,
+                                 fontIndex,
+                                 color,
+                                 textAlign );
+
+    SDL_Texture* textTexture =
+            SDL_CreateTextureFromSurface( renderer_, textSurface );
+
+    SDL_Rect textRect =
+    {
+        0, 0, textSurface->w, textSurface->h
+    };
+
+    SDL_RenderCopy( renderer_, textTexture, nullptr, &textRect );
+
+    SDL_FreeSurface( textSurface );
+    SDL_DestroyTexture( textTexture );
 }
 
 

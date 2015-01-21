@@ -20,9 +20,9 @@
 #ifndef TEXT_RENDERER_HPP
 #define TEXT_RENDERER_HPP
 
-#include "../drawables/sprite.hpp"
 #include <SDL2/SDL_ttf.h>
 #include <map>
+#include <vector>
 
 enum class TextHorizontalAlign
 {
@@ -60,7 +60,6 @@ class TextRenderer
         /***
          * 3. Drawing
          ***/
-        SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextHorizontalAlign textAlign = TextHorizontalAlign::LEFT ) const;
         void drawText( const char* text,
                        unsigned int fontIndex,
                        const SDL_Color& color,
