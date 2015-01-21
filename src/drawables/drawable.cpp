@@ -21,27 +21,6 @@
 
 namespace m2g {
 
-
-void Rect::loadFromXML( tinyxml2::XMLElement* xmlElement )
-{
-    x = xmlElement->FloatAttribute( "x" );
-    y = xmlElement->FloatAttribute( "y" );
-    width = xmlElement->FloatAttribute( "w" );
-    height = xmlElement->FloatAttribute( "h" );
-}
-
-
-bool Rect::collide( const Rect& b ) const
-{
-    return  (
-        ( x < ( b.x + static_cast< int >( b.width ) ) ) &&
-        ( ( x + static_cast< int >( width ) ) > b.x ) &&
-        ( y < ( b.y + static_cast< int >( b.height ) ) ) &&
-        ( ( y + static_cast< int >( height ) ) > b.y )
-            );
-}
-
-
 /***
  * 1. Initialization
  ***/

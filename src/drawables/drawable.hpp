@@ -20,23 +20,12 @@
 #ifndef DRAWABLE_HPP
 #define DRAWABLE_HPP
 
+#include "../utilities/rect.hpp"
 #include <memory> // shared_ptr
-#include <tinyxml2.h>
 #include <glm/vec2.hpp>
 #include <SDL2/SDL.h>
 
 namespace m2g {
-
-struct Rect
-{
-    int x;
-    int y;
-    unsigned int width;
-    unsigned int height;
-
-    void loadFromXML( tinyxml2::XMLElement* xmlElement );
-    bool collide( const Rect& b ) const ;
-};
 
 // TODO: Move non-drawing methods to classes Collidable or Sprite.
 // TODO: Remove attributes and use a default constructor so
