@@ -22,6 +22,7 @@
 
 #include <string>
 #include "../utilities/rect.hpp"
+#include "../utilities/alignment.hpp"
 
 namespace m2g {
 
@@ -30,6 +31,8 @@ struct TextArea
     std::string name;
     std::string text;
     Rect rect;
+    VerticalAlign verticalAlign;
+    HorizontalAlign horizontalAlign;
 };
 
 } // namespace m2g
