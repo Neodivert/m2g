@@ -21,12 +21,15 @@
 #define TEXT_AREA
 
 #include <string>
+#include "../utilities/rect.hpp"
 
 namespace m2g {
 
 struct TextArea
 {
     std::string name;
+    std::string text;
+    Rect rect;
 };
 
 } // namespace m2g
