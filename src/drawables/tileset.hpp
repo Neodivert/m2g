@@ -24,6 +24,7 @@
 #include <memory>
 #include <vector>
 #include <tinyxml2.h>
+#include "../text/text_renderer.hpp"
 
 namespace m2g {
 
