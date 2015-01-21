@@ -64,7 +64,7 @@ unsigned int TextRenderer::loadFont( const char *fontPath, int fontSize )
  * 3. Drawing
  ***/
 
-SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign ) const
+SpritePtr TextRenderer::drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextHorizontalAlign textAlign ) const
 {
     TilesetPtr textTileset;
 
@@ -91,7 +91,7 @@ void TextRenderer::drawText( const char *text,
                              const SDL_Color &color,
                              int x,
                              int y,
-                             TextAlign textAlign ) const
+                             TextHorizontalAlign textAlign ) const
 {
     SpritePtr textSprite = drawText( text, fontIndex, color , textAlign );
     textSprite->moveTo( x, y );
@@ -102,7 +102,7 @@ void TextRenderer::drawText( const char *text,
 SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
                                                 unsigned int fontIndex,
                                                 const SDL_Color &color,
-                                                TextAlign textAlign ) const
+                                                TextHorizontalAlign textAlign ) const
 {
     TTF_Font* font = nullptr;
     SDL_Surface* lineSurface = nullptr;
@@ -161,13 +161,13 @@ SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
         // Give the text the given align.
         // TODO: Change so the switch is executed only once.
         switch( textAlign ){
-            case TextAlign::LEFT:
+            case TextHorizontalAlign::LEFT:
                 dstRect.x = 0;
             break;
-            case TextAlign::CENTER:
+            case TextHorizontalAlign::CENTER:
                 dstRect.x = (textWidth >> 1) - (lineSurface->w >> 1);
             break;
-            case TextAlign::RIGHT:
+            case TextHorizontalAlign::RIGHT:
                 dstRect.x = textWidth - lineSurface->w;
             break;
         }

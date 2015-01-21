@@ -24,7 +24,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <map>
 
-enum class TextAlign
+enum class TextHorizontalAlign
 {
     LEFT,
     CENTER,
@@ -53,17 +53,17 @@ class TextRenderer
         /***
          * 3. Drawing
          ***/
-        SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextAlign textAlign = TextAlign::LEFT ) const;
+        SpritePtr drawText( const char* text, unsigned int fontIndex, const SDL_Color& color, TextHorizontalAlign textAlign = TextHorizontalAlign::LEFT ) const;
         void drawText( const char* text,
                        unsigned int fontIndex,
                        const SDL_Color& color,
                        int x,
                        int y,
-                       TextAlign textAlign = TextAlign::LEFT ) const;
+                       TextHorizontalAlign textAlign = TextHorizontalAlign::LEFT ) const;
         SDL_Surface* renderTextToSurface( const char* text,
                                           unsigned int fontIndex,
                                           const SDL_Color& color,
-                                          TextAlign textAlign = TextAlign::LEFT ) const;
+                                          TextHorizontalAlign textAlign = TextHorizontalAlign::LEFT ) const;
 
 
         /***
