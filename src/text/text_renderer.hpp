@@ -31,6 +31,13 @@ enum class TextHorizontalAlign
     RIGHT
 };
 
+enum class TextVerticalAlign
+{
+    TOP,
+    MIDDLE,
+    BOTTOM
+};
+
 namespace m2g {
 
 class TextRenderer
