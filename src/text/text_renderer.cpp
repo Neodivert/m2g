@@ -69,7 +69,7 @@ void TextRenderer::drawText( const char *text,
                              const SDL_Color &color,
                              int x,
                              int y,
-                             TextHorizontalAlign textAlign ) const
+                             HorizontalAlign textAlign ) const
 {
     SDL_Surface* textSurface =
             renderTextToSurface( text,
@@ -97,8 +97,8 @@ void TextRenderer::renderTextToSurface( const char *text,
                                         const SDL_Color &color,
                                         SDL_Surface *textSurface,
                                         const SDL_Rect &textRect,
-                                        TextHorizontalAlign horizontalAlign,
-                                        TextVerticalAlign verticalAlign ) const
+                                        HorizontalAlign horizontalAlign,
+                                        VerticalAlign verticalAlign ) const
 {
     TTF_Font* font = nullptr;
     SDL_Surface* lineSurface = nullptr;
@@ -121,13 +121,13 @@ void TextRenderer::renderTextToSurface( const char *text,
     // Give the text the given align.
     dstRect.y = textRect.y;
     switch( verticalAlign ){
-        case TextVerticalAlign::TOP:
+        case VerticalAlign::TOP:
         break;
-        case TextVerticalAlign::MIDDLE:
+        case VerticalAlign::MIDDLE:
             // FIXME: Check when textSurface->h > textHeight.
             dstRect.y += ( textSurface->h - textHeight ) >> 1;
         break;
-        case TextVerticalAlign::BOTTOM:
+        case VerticalAlign::BOTTOM:
             // FIXME: Check when textSurface->h > textHeight.
             dstRect.y += textSurface->h - textHeight;
         break;
@@ -142,14 +142,14 @@ void TextRenderer::renderTextToSurface( const char *text,
         // TODO: Change so the switch is executed only once.
 
         switch( horizontalAlign ){
-            case TextHorizontalAlign::LEFT:
+            case HorizontalAlign::LEFT:
                 dstRect.x = 0;
             break;
-            case TextHorizontalAlign::CENTER:
+            case HorizontalAlign::CENTER:
                 // FIXME: Check when textWidth > lineSurface.
                 dstRect.x = (textWidth >> 1) - (lineSurface->w >> 1);
             break;
-            case TextHorizontalAlign::RIGHT:
+            case HorizontalAlign::RIGHT:
                 // FIXME: Check when textWidth > lineSurface.
                 dstRect.x = textWidth - lineSurface->w;
             break;
@@ -171,7 +171,7 @@ void TextRenderer::renderTextToSurface( const char *text,
 SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
                                                 unsigned int fontIndex,
                                                 const SDL_Color &color,
-                                                TextHorizontalAlign textAlign ) const
+                                                HorizontalAlign textAlign ) const
 {
     std::vector< std::string > lines;
     int textWidth, textHeight;

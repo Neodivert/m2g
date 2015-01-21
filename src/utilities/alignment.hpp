@@ -22,14 +22,14 @@
 
 namespace m2g {
 
-enum class TextHorizontalAlign
+enum class HorizontalAlign
 {
     LEFT,
     CENTER,
     RIGHT
 };
 
-enum class TextVerticalAlign
+enum class VerticalAlign
 {
     TOP,
     MIDDLE,

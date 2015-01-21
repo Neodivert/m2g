@@ -138,7 +138,7 @@ TilesetPtr TextButton::generateTileset( SDL_Renderer* renderer,
                 textRenderer.renderTextToSurface( text.c_str(),
                                                   fontIndices[i],
                                                   fontsInfo[i].color,
-                                                  TextHorizontalAlign::CENTER );
+                                                  HorizontalAlign::CENTER );
         if( textSurfaces[i]->w > static_cast< int >( maxWidth ) ){
             maxWidth = textSurfaces[i]->w;
         }
