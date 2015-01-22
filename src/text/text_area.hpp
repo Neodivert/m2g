@@ -34,6 +34,14 @@ class TextArea : public Drawable
         /***
          * 1. Construction
          ***/
+        TextArea( const Rect& rect,
+                  const std::string& text,
+                  TextRenderer* textRenderer,
+                  unsigned int fontIndex,
+                  const SDL_Color& fontColor,
+                  HorizontalAlign horizontalAlign = HorizontalAlign::CENTER,
+                  VerticalAlign verticalAlign = VerticalAlign::MIDDLE );
+
         TextArea( SDL_Renderer* renderer,
                   tinyxml2::XMLElement* xmlElement,
                   TextRenderer* textRenderer,
@@ -64,9 +72,10 @@ class TextArea : public Drawable
          * Attributes
          ***/
         std::string name_;
+        Rect rect_;
         std::string text_;
-        VerticalAlign verticalAlign_;
         HorizontalAlign horizontalAlign_;
+        VerticalAlign verticalAlign_;
 
         SDL_Texture* texture_;
 

@@ -71,6 +71,7 @@ class TextRenderer
         /***
          * 4. Auxiliar methods
          ***/
+        SDL_Renderer* renderer() const;
     private:
         void getTextDimensions( TTF_Font* font, const char* text, int& textWidth, int& textHeight, std::vector< std::string >& lines ) const;
 

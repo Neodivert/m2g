@@ -25,6 +25,24 @@ namespace m2g {
  * 1. Construction
  ***/
 
+TextArea::TextArea( const Rect &rect,
+                    const std::string &text,
+                    TextRenderer *textRenderer,
+                    unsigned int fontIndex,
+                    const SDL_Color &fontColor,
+                    HorizontalAlign horizontalAlign,
+                    VerticalAlign verticalAlign ) :
+    Drawable( textRenderer->renderer() ),
+    rect_( rect ),
+    text_( text ),
+    horizontalAlign_( horizontalAlign ),
+    verticalAlign_( verticalAlign ),
+    textRenderer_( textRenderer ),
+    fontIndex_( fontIndex ),
+    fontColor_( fontColor )
+{}
+
+
 TextArea::TextArea( SDL_Renderer *renderer,
                     tinyxml2::XMLElement* xmlElement,
                     TextRenderer* textRenderer,

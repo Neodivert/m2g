@@ -233,6 +233,12 @@ SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
 }
 
 
+SDL_Renderer *TextRenderer::renderer() const
+{
+    return renderer_;
+}
+
+
 /***
  * 4. Auxiliar methods
  ***/
