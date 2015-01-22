@@ -23,3 +23,6 @@ set( LIBRARIES "${LIBRARIES};-ltinyxml2" )
 
 add_subdirectory( lib )
 add_subdirectory( samples )
+
+# TODO: Build samples' dependencies automatically.
+add_dependencies( text_area_sample ${LIBRARY_NAME} )
