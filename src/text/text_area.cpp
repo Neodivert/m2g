@@ -37,6 +37,7 @@ TextArea::TextArea( const Rect &rect,
     text_( text ),
     horizontalAlign_( horizontalAlign ),
     verticalAlign_( verticalAlign ),
+    texture_( nullptr ),
     textRenderer_( textRenderer ),
     fontIndex_( fontIndex ),
     fontColor_( fontColor )
@@ -51,6 +52,7 @@ TextArea::TextArea( SDL_Renderer *renderer,
                     unsigned int fontIndex,
                     const SDL_Color& fontColor ) :
     Drawable( renderer ),
+    texture_( nullptr ),
     textRenderer_( textRenderer ),
     fontIndex_( fontIndex ),
     fontColor_( fontColor )
@@ -102,6 +104,9 @@ void TextArea::renderTextToTexture()
                 fontColor_,
                 horizontalAlign_ );
 
+    if( texture_ != nullptr ){
+        SDL_DestroyTexture( texture_ );
+    }
     texture_ = SDL_CreateTextureFromSurface( renderer_, textSurface );
 
     // Set the text's boundary box according to its alignment.
