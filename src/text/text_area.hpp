@@ -56,14 +56,30 @@ class TextArea : public Drawable
 
 
         /***
-         * 3. Drawing
+         * 3. Getters
+         ***/
+        VerticalAlign verticalAlign() const;
+        HorizontalAlign horizontalAlign() const;
+        std::string text() const;
+
+
+        /***
+         * 4. Setters
+         ***/
+        void setVerticalAlign( VerticalAlign verticalAlign );
+        void setHorizontalAlign( HorizontalAlign horizontalAlign );
+        void setText( const std::string& text );
+
+
+        /***
+         * 5. Drawing
          ***/
         virtual void draw() const;
 
 
     private:
         /***
-         * 4. Text rendering
+         * 6. Text rendering
          ***/
         void renderTextToTexture();
 

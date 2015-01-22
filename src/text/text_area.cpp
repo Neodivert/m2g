@@ -81,7 +81,54 @@ void TextArea::loadFromXML( tinyxml2::XMLElement *xmlElement )
 
 
 /***
- * 3. Drawing
+ * 3. Getters
+ ***/
+
+VerticalAlign TextArea::verticalAlign() const
+{
+    return verticalAlign_;
+}
+
+
+HorizontalAlign TextArea::horizontalAlign() const
+{
+    return horizontalAlign_;
+}
+
+
+std::string TextArea::text() const
+{
+    return text_;
+}
+
+
+/***
+ * 4. Setters
+ ***/
+
+void TextArea::setVerticalAlign( VerticalAlign verticalAlign )
+{
+    verticalAlign_ = verticalAlign;
+    renderTextToTexture();
+}
+
+
+void TextArea::setHorizontalAlign( HorizontalAlign horizontalAlign )
+{
+    horizontalAlign_ = horizontalAlign;
+    renderTextToTexture();
+}
+
+
+void TextArea::setText( const std::string& text )
+{
+    text_ = text;
+    renderTextToTexture();
+}
+
+
+/***
+ * 5. Drawing
  ***/
 
 void TextArea::draw() const
@@ -92,7 +139,7 @@ void TextArea::draw() const
 
 
 /***
- * 4. Text rendering
+ * 6. Text rendering
  ***/
 
 void TextArea::renderTextToTexture()
