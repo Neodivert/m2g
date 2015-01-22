@@ -51,7 +51,6 @@ class TextArea : public Drawable
     private:
         std::string name_;
         std::string text_;
-        Rect rect_;
         VerticalAlign verticalAlign_;
         HorizontalAlign horizontalAlign_;
 

@@ -37,7 +37,7 @@ TextArea::TextArea( SDL_Renderer *renderer ) :
 void TextArea::loadFromXML( tinyxml2::XMLElement *xmlElement )
 {
     name_ = xmlElement->Attribute( "name" );
-    rect_.loadFromXML( xmlElement->FirstChildElement( "rect" ) );
+    boundaryBox.loadFromXML( xmlElement->FirstChildElement( "rect" ) );
     horizontalAlign_ =
             readHorizontalAligmentFromXML( xmlElement->FirstChildElement( "horizontal_align" ) );
     verticalAlign_ =
