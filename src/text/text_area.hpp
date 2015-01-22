@@ -24,6 +24,7 @@
 #include "../utilities/rect.hpp"
 #include "../utilities/alignment.hpp"
 #include "../drawables/drawable.hpp"
+#include "text_renderer.hpp"
 
 namespace m2g {
 
@@ -33,7 +34,11 @@ class TextArea : public Drawable
         /***
          * 1. Construction
          ***/
-        TextArea( SDL_Renderer* renderer, tinyxml2::XMLElement* xmlElement );
+        TextArea( SDL_Renderer* renderer,
+                  tinyxml2::XMLElement* xmlElement,
+                  TextRenderer* textRenderer,
+                  unsigned int fontIndex,
+                  const SDL_Color& fontColor );
 
 
         /***
@@ -49,12 +54,25 @@ class TextArea : public Drawable
 
 
     private:
+        /***
+         * 4. Text rendering
+         ***/
+        void renderTextToTexture();
+
+
+        /***
+         * Attributes
+         ***/
         std::string name_;
         std::string text_;
         VerticalAlign verticalAlign_;
         HorizontalAlign horizontalAlign_;
 
         SDL_Texture* texture_;
+
+        TextRenderer* textRenderer_;
+        unsigned int fontIndex_;
+        SDL_Color fontColor_;
 };
 
 } // namespace m2g

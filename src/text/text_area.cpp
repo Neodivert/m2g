@@ -25,10 +25,18 @@ namespace m2g {
  * 1. Construction
  ***/
 
-TextArea::TextArea( SDL_Renderer *renderer, tinyxml2::XMLElement* xmlElement ) :
-    Drawable( renderer )
+TextArea::TextArea( SDL_Renderer *renderer,
+                    tinyxml2::XMLElement* xmlElement,
+                    TextRenderer* textRenderer,
+                    unsigned int fontIndex,
+                    const SDL_Color& fontColor ) :
+    Drawable( renderer ),
+    textRenderer_( textRenderer ),
+    fontIndex_( fontIndex ),
+    fontColor_( fontColor )
 {
     loadFromXML( xmlElement );
+    renderTextToTexture();
 }
 
 
@@ -58,6 +66,25 @@ void TextArea::draw() const
 {
     const SDL_Rect dstRect = boundaryBox.sdlRect();
     SDL_RenderCopy( renderer_, texture_, nullptr, &dstRect );
+}
+
+
+/***
+ * 4. Text rendering
+ ***/
+
+void TextArea::renderTextToTexture()
+{
+    SDL_Surface* textSurface =
+            textRenderer_->renderTextToSurface(
+                text_.c_str(),
+                fontIndex_,
+                fontColor_,
+                horizontalAlign_ );
+
+    texture_ = SDL_CreateTextureFromSurface( renderer_, textSurface );
+
+    SDL_FreeSurface( textSurface );
 }
 
 } // namespace m2g
