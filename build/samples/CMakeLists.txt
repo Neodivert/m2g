@@ -12,5 +12,5 @@ add_executable(
 )
 target_link_libraries(
     "text_area_sample"
-    "-lm2g;${LIBRARIES}"
+    "${PROJECT_SOURCE_DIR}/lib/libm2g.so;${LIBRARIES}"
 )

@@ -30,9 +30,10 @@ int main(){
         { 255, 0, 0, 255 } );
 
     do{
+        SDL_PollEvent( &event );
+
         SDL_RenderClear( renderer );
         textArea.draw();
         SDL_RenderPresent( renderer );
-        SDL_WaitEvent( &event );
     }while( event.type != SDL_QUIT );
 }

@@ -40,7 +40,10 @@ TextArea::TextArea( const Rect &rect,
     textRenderer_( textRenderer ),
     fontIndex_( fontIndex ),
     fontColor_( fontColor )
-{}
+{
+    boundaryBox = rect_;
+    renderTextToTexture();
+}
 
 
 TextArea::TextArea( SDL_Renderer *renderer,
