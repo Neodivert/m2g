@@ -41,7 +41,6 @@ TextArea::TextArea( const Rect &rect,
     fontIndex_( fontIndex ),
     fontColor_( fontColor )
 {
-    boundaryBox = rect_;
     renderTextToTexture();
 }
 
@@ -104,6 +103,24 @@ void TextArea::renderTextToTexture()
                 horizontalAlign_ );
 
     texture_ = SDL_CreateTextureFromSurface( renderer_, textSurface );
+
+    // Set the text's boundary box according to its alignment.
+    boundaryBox.x = rect_.x;
+    if( horizontalAlign_ == HorizontalAlign::CENTER ){
+        boundaryBox.x += (rect_.width - textSurface->w) >> 1;
+    }else if( horizontalAlign_ == HorizontalAlign::RIGHT ){
+        boundaryBox.x += rect_.width - textSurface->w;
+    }
+
+    boundaryBox.y = rect_.y;
+    if( verticalAlign_ == VerticalAlign::MIDDLE ){
+        boundaryBox.y += (rect_.height - textSurface->h) >> 1;
+    }else if( verticalAlign_ == VerticalAlign::BOTTOM ){
+        boundaryBox.y += rect_.height - textSurface->h;
+    }
+
+    boundaryBox.width = textSurface->w;
+    boundaryBox.height = textSurface->h;
 
     SDL_FreeSurface( textSurface );
 }
