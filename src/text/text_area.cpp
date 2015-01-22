@@ -25,9 +25,11 @@ namespace m2g {
  * 1. Construction
  ***/
 
-TextArea::TextArea( SDL_Renderer *renderer ) :
+TextArea::TextArea( SDL_Renderer *renderer, tinyxml2::XMLElement* xmlElement ) :
     Drawable( renderer )
-{}
+{
+    loadFromXML( xmlElement );
+}
 
 
 /***

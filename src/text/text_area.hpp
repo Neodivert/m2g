@@ -33,7 +33,7 @@ class TextArea : public Drawable
         /***
          * 1. Construction
          ***/
-        TextArea( SDL_Renderer* renderer );
+        TextArea( SDL_Renderer* renderer, tinyxml2::XMLElement* xmlElement );
 
 
         /***
