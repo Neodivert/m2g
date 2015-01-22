@@ -3,14 +3,14 @@
 #list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
 
 set( SAMPLES_SOURCE_DIR "${PROJECT_SOURCE_DIR}/../src/samples" )
-
-set(
-    SAMPLES_SOURCE_FILES
-    ""
-)
-set(
-    SAMPLES_HEADER_FILES
-    ""
-)
-
 include_directories( ${SAMPLES_SOURCE_DIR} )
+
+# Text area sample
+add_executable(
+    "text_area_sample"
+    "${SAMPLES_SOURCE_DIR}/text/text_area_sample.cpp"
+)
+target_link_libraries(
+    "text_area_sample"
+    "-lm2g;${LIBRARIES}"
+)

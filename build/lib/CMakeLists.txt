@@ -46,17 +46,6 @@ set(
 
 include_directories( ${SOURCE_DIR} )
 
-# Include libraries SDL2, SDL2_image and SDL2_ttf
-include( FindPkgConfig )
-pkg_search_module( SDL2 REQUIRED sdl2 )
-pkg_search_module( SDL2IMAGE REQUIRED SDL2_image>=2.0.0 )
-pkg_search_module( SDL2TTF REQUIRED SDL2_ttf>=2.0.0 )
-include_directories( ${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2TTF_INCLUDE_DIRS} )
-set( LIBRARIES "${LIBRARIES};${SDL2IMAGE_LIBRARIES};${SDL2TTF_LIBRARIES};${SDL2_LIBRARIES}" )
-
-# Include library tinyxml2
-set( LIBRARIES "${LIBRARIES};-ltinyxml2" )
-
 # Build shared library.
 add_library( ${LIBRARY_NAME} SHARED ${SOURCE_FILES} )
 set_target_properties(
