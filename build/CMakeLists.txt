@@ -26,3 +26,5 @@ add_subdirectory( samples )
 
 # TODO: Build samples' dependencies automatically.
 add_dependencies( text_area_sample ${LIBRARY_NAME} )
+
+include_directories( ${SOURCE_DIR} )

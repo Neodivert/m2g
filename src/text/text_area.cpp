@@ -159,16 +159,32 @@ void TextArea::renderTextToTexture()
     // Set the text's boundary box according to its alignment.
     boundaryBox.x = rect_.x;
     if( horizontalAlign_ == HorizontalAlign::CENTER ){
-        boundaryBox.x += (rect_.width - textSurface->w) >> 1;
+        if( static_cast< int >( rect_.width ) > textSurface->w ){
+            boundaryBox.x += (rect_.width - textSurface->w) / 2;
+        }else{
+            boundaryBox.x += (textSurface->w - rect_.width) / 2;
+        }
     }else if( horizontalAlign_ == HorizontalAlign::RIGHT ){
-        boundaryBox.x += rect_.width - textSurface->w;
+        if( static_cast< int >( rect_.width ) > textSurface->w ){
+            boundaryBox.x += rect_.width - textSurface->w;
+        }else{
+            boundaryBox.x += textSurface->w - rect_.width;
+        }
     }
 
     boundaryBox.y = rect_.y;
     if( verticalAlign_ == VerticalAlign::MIDDLE ){
-        boundaryBox.y += (rect_.height - textSurface->h) >> 1;
+        if( static_cast< int >( rect_.height ) > textSurface->h ){
+            boundaryBox.y += (rect_.height - textSurface->h) >> 1;
+        }else{
+            boundaryBox.y += (textSurface->h - rect_.height) >> 1;
+        }
     }else if( verticalAlign_ == VerticalAlign::BOTTOM ){
-        boundaryBox.y += rect_.height - textSurface->h;
+        if( static_cast< int >( rect_.height ) > textSurface->h ){
+            boundaryBox.y += rect_.height - textSurface->h;
+        }else{
+            boundaryBox.y += textSurface->h - rect_.height;
+        }
     }
 
     boundaryBox.width = textSurface->w;

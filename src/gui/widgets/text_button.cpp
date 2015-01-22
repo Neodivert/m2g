@@ -18,7 +18,7 @@
 ***/
 
 #include "text_button.hpp"
-#include <text/text_renderer.hpp>
+#include "../../text/text_renderer.hpp"
 #include <array>
 
 namespace m2g {

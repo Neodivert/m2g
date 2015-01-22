@@ -44,8 +44,6 @@ set(
     "${SOURCE_DIR}/gui/gui.hpp"
 )
 
-include_directories( ${SOURCE_DIR} )
-
 # Build shared library.
 add_library( ${LIBRARY_NAME} SHARED ${SOURCE_FILES} )
 set_target_properties(
