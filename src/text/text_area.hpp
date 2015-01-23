@@ -93,6 +93,7 @@ class TextArea : public Drawable
         VerticalAlign verticalAlign_;
 
         SDL_Texture* texture_;
+        SDL_Rect srcRect_;
 
         const TextRenderer* textRenderer_;
         unsigned int fontIndex_;

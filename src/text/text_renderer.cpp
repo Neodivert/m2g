@@ -105,6 +105,8 @@ SDL_Rect TextRenderer::renderTextToSurface( const char *text,
     std::vector< std::string > lines;
     SDL_Rect dstRect = { 0, 0, 0, 0 };
     int textWidth, textHeight;
+    SDL_Rect resRect;
+    resRect.x = 9999999;
 
     // Load the required font.
     font = fonts_.at( fontIndex );
@@ -132,6 +134,7 @@ SDL_Rect TextRenderer::renderTextToSurface( const char *text,
             dstRect.y += textSurface->h - textHeight;
         break;
     }
+    resRect.y = dstRect.y;
 
     // Render every line and blit it to the final surface.
     for( const std::string& line : lines ){
@@ -155,6 +158,9 @@ SDL_Rect TextRenderer::renderTextToSurface( const char *text,
             break;
         }
         dstRect.x += textRect.x;
+        if( dstRect.x < resRect.x ){
+            resRect.x = dstRect.x;
+        }
 
         // Blit the line surface to its final surface.
         // FIXME: Check when line's width > textRect.w.
@@ -166,7 +172,10 @@ SDL_Rect TextRenderer::renderTextToSurface( const char *text,
         dstRect.y += TTF_FontHeight( font );
     }
 
-    return dstRect;
+    resRect.w = textWidth;
+    resRect.h = textHeight;
+
+    return resRect;
 }
 
 

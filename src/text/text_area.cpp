@@ -133,7 +133,7 @@ void TextArea::setText( const std::string& text )
 void TextArea::draw() const
 {
     const SDL_Rect dstRect = boundaryBox.sdlRect();
-    SDL_RenderCopy( renderer_, texture_, nullptr, &dstRect );
+    SDL_RenderCopy( renderer_, texture_, &srcRect_, &dstRect );
 }
 
 
@@ -148,7 +148,8 @@ void TextArea::renderTextToTexture()
                 text_.c_str(),
                 fontIndex_,
                 fontColor_,
-                horizontalAlign_ );
+                horizontalAlign_,
+                &srcRect_ );
 
     if( texture_ != nullptr ){
         SDL_DestroyTexture( texture_ );
@@ -158,36 +159,36 @@ void TextArea::renderTextToTexture()
     // Set the text's boundary box according to its alignment.
     boundaryBox.x = rect_.x;
     if( horizontalAlign_ == HorizontalAlign::CENTER ){
-        if( static_cast< int >( rect_.width ) > textSurface->w ){
-            boundaryBox.x += (rect_.width - textSurface->w) / 2;
+        if( static_cast< int >( rect_.width ) > srcRect_.w ){
+            boundaryBox.x += (rect_.width - srcRect_.w) / 2;
         }else{
-            boundaryBox.x += (textSurface->w - rect_.width) / 2;
+            boundaryBox.x += (srcRect_.w - rect_.width) / 2;
         }
     }else if( horizontalAlign_ == HorizontalAlign::RIGHT ){
-        if( static_cast< int >( rect_.width ) > textSurface->w ){
-            boundaryBox.x += rect_.width - textSurface->w;
+        if( static_cast< int >( rect_.width ) > srcRect_.w ){
+            boundaryBox.x += rect_.width - srcRect_.w;
         }else{
-            boundaryBox.x += textSurface->w - rect_.width;
+            boundaryBox.x += srcRect_.w - rect_.width;
         }
     }
 
     boundaryBox.y = rect_.y;
     if( verticalAlign_ == VerticalAlign::MIDDLE ){
-        if( static_cast< int >( rect_.height ) > textSurface->h ){
-            boundaryBox.y += (rect_.height - textSurface->h) >> 1;
+        if( static_cast< int >( rect_.height ) > srcRect_.h ){
+            boundaryBox.y += (rect_.height - srcRect_.h) >> 1;
         }else{
-            boundaryBox.y += (textSurface->h - rect_.height) >> 1;
+            boundaryBox.y += (srcRect_.h - rect_.height) >> 1;
         }
     }else if( verticalAlign_ == VerticalAlign::BOTTOM ){
-        if( static_cast< int >( rect_.height ) > textSurface->h ){
-            boundaryBox.y += rect_.height - textSurface->h;
+        if( static_cast< int >( rect_.height ) > srcRect_.h ){
+            boundaryBox.y += rect_.height - srcRect_.h;
         }else{
-            boundaryBox.y += textSurface->h - rect_.height;
+            boundaryBox.y += srcRect_.h - rect_.height;
         }
     }
 
-    boundaryBox.width = textSurface->w;
-    boundaryBox.height = textSurface->h;
+    boundaryBox.width = srcRect_.w;
+    boundaryBox.height = srcRect_.h;
 
     SDL_FreeSurface( textSurface );
 }
