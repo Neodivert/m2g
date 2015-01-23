@@ -46,12 +46,11 @@ TextArea::TextArea( const Rect &rect,
 }
 
 
-TextArea::TextArea( SDL_Renderer *renderer,
-                    tinyxml2::XMLElement* xmlElement,
+TextArea::TextArea( tinyxml2::XMLElement* xmlElement,
                     const TextRenderer* textRenderer,
                     unsigned int fontIndex,
                     const SDL_Color& fontColor ) :
-    Drawable( renderer ),
+    Drawable( textRenderer->renderer() ),
     texture_( nullptr ),
     textRenderer_( textRenderer ),
     fontIndex_( fontIndex ),

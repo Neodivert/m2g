@@ -91,8 +91,7 @@ void xmlTestAreasSample( const m2g::TextRenderer& textRenderer, unsigned int fon
     tinyxml2::XMLElement* xmlRootElement =
             xmlDocument.FirstChildElement();
 
-    m2g::TextArea xmlTextArea( textRenderer.renderer(),
-                               xmlRootElement->FirstChildElement( "text_area" ),
+    m2g::TextArea xmlTextArea( xmlRootElement->FirstChildElement( "text_area" ),
                                &textRenderer,
                                fontIndex,
                                fontColor );

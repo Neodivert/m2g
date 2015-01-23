@@ -42,8 +42,7 @@ class TextArea : public Drawable
                   HorizontalAlign horizontalAlign = HorizontalAlign::CENTER,
                   VerticalAlign verticalAlign = VerticalAlign::MIDDLE );
 
-        TextArea( SDL_Renderer* renderer,
-                  tinyxml2::XMLElement* xmlElement,
+        TextArea( tinyxml2::XMLElement* xmlElement,
                   const TextRenderer* textRenderer,
                   unsigned int fontIndex,
                   const SDL_Color& fontColor );
