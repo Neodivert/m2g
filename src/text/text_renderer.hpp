@@ -65,7 +65,8 @@ class TextRenderer
         SDL_Surface* renderTextToSurface( const char* text,
                                           unsigned int fontIndex,
                                           const SDL_Color &color,
-                                          HorizontalAlign textAlign ) const;
+                                          HorizontalAlign textAlign,
+                                          SDL_Rect* textRect = nullptr ) const;
 
 
         /***

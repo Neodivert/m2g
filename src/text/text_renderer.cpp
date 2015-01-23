@@ -173,7 +173,8 @@ SDL_Rect TextRenderer::renderTextToSurface( const char *text,
 SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
                                                 unsigned int fontIndex,
                                                 const SDL_Color &color,
-                                                HorizontalAlign textAlign ) const
+                                                HorizontalAlign textAlign,
+                                                SDL_Rect* textRect ) const
 {
     std::vector< std::string > lines;
     int textWidth, textHeight;
@@ -224,12 +225,16 @@ SDL_Surface *TextRenderer::renderTextToSurface( const char *text,
         textHeight
     };
 
-    renderTextToSurface( text,
-                         fontIndex,
-                         color,
-                         textSurface,
-                         rect,
-                         textAlign );
+    SDL_Rect textRect_ =
+            renderTextToSurface( text,
+                                 fontIndex,
+                                 color,
+                                 textSurface,
+                                 rect,
+                                 textAlign );
+    if( textRect != nullptr ){
+        *textRect = textRect_;
+    }
 
     return textSurface;
 }
