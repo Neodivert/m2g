@@ -100,6 +100,8 @@ class TextArea : public Drawable
         SDL_Color fontColor_;
 };
 
+typedef std::unique_ptr< TextArea > TextAreaPtr;
+
 } // namespace m2g
 
 #endif // TEXT_AREA
