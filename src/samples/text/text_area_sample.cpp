@@ -1,6 +1,7 @@
 #include "../m2g.hpp"
 #include "../text/text_area.hpp"
 #include <iostream>
+#include <list>
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
@@ -84,6 +85,7 @@ void xmlTestAreasSample( const m2g::TextRenderer& textRenderer, unsigned int fon
 {
     SDL_Event event;
     const SDL_Color fontColor = { 0, 0, 255, 255 };
+    std::list< m2g::TextAreaPtr > textAreas;
 
     tinyxml2::XMLDocument xmlDocument;
     xmlDocument.LoadFile( "data/text_areas.xml" );
@@ -91,14 +93,24 @@ void xmlTestAreasSample( const m2g::TextRenderer& textRenderer, unsigned int fon
     tinyxml2::XMLElement* xmlRootElement =
             xmlDocument.FirstChildElement();
 
-    m2g::TextArea xmlTextArea( xmlRootElement->FirstChildElement( "text_area" ),
-                               &textRenderer,
-                               fontIndex,
-                               fontColor );
+    tinyxml2::XMLElement* xmlElement =
+            xmlRootElement->FirstChildElement( "text_area" );
+    while( xmlElement ){
+        textAreas.push_back(
+                    m2g::TextAreaPtr(
+                        new m2g::TextArea( xmlElement,
+                                           &textRenderer,
+                                           fontIndex,
+                                           fontColor ) ) );
+
+        xmlElement = xmlElement->NextSiblingElement( "text_area" );
+    }
 
     do{
         SDL_RenderClear( textRenderer.renderer() );
-        xmlTextArea.draw();
+        for( const m2g::TextAreaPtr& textArea : textAreas ){
+            textArea->draw();
+        }
         SDL_RenderPresent( textRenderer.renderer() );
 
         SDL_WaitEvent( &event );
