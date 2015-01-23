@@ -1,10 +1,67 @@
 <?xml version="1.0"?>
 
 <text_areas>
-	<text_area name="text_area_xml">
+	<text_area name="top_left">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>top</vertical_align>
+		<horizontal_align>left</horizontal_align>
+		<text>Top\nLeft</text>
+	</text_area>
+
+	<text_area name="top_center">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>top</vertical_align>
+		<horizontal_align>center</horizontal_align>
+		<text>Top\nCenter</text>
+	</text_area>
+	
+	<text_area name="top_right">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>top</vertical_align>
+		<horizontal_align>right</horizontal_align>
+		<text>Top\nRight</text>
+	</text_area>
+
+	<text_area name="middle_left">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>middle</vertical_align>
+		<horizontal_align>left</horizontal_align>
+		<text>Midle\nLeft</text>
+	</text_area>
+
+	<text_area name="middle_center">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>middle</vertical_align>
+		<horizontal_align>center</horizontal_align>
+		<text>Midle\nCenter</text>
+	</text_area>
+	
+	<text_area name="middle_right">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>middle</vertical_align>
+		<horizontal_align>right</horizontal_align>
+		<text>Midle\nRight</text>
+	</text_area>
+
+
+	<text_area name="bottom_left">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>bottom</vertical_align>
+		<horizontal_align>left</horizontal_align>
+		<text>Bottom\nLeft</text>
+	</text_area>
+
+	<text_area name="bottom_center">
 		<rect x="0" y="0" w="800" h="600" />
 		<vertical_align>bottom</vertical_align>
 		<horizontal_align>center</horizontal_align>
-		<text>Text Area\nloaded from XML</text>
+		<text>Bottom\nCenter</text>
+	</text_area>
+	
+	<text_area name="bottom_right">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>bottom</vertical_align>
+		<horizontal_align>right</horizontal_align>
+		<text>Bottom\nRight</text>
 	</text_area>
 </text_areas>
