@@ -18,6 +18,7 @@
 ***/
 
 #include "text_texture.hpp"
+#include <utility>
 
 namespace m2g {
 
@@ -35,9 +36,17 @@ TextTexture::TextTexture( SDL_Renderer *renderer,
 }
 
 
+TextTexture::TextTexture( TextTexture&& b )
+{
+    *this = std::move( b );
+}
+
+
 TextTexture::~TextTexture()
 {
-    SDL_DestroyTexture( texture );
+    if( texture ){
+        SDL_DestroyTexture( texture );
+    }
 }
 
 
@@ -48,6 +57,22 @@ TextTexture::~TextTexture()
 void TextTexture::draw( SDL_Rect dstRect ) const
 {
     SDL_RenderCopy( renderer, texture, &textRect, &dstRect );
+}
+
+
+/***
+ * 3. Operators
+ ***/
+
+TextTexture& TextTexture::operator = ( TextTexture&& b )
+{
+    renderer = b.renderer;
+    texture = b.texture;
+    textRect = b.textRect;
+
+    b.texture = nullptr;
+
+    return *this;
 }
 
 

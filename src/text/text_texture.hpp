@@ -26,10 +26,6 @@ namespace m2g {
 
 struct TextTexture
 {
-    SDL_Renderer* renderer;
-    SDL_Texture* texture;
-    const SDL_Rect textRect;
-
     /***
      * 1. Construction and destruction
      ***/
@@ -37,6 +33,7 @@ struct TextTexture
                  SDL_Surface* surface,
                  const SDL_Rect& textRect );
     TextTexture( const TextTexture& ) = delete;
+    TextTexture( TextTexture&& );
     ~TextTexture();
 
 
@@ -50,6 +47,17 @@ struct TextTexture
      * 3. Operators
      ***/
     TextTexture& operator = ( const TextTexture& ) = delete;
+    TextTexture& operator = ( TextTexture&& );
+
+
+    /***
+     * Attributes
+     ***/
+    SDL_Renderer* renderer;
+    SDL_Texture* texture;
+
+    private:
+        SDL_Rect textRect;
 };
 
 } // namespace m2g
