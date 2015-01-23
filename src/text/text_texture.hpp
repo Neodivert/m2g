@@ -38,13 +38,19 @@ struct TextTexture
 
 
     /***
-     * 2. Drawing
+     * 2. Getters
+     ***/
+    SDL_Rect textRect() const;
+
+
+    /***
+     * 3. Drawing
      ***/
     void draw( SDL_Rect dstRect ) const;
 
 
     /***
-     * 3. Operators
+     * 4. Operators
      ***/
     TextTexture& operator = ( const TextTexture& ) = delete;
     TextTexture& operator = ( TextTexture&& );
@@ -57,7 +63,7 @@ struct TextTexture
     SDL_Texture* texture;
 
     private:
-        SDL_Rect textRect;
+        SDL_Rect textRect_;
 };
 
 } // namespace m2g

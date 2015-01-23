@@ -30,7 +30,7 @@ TextTexture::TextTexture( SDL_Renderer *renderer,
                           SDL_Surface *surface,
                           const SDL_Rect &textRect ) :
     renderer( renderer ),
-    textRect( textRect )
+    textRect_( textRect )
 {
     texture = SDL_CreateTextureFromSurface( renderer, surface );
 }
@@ -51,24 +51,34 @@ TextTexture::~TextTexture()
 
 
 /***
- * 2. Drawing
+ * 2. Getters
  ***/
 
-void TextTexture::draw( SDL_Rect dstRect ) const
+SDL_Rect TextTexture::textRect() const
 {
-    SDL_RenderCopy( renderer, texture, &textRect, &dstRect );
+    return textRect_;
 }
 
 
 /***
- * 3. Operators
+ * 3. Drawing
+ ***/
+
+void TextTexture::draw( SDL_Rect dstRect ) const
+{
+    SDL_RenderCopy( renderer, texture, &textRect_, &dstRect );
+}
+
+
+/***
+ * 4. Operators
  ***/
 
 TextTexture& TextTexture::operator = ( TextTexture&& b )
 {
     renderer = b.renderer;
     texture = b.texture;
-    textRect = b.textRect;
+    textRect_ = b.textRect_;
 
     b.texture = nullptr;
 
