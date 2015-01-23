@@ -72,7 +72,7 @@ TextArea::TextArea( tinyxml2::XMLElement* xmlElement,
 void TextArea::loadFromXML( tinyxml2::XMLElement *xmlElement )
 {
     name_ = xmlElement->Attribute( "name" );
-    boundaryBox.loadFromXML( xmlElement->FirstChildElement( "rect" ) );
+    rect_.loadFromXML( xmlElement->FirstChildElement( "rect" ) );
     horizontalAlign_ =
             readHorizontalAligmentFromXML( xmlElement->FirstChildElement( "horizontal_align" ) );
     verticalAlign_ =
