@@ -54,13 +54,13 @@ class TextRenderer
                        int y,
                        HorizontalAlign textAlign = HorizontalAlign::LEFT ) const;
 
-        void renderTextToSurface( const char* text,
-                                  unsigned int fontIndex,
-                                  const SDL_Color& color,
-                                  SDL_Surface* textSurface,
-                                  const SDL_Rect& textRect,
-                                  HorizontalAlign horizontalAlign = HorizontalAlign::LEFT,
-                                  VerticalAlign verticalAlign = VerticalAlign::MIDDLE ) const;
+        SDL_Rect renderTextToSurface( const char* text,
+                                      unsigned int fontIndex,
+                                      const SDL_Color& color,
+                                      SDL_Surface* textSurface,
+                                      const SDL_Rect& textRect,
+                                      HorizontalAlign horizontalAlign = HorizontalAlign::LEFT,
+                                      VerticalAlign verticalAlign = VerticalAlign::MIDDLE ) const;
 
         SDL_Surface* renderTextToSurface( const char* text,
                                           unsigned int fontIndex,

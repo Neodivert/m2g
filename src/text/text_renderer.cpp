@@ -92,7 +92,7 @@ void TextRenderer::drawText( const char *text,
 }
 
 
-void TextRenderer::renderTextToSurface( const char *text,
+SDL_Rect TextRenderer::renderTextToSurface( const char *text,
                                         unsigned int fontIndex,
                                         const SDL_Color &color,
                                         SDL_Surface *textSurface,
@@ -165,6 +165,8 @@ void TextRenderer::renderTextToSurface( const char *text,
         //
         dstRect.y += TTF_FontHeight( font );
     }
+
+    return dstRect;
 }
 
 
