@@ -51,6 +51,10 @@ TextArea::TextArea( tinyxml2::XMLElement* xmlElement,
                     unsigned int fontIndex,
                     const SDL_Color& fontColor ) :
     Drawable( textRenderer->renderer() ),
+    rect_{ 0, 0, 0, 0 },
+    text_( "" ),
+    horizontalAlign_( HorizontalAlign::CENTER ),
+    verticalAlign_( VerticalAlign::MIDDLE ),
     texture_( nullptr ),
     textRenderer_( textRenderer ),
     fontIndex_( fontIndex ),
@@ -74,7 +78,18 @@ void TextArea::loadFromXML( tinyxml2::XMLElement *xmlElement )
     verticalAlign_ =
             readVerticalAligmentFromXML( xmlElement->FirstChildElement( "vertical_align" ) );
     if( xmlElement->FirstChildElement( "text" ) ){
-        text_ = xmlElement->FirstChildElement( "text" )->GetText();
+        text_ = "";
+        const char* text = xmlElement->FirstChildElement( "text" )->GetText();
+
+        while( *text ){
+            if( *text == '\\' && *(text+1) == 'n' ){
+                text_ += '\n';
+                text += 2;
+            }else{
+                text_ += *text;
+                text++;
+            }
+        }
     }
 }
 
