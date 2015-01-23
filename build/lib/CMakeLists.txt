@@ -1,7 +1,3 @@
-# Project files
-#file( GLOB_RECURSE SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp" ) # TODO: Remove sample and test files.
-#list( REMOVE_ITEM SOURCE_FILES "${PROJECT_SOURCE_DIR}/src/tests/main.cpp" )
-
 set( SOURCE_DIR "${PROJECT_SOURCE_DIR}/../src" )
 
 set(
