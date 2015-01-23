@@ -36,7 +36,7 @@ class TextArea : public Drawable
          ***/
         TextArea( const Rect& rect,
                   const std::string& text,
-                  TextRenderer* textRenderer,
+                  const TextRenderer* textRenderer,
                   unsigned int fontIndex,
                   const SDL_Color& fontColor,
                   HorizontalAlign horizontalAlign = HorizontalAlign::CENTER,
@@ -44,7 +44,7 @@ class TextArea : public Drawable
 
         TextArea( SDL_Renderer* renderer,
                   tinyxml2::XMLElement* xmlElement,
-                  TextRenderer* textRenderer,
+                  const TextRenderer* textRenderer,
                   unsigned int fontIndex,
                   const SDL_Color& fontColor );
 
@@ -95,7 +95,7 @@ class TextArea : public Drawable
 
         SDL_Texture* texture_;
 
-        TextRenderer* textRenderer_;
+        const TextRenderer* textRenderer_;
         unsigned int fontIndex_;
         SDL_Color fontColor_;
 };
@@ -103,12 +103,3 @@ class TextArea : public Drawable
 } // namespace m2g
 
 #endif // TEXT_AREA
-
-/*
-<text_area name="">
-        <rect x="" y="" w="" h="" />
-        <vertical_align>middle</vertical_align>
-        <horizontal_align>middle</horizontal_align>
-        <text></text>
-</text_area>
-*/

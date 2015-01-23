@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<text_areas>
+	<text_area name="text_area_xml">
+		<rect x="0" y="0" w="800" h="600" />
+		<vertical_align>bottom</vertical_align>
+		<horizontal_align>center</horizontal_align>
+		<text>Text Area\nloaded from XML</text>
+	</text_area>
+</text_areas>

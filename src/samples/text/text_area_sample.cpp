@@ -5,6 +5,10 @@
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
+void xmlTestAreasSample( const m2g::TextRenderer& textRenderer,
+                         unsigned int fontIndex );
+
+
 int main(){
     SDL_Event event;
     m2g::init();
@@ -25,7 +29,7 @@ int main(){
 
     m2g::TextArea textArea(
         { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT },
-        "Hello\nawesome world!\nPress arrows to change text alignment",
+        "Hello\nawesome world!\nPress arrows to change text alignment\nPress [ENTER] to follow with next sample",
         &textRenderer,
         fontIndex,
         { 255, 0, 0, 255 } );
@@ -66,5 +70,40 @@ int main(){
         textArea.draw();
         SDL_RenderPresent( renderer );
 
-    }while( event.type != SDL_QUIT );
+    }while( ( event.type != SDL_QUIT ) &&
+            ( ( event.type != SDL_KEYDOWN ) ||
+              ( event.key.keysym.sym != SDLK_RETURN ) ) );
+
+    if( event.type != SDL_QUIT ){
+        xmlTestAreasSample( textRenderer, fontIndex );
+    }
+}
+
+
+void xmlTestAreasSample( const m2g::TextRenderer& textRenderer, unsigned int fontIndex )
+{
+    SDL_Event event;
+    const SDL_Color fontColor = { 0, 0, 255, 255 };
+
+    tinyxml2::XMLDocument xmlDocument;
+    xmlDocument.LoadFile( "data/text_areas.xml" );
+
+    tinyxml2::XMLElement* xmlRootElement =
+            xmlDocument.FirstChildElement();
+
+    m2g::TextArea xmlTextArea( textRenderer.renderer(),
+                               xmlRootElement->FirstChildElement( "text_area" ),
+                               &textRenderer,
+                               fontIndex,
+                               fontColor );
+
+    do{
+        SDL_RenderClear( textRenderer.renderer() );
+        xmlTextArea.draw();
+        SDL_RenderPresent( textRenderer.renderer() );
+
+        SDL_WaitEvent( &event );
+    }while( ( event.type != SDL_QUIT ) &&
+            ( ( event.type != SDL_KEYDOWN ) ||
+              ( event.key.keysym.sym != SDLK_RETURN ) ) );
 }
