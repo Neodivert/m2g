@@ -17,8 +17,8 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#ifndef BOOK_HPP
-#define BOOK_HPP
+#ifndef BOOK_PAGE_HPP
+#define BOOK_PAGE_HPP
 
 namespace m2g {
 
@@ -29,4 +29,4 @@ class BookPage
 
 } // namespace m2g
 
-#endif // BOOK_HPP
+#endif // BOOK_PAGE_HPP
