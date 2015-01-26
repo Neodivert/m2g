@@ -99,7 +99,13 @@ void Book::setBackground( const char *backgroundPath )
 
 void Book::addPage( const std::string& text )
 {
-    BookPage newPage( textRenderer_, boundaryBox, text );
+    const Rect textArea = {
+        boundaryBox.x,
+        boundaryBox.y,
+        boundaryBox.width,
+        boundaryBox.height - bookNavigationText_.area().height
+    };
+    BookPage newPage( textRenderer_, textArea, text );
     addPage( newPage );
 }
 
