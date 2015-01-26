@@ -18,6 +18,7 @@
 ***/
 
 #include "book.hpp"
+#include <SDL2/SDL_image.h>
 
 namespace m2g {
 
@@ -25,17 +26,45 @@ namespace m2g {
  * 1. Construction
  ***/
 
-Book::Book( SDL_Renderer *renderer ) :
+Book::Book( SDL_Renderer *renderer, const char* backgroundPath ) :
     Drawable( renderer )
-{}
+{
+    setBackground( backgroundPath );
+}
 
 
 /***
- * 2. Drawing
+ * 2. Setters
+ ***/
+
+void Book::setBackground( const char *backgroundPath )
+{
+    SDL_Surface* bgSurface = IMG_Load( backgroundPath );
+    if( !bgSurface ){
+        throw std::runtime_error( SDL_GetError() );
+    }
+    boundaryBox.width = bgSurface->w;
+    boundaryBox.height = bgSurface->h;
+
+    background_ =
+            SDL_CreateTextureFromSurface( renderer_, bgSurface );
+    if( !background_ ){
+        throw std::runtime_error( SDL_GetError() );
+    }
+
+    SDL_FreeSurface( bgSurface );
+}
+
+
+/***
+ * 3. Drawing
  ***/
 
 void Book::draw() const
-{}
+{
+    const SDL_Rect dstRect = boundaryBox.sdlRect();
+    SDL_RenderCopy( renderer_, background_, nullptr, &dstRect );
+}
 
 
 

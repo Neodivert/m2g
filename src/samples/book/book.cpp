@@ -41,17 +41,18 @@ int main(){
     m2g::TextRenderer textRenderer( renderer );
     const unsigned int fontIndex = textRenderer.loadFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 30 );
 
-    m2g::Book book( renderer );
+    m2g::Book book( renderer, "./data/book_background.png" );
+    book.moveTo( ( WINDOW_WIDTH - book.getWidth() ) >> 1,
+                 ( WINDOW_HEIGHT - book.getHeight() ) >> 1 );
 
     (void)( fontIndex );
-    (void)( book );
 
     do{
         if( SDL_PollEvent( &event ) ){
         }
 
         SDL_RenderClear( renderer );
-        //book.draw();
+        book.draw();
         SDL_RenderPresent( renderer );
 
     }while( ( event.type != SDL_QUIT ) &&

@@ -30,13 +30,23 @@ class Book : public Drawable
         /***
          * 1. Construction
          ***/
-        Book( SDL_Renderer* renderer );
+        Book( SDL_Renderer* renderer, const char* backgroundPath );
 
 
         /***
-         * 2. Drawing
+         * 2. Setters
+         ***/
+        void setBackground( const char* backgroundPath );
+
+
+        /***
+         * 3. Drawing
          ***/
         virtual void draw() const;
+
+
+    private:
+        SDL_Texture* background_;
 };
 
 } // namespace m2g
