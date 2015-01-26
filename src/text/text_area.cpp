@@ -149,8 +149,26 @@ void TextArea::setArea( const Rect &rect )
 
 
 /***
- * 5. Drawing
+ * 5. Drawable interface
  ***/
+
+void TextArea::translate(int tx, int ty)
+{
+    rect_.x += tx;
+    rect_.y += ty;
+
+    renderTextToTexture();
+}
+
+
+void TextArea::moveTo(int x, int y)
+{
+    rect_.x = x;
+    rect_.y = y;
+
+    renderTextToTexture();
+}
+
 
 void TextArea::draw() const
 {

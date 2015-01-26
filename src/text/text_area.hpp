@@ -72,8 +72,10 @@ class TextArea : public Drawable
 
 
         /***
-         * 5. Drawing
+         * 5. Drawable interface
          ***/
+        virtual void translate( int tx, int ty );
+        virtual void moveTo( int x, int y );
         virtual void draw() const;
 
 

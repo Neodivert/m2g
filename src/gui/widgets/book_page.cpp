@@ -50,13 +50,15 @@ void BookPage::moveTo( int x, int y )
 
     textArea_.translate( xRel, yRel );
 
-    DrawablesSet::moveTo( x, y );
+    DrawablesSet::translate( xRel, yRel );
 }
 
 
 void BookPage::draw() const
 {
     textArea_.draw();
+
+    DrawablesSet::draw();
 }
 
 
