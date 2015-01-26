@@ -41,7 +41,7 @@ int main(){
     m2g::TextRenderer textRenderer( renderer );
     const unsigned int fontIndex = textRenderer.loadFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 30 );
 
-    m2g::Book book;
+    m2g::Book book( renderer );
 
     (void)( fontIndex );
     (void)( book );

@@ -21,6 +21,22 @@
 
 namespace m2g {
 
+/***
+ * 1. Construction
+ ***/
+
+Book::Book( SDL_Renderer *renderer ) :
+    Drawable( renderer )
+{}
+
+
+/***
+ * 2. Drawing
+ ***/
+
+void Book::draw() const
+{}
+
 
 
 } // namespace m2g

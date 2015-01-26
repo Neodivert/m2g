@@ -20,11 +20,23 @@
 #ifndef BOOK_HPP
 #define BOOK_HPP
 
+#include "../../drawables/drawable.hpp"
+
 namespace m2g {
 
-class Book
+class Book : public Drawable
 {
+    public:
+        /***
+         * 1. Construction
+         ***/
+        Book( SDL_Renderer* renderer );
 
+
+        /***
+         * 2. Drawing
+         ***/
+        virtual void draw() const;
 };
 
 } // namespace m2g
