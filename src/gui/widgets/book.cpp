@@ -75,13 +75,12 @@ void Book::setBackground( const char *backgroundPath )
 
 void Book::addPage( const std::string& text )
 {
-    BookPage newPage( textRenderer_, { 0, 0, getWidth(), getHeight() }, text );
+    BookPage newPage( textRenderer_, boundaryBox, text );
     addPage( newPage );
 }
 
 void Book::addPage( BookPage page )
 {
-    page.translate( boundaryBox.x, boundaryBox.y );
     pages_.push_back( page );
 
     if( currentPage_ == pages_.end() ){
@@ -140,10 +139,6 @@ void Book::translate( int tx, int ty )
 {
     bookNavigationText_.translate( tx, ty );
 
-    for( BookPage& page : pages_ ){
-        page.translate( tx, ty );
-    }
-
     Drawable::translate( tx, ty );
 }
 
@@ -152,10 +147,6 @@ void Book::moveTo( int x, int y )
 {
     const int xRel = x - boundaryBox.x;
     const int yRel = y - boundaryBox.y;
-
-    for( BookPage& page : pages_ ){
-        page.translate( xRel, yRel );
-    }
 
     bookNavigationText_.translate( xRel, yRel );
 

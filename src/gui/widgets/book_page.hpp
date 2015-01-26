@@ -20,7 +20,7 @@
 #ifndef BOOK_PAGE_HPP
 #define BOOK_PAGE_HPP
 
-#include "../../drawables/drawables_set.hpp"
+#include "../../drawables/drawable.hpp"
 #include "../../text/text_renderer.hpp"
 #include "../../text/text_area.hpp"
 
@@ -29,7 +29,7 @@ namespace m2g {
 // TODO: Implement class TextDrawable and inherit it.
 // TODO: Implement class DrawableParent or include an attribute
 // Drawable::children_ for drawing drawables following a parentship hierarchy.
-class BookPage : public DrawablesSet
+class BookPage : public Drawable
 {
     public:
         /***
@@ -42,7 +42,7 @@ class BookPage : public DrawablesSet
 
 
         /***
-         * 3. DrawablesSet interface
+         * 2. Drawable interface
          ***/
         virtual void translate( int tx, int ty );
         virtual void moveTo( int x, int y );
