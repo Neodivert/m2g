@@ -25,19 +25,21 @@ BookPage::BookPage( const TextRenderer *textRenderer,
                     const Rect &textArea,
                     const std::string &text,
                     const unsigned int fontIndex ) :
-    Drawable( textRenderer->renderer() ),
+    DrawablesSet( textRenderer->renderer() ),
     textRenderer_( textRenderer ),
     textArea_( textArea, text, textRenderer, fontIndex, {0, 0, 0, 255 } )
 {}
 
 
 /***
- * 2. Drawable interface
+ * 3. DrawablesSet interface
  ***/
 
 void BookPage::translate( int tx, int ty )
 {
     textArea_.translate( tx, ty );
+
+    DrawablesSet::translate( tx, ty );
 }
 
 
@@ -47,6 +49,8 @@ void BookPage::moveTo( int x, int y )
     const int yRel = y - boundaryBox.y;
 
     textArea_.translate( xRel, yRel );
+
+    DrawablesSet::moveTo( x, y );
 }
 
 
