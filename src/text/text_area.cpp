@@ -116,6 +116,12 @@ std::string TextArea::text() const
 }
 
 
+Rect TextArea::area() const
+{
+    return rect_;
+}
+
+
 /***
  * 4. Setters
  ***/

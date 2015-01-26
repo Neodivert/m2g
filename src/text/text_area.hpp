@@ -60,6 +60,7 @@ class TextArea : public Drawable
         VerticalAlign verticalAlign() const;
         HorizontalAlign horizontalAlign() const;
         std::string text() const;
+        Rect area() const;
 
 
         /***
