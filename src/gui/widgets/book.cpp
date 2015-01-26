@@ -71,9 +71,9 @@ void Book::setBackground( const char *backgroundPath )
  * 3. Pages management
  ***/
 
-void Book::addPage()
+void Book::addPage( const std::string& text )
 {
-    BookPage newPage;
+    BookPage newPage( textRenderer_, boundaryBox, text );
 
     pages_.push_back( newPage );
 }

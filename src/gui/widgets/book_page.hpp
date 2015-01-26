@@ -20,11 +20,39 @@
 #ifndef BOOK_PAGE_HPP
 #define BOOK_PAGE_HPP
 
+#include "../../drawables/drawable.hpp"
+#include "../../text/text_renderer.hpp"
+#include "../../text/text_area.hpp"
+
 namespace m2g {
 
-class BookPage
+// TODO: Implement class TextDrawable and inherit it.
+// TODO: Implement class DrawableParent or include an attribute
+// Drawable::children_ for drawing drawables following a parentship hierarchy.
+class BookPage : public Drawable
 {
+    public:
+        /***
+         * 1. Construction
+         ***/
+        BookPage( const TextRenderer* textRenderer,
+                  const Rect& textArea,
+                  const std::string& text,
+                  const unsigned int fontIndex = 0 );
 
+
+        /***
+         * 2. Drawable interface
+         ***/
+        virtual void translate( int tx, int ty );
+        virtual void moveTo( int x, int y );
+        virtual void draw() const;
+
+
+    private:
+        const TextRenderer* textRenderer_;
+
+        TextArea textArea_;
 };
 
 } // namespace m2g

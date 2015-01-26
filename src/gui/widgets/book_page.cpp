@@ -21,5 +21,39 @@
 
 namespace m2g {
 
+BookPage::BookPage( const TextRenderer *textRenderer,
+                    const Rect &textArea,
+                    const std::string &text,
+                    const unsigned int fontIndex ) :
+    Drawable( textRenderer_->renderer() ),
+    textRenderer_( textRenderer ),
+    textArea_( textArea, text, textRenderer, fontIndex, {0, 0, 0, 255 } )
+{}
+
+
+/***
+ * 2. Drawable interface
+ ***/
+
+void BookPage::translate( int tx, int ty )
+{
+    textArea_.translate( tx, ty );
+}
+
+
+void BookPage::moveTo( int x, int y )
+{
+    const int xRel = x - boundaryBox.x;
+    const int yRel = y - boundaryBox.y;
+
+    textArea_.translate( xRel, yRel );
+}
+
+
+void BookPage::draw() const
+{
+    textArea_.draw();
+}
+
 
 } // namespace m2g

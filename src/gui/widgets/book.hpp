@@ -20,9 +20,6 @@
 #ifndef BOOK_HPP
 #define BOOK_HPP
 
-#include "../../drawables/drawable.hpp"
-#include "../../text/text_renderer.hpp"
-#include "../../text/text_area.hpp"
 #include "book_page.hpp"
 #include <list>
 
@@ -46,7 +43,7 @@ class Book : public Drawable
         /***
          * 3. Pages management
          ***/
-        void addPage();
+        void addPage( const std::string& text = "" );
 
 
         /***
