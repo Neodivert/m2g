@@ -44,7 +44,13 @@ class Book : public Drawable
 
 
         /***
-         * 3. Drawawable interface
+         * 3. Pages management
+         ***/
+        void addPage();
+
+
+        /***
+         * 4. Drawawable interface
          ***/
         virtual void translate( int tx, int ty );
         virtual void moveTo( int x, int y );

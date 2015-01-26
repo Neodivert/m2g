@@ -68,7 +68,19 @@ void Book::setBackground( const char *backgroundPath )
 
 
 /***
- * 3. Drawawable interface
+ * 3. Pages management
+ ***/
+
+void Book::addPage()
+{
+    BookPage newPage;
+
+    pages_.push_back( newPage );
+}
+
+
+/***
+ * 4. Drawawable interface
  ***/
 
 void Book::translate( int tx, int ty )
