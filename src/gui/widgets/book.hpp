@@ -21,6 +21,8 @@
 #define BOOK_HPP
 
 #include "../../drawables/drawable.hpp"
+#include "../../text/text_renderer.hpp"
+#include "../../text/text_area.hpp"
 
 namespace m2g {
 
@@ -30,7 +32,7 @@ class Book : public Drawable
         /***
          * 1. Construction
          ***/
-        Book( SDL_Renderer* renderer, const char* backgroundPath );
+        Book( const TextRenderer* textRenderer, const char* backgroundPath, unsigned int fontIndex = 0 );
 
 
         /***
@@ -40,13 +42,19 @@ class Book : public Drawable
 
 
         /***
-         * 3. Drawing
+         * 3. Drawawable interface
          ***/
+        virtual void translate( int tx, int ty );
+        virtual void moveTo( int x, int y );
         virtual void draw() const;
 
 
     private:
+        const m2g::TextRenderer* textRenderer_;
         SDL_Texture* background_;
+
+        // TODO: Use two text buttons instead.
+        m2g::TextArea bookNavigationText_;
 };
 
 } // namespace m2g

@@ -141,6 +141,13 @@ void TextArea::setText( const std::string& text )
 }
 
 
+void TextArea::setArea( const Rect &rect )
+{
+    rect_ = rect;
+    renderTextToTexture();
+}
+
+
 /***
  * 5. Drawing
  ***/

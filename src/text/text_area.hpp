@@ -68,6 +68,7 @@ class TextArea : public Drawable
         void setVerticalAlign( VerticalAlign verticalAlign );
         void setHorizontalAlign( HorizontalAlign horizontalAlign );
         void setText( const std::string& text );
+        void setArea( const Rect& rect );
 
 
         /***

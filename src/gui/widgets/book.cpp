@@ -26,8 +26,17 @@ namespace m2g {
  * 1. Construction
  ***/
 
-Book::Book( SDL_Renderer *renderer, const char* backgroundPath ) :
-    Drawable( renderer )
+Book::Book( const TextRenderer* textRenderer, const char* backgroundPath, unsigned int fontIndex ) :
+    Drawable( textRenderer->renderer() ),
+    textRenderer_( textRenderer ),
+    bookNavigationText_(
+        { 0, 0, 0, 0 },
+        "< RePag / AvPag >",
+        textRenderer_,
+        fontIndex,
+        { 0, 0, 0, 255 },
+        HorizontalAlign::CENTER,
+        VerticalAlign::BOTTOM )
 {
     setBackground( backgroundPath );
 }
@@ -52,18 +61,40 @@ void Book::setBackground( const char *backgroundPath )
         throw std::runtime_error( SDL_GetError() );
     }
 
+    bookNavigationText_.setArea( boundaryBox );
+
     SDL_FreeSurface( bgSurface );
 }
 
 
 /***
- * 3. Drawing
+ * 3. Drawawable interface
  ***/
+
+void Book::translate( int tx, int ty )
+{
+    bookNavigationText_.translate( tx, ty );
+
+    Drawable::translate( tx, ty );
+}
+
+
+void Book::moveTo( int x, int y )
+{
+    const int xRel = x - boundaryBox.x;
+    const int yRel = y - boundaryBox.y;
+
+    bookNavigationText_.translate( xRel, yRel );
+
+    Drawable::moveTo( x, y );
+}
+
 
 void Book::draw() const
 {
     const SDL_Rect dstRect = boundaryBox.sdlRect();
     SDL_RenderCopy( renderer_, background_, nullptr, &dstRect );
+    bookNavigationText_.draw();
 }
 
 
