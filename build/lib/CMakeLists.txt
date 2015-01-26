@@ -20,6 +20,7 @@ set(
     "${SOURCE_DIR}/text/text_renderer.cpp"
     "${SOURCE_DIR}/gui/widgets/text_button.cpp"
     "${SOURCE_DIR}/gui/widgets/book.cpp"
+    "${SOURCE_DIR}/gui/widgets/book_page.cpp"
     "${SOURCE_DIR}/gui/gui.cpp"
 )
 set(
@@ -43,6 +44,7 @@ set(
     "${SOURCE_DIR}/gui/widgets/widget.hpp"
     "${SOURCE_DIR}/gui/widgets/text_button.hpp"
     "${SOURCE_DIR}/gui/widgets/book.hpp"
+    "${SOURCE_DIR}/gui/widgets/book_page.hpp"
     "${SOURCE_DIR}/gui/gui.hpp"
 )
 
