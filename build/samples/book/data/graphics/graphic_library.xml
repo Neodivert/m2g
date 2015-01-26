@@ -16,7 +16,7 @@
 				</collision_rects>
 			</tileset>
 			<animation_states>
-				<animation_state firstFrame="0" lastFrame="0" backFrame="0" />
+				<animation_state firstFrame="0" lastFrame="59" backFrame="0" />
 			</animation_states>
 		</animation>
 
