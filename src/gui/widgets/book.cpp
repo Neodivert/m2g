@@ -76,8 +76,12 @@ void Book::setBackground( const char *backgroundPath )
 void Book::addPage( const std::string& text )
 {
     BookPage newPage( textRenderer_, boundaryBox, text );
+    addPage( newPage );
+}
 
-    pages_.push_back( newPage );
+void Book::addPage( BookPage page )
+{
+    pages_.push_back( page );
 
     if( currentPage_ == pages_.end() ){
         currentPage_ = pages_.begin();

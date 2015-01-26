@@ -45,6 +45,7 @@ class Book : public Widget
          * 3. Pages management
          ***/
         void addPage( const std::string& text = "" );
+        void addPage( BookPage page );
 
 
         /***

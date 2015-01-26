@@ -25,7 +25,7 @@ BookPage::BookPage( const TextRenderer *textRenderer,
                     const Rect &textArea,
                     const std::string &text,
                     const unsigned int fontIndex ) :
-    Drawable( textRenderer_->renderer() ),
+    Drawable( textRenderer->renderer() ),
     textRenderer_( textRenderer ),
     textArea_( textArea, text, textRenderer, fontIndex, {0, 0, 0, 255 } )
 {}
