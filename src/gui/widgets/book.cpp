@@ -44,6 +44,30 @@ Book::Book( const TextRenderer* textRenderer, const char* backgroundPath, unsign
 }
 
 
+Book::Book( const TextRenderer *textRenderer,
+            tinyxml2::XMLElement *xmlElement,
+            unsigned int fontIndex ) :
+    Drawable( textRenderer->renderer() ),
+    Widget( textRenderer->renderer() ),
+    textRenderer_( textRenderer ),
+    bookNavigationText_( // FIXME: Duplicated initialization
+        { 0, 0, 0, 0 },
+        "< RePag / AvPag >",
+        textRenderer_,
+        fontIndex,
+        { 0, 0, 0, 255 },
+        HorizontalAlign::CENTER,
+        VerticalAlign::BOTTOM ),
+    currentPage_( pages_.begin() )
+{
+    xmlElement = xmlElement->FirstChildElement( "background" );
+    if( !xmlElement ){
+        throw std::runtime_error( "No \"background\" node in XML" );
+    }
+    setBackground( xmlElement->GetText() );
+}
+
+
 /***
  * 2. Setters
  ***/

@@ -33,6 +33,7 @@ class Book : public Widget
          * 1. Construction
          ***/
         Book( const TextRenderer* textRenderer, const char* backgroundPath, unsigned int fontIndex = 0 );
+        Book( const TextRenderer* textRenderer, tinyxml2::XMLElement* xmlElement, unsigned int fontIndex = 0 );
 
 
         /***

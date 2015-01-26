@@ -41,7 +41,9 @@ int main(){
     m2g::TextRenderer textRenderer( renderer );
     const unsigned int fontIndex = textRenderer.loadFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 30 );
 
-    m2g::Book book( &textRenderer, "./data/book_background.png", fontIndex );
+    tinyxml2::XMLDocument document;
+    document.LoadFile( "./data/book.xml" );
+    m2g::Book book( &textRenderer, document.FirstChildElement( "book" ), fontIndex );
     book.moveTo( ( WINDOW_WIDTH - book.getWidth() ) >> 1,
                  ( WINDOW_HEIGHT - book.getHeight() ) >> 1 );
     book.addPage( "This is\nthe first\npage");
