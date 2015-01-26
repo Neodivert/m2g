@@ -43,7 +43,8 @@ class DrawablesSet : public Drawable
         /***
          * 2. Drawables management
          ***/
-        DrawablePtr addDrawable( DrawablePtr newDrawable, float x = 0.0f, float y = 0.0f );
+        DrawablePtr addDrawable( DrawablePtr newDrawable );
+        DrawablePtr addDrawable( DrawablePtr newDrawable, int x, int y );
 
 
         /***

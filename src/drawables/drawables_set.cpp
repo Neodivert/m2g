@@ -38,7 +38,22 @@ DrawablesSet::DrawablesSet( SDL_Renderer *renderer ) :
  * 2. Drawables management
  ***/
 
-DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable, float x, float y )
+DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable )
+{
+    int x, y;
+
+    x = boundaryBox.x + ( abs( boundaryBox.width - newDrawable->getWidth() ) >> 1 );
+    if( drawables_.size() ){
+        y = drawables_.back()->getX() + drawables_.back()->getWidth();
+    }else{
+        y = boundaryBox.y;
+    }
+
+    return addDrawable( newDrawable, x, y );
+}
+
+
+DrawablePtr DrawablesSet::addDrawable( DrawablePtr newDrawable, int x, int y )
 {
     // Move the given drawable to its final position.
     newDrawable->moveTo( x, y );

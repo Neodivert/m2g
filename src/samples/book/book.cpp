@@ -51,7 +51,7 @@ int main(){
 
     m2g::BookPage page( &textRenderer, { 0, 0, book.getWidth(), book.getHeight() }, "This is\nthe third\npage" );
     m2g::DrawablePtr fire = m2g::DrawablePtr( new m2g::Animation( renderer, graphics.getAnimationData( "fire.png" ) ) );
-    page.addDrawable( fire, 0, 0 );
+    page.addDrawable( fire );
 
     book.addPage( "This is\nthe first\npage");
     book.addPage( "This is\nthe second\npage");
