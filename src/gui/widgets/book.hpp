@@ -23,6 +23,8 @@
 #include "../../drawables/drawable.hpp"
 #include "../../text/text_renderer.hpp"
 #include "../../text/text_area.hpp"
+#include "book_page.hpp"
+#include <list>
 
 namespace m2g {
 
@@ -55,6 +57,8 @@ class Book : public Drawable
 
         // TODO: Use two text buttons instead.
         m2g::TextArea bookNavigationText_;
+
+        std::list< BookPage > pages_;
 };
 
 } // namespace m2g
