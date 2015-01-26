@@ -62,6 +62,7 @@ class Book : public Drawable
         m2g::TextArea bookNavigationText_;
 
         std::list< BookPage > pages_;
+        std::list< BookPage >::const_iterator currentPage_;
 };
 
 } // namespace m2g

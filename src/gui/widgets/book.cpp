@@ -36,7 +36,8 @@ Book::Book( const TextRenderer* textRenderer, const char* backgroundPath, unsign
         fontIndex,
         { 0, 0, 0, 255 },
         HorizontalAlign::CENTER,
-        VerticalAlign::BOTTOM )
+        VerticalAlign::BOTTOM ),
+    currentPage_( pages_.begin() )
 {
     setBackground( backgroundPath );
 }
@@ -76,6 +77,10 @@ void Book::addPage( const std::string& text )
     BookPage newPage( textRenderer_, boundaryBox, text );
 
     pages_.push_back( newPage );
+
+    if( currentPage_ == pages_.end() ){
+        currentPage_ = pages_.begin();
+    }
 }
 
 
@@ -106,6 +111,11 @@ void Book::draw() const
 {
     const SDL_Rect dstRect = boundaryBox.sdlRect();
     SDL_RenderCopy( renderer_, background_, nullptr, &dstRect );
+
+    if( currentPage_ != pages_.end() ){
+        currentPage_->draw();
+    }
+
     bookNavigationText_.draw();
 }
 
