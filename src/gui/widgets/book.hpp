@@ -78,7 +78,7 @@ class Book : public Widget
         std::list< BookPage > pages_;
         std::list< BookPage >::const_iterator currentPage_;
 
-
+        // TODO: Add a "finish callback".
 };
 
 } // namespace m2g
