@@ -22,10 +22,11 @@
 
 #include "book_page.hpp"
 #include <list>
+#include "widget.hpp"
 
 namespace m2g {
 
-class Book : public Drawable
+class Book : public Widget
 {
     public:
         /***
@@ -47,7 +48,20 @@ class Book : public Drawable
 
 
         /***
-         * 4. Drawawable interface
+         * 4. Pages navigation
+         ***/
+        void nextPage();
+        void previousPage();
+
+
+        /***
+         * 5. EventListener interface
+         ***/
+        virtual bool handleEvent(const SDL_Event &event);
+
+
+        /***
+         * 6. Drawawable interface
          ***/
         virtual void translate( int tx, int ty );
         virtual void moveTo( int x, int y );
@@ -63,6 +77,8 @@ class Book : public Drawable
 
         std::list< BookPage > pages_;
         std::list< BookPage >::const_iterator currentPage_;
+
+
 };
 
 } // namespace m2g

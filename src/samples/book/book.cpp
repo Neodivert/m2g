@@ -49,6 +49,7 @@ int main(){
 
     do{
         if( SDL_PollEvent( &event ) ){
+            book.handleEvent( event );
         }
 
         SDL_RenderClear( renderer );

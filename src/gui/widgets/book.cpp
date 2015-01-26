@@ -28,6 +28,7 @@ namespace m2g {
 
 Book::Book( const TextRenderer* textRenderer, const char* backgroundPath, unsigned int fontIndex ) :
     Drawable( textRenderer->renderer() ),
+    Widget( textRenderer->renderer() ),
     textRenderer_( textRenderer ),
     bookNavigationText_(
         { 0, 0, 0, 0 },
@@ -85,7 +86,49 @@ void Book::addPage( const std::string& text )
 
 
 /***
- * 4. Drawawable interface
+ * 4. Pages navigation
+ ***/
+
+void Book::nextPage()
+{
+    if( currentPage_ != pages_.end() ){
+        currentPage_++;
+    }
+}
+
+
+void Book::previousPage()
+{
+    if( currentPage_ != pages_.begin() ){
+        currentPage_--;
+    }
+}
+
+
+/***
+ * 5. EventListener interface
+ ***/
+
+bool Book::handleEvent( const SDL_Event &event )
+{
+    if( currentPage_ != pages_.end() ){
+        if( event.type == SDL_KEYDOWN ){
+            SDL_Keycode key = event.key.keysym.sym;
+            if( key == SDLK_PAGEDOWN ){
+                nextPage();
+                return true;
+            }else if( key == SDLK_PAGEUP ){
+                previousPage();
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+/***
+ * 6. Drawawable interface
  ***/
 
 void Book::translate( int tx, int ty )
@@ -109,14 +152,14 @@ void Book::moveTo( int x, int y )
 
 void Book::draw() const
 {
-    const SDL_Rect dstRect = boundaryBox.sdlRect();
-    SDL_RenderCopy( renderer_, background_, nullptr, &dstRect );
-
     if( currentPage_ != pages_.end() ){
-        currentPage_->draw();
-    }
+        const SDL_Rect dstRect = boundaryBox.sdlRect();
+        SDL_RenderCopy( renderer_, background_, nullptr, &dstRect );
 
-    bookNavigationText_.draw();
+        currentPage_->draw();
+
+        bookNavigationText_.draw();
+    }
 }
 
 
