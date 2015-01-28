@@ -10,4 +10,4 @@ before_install:
   - sudo apt-get install -y libtinyxml2-dev libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
 # Building
-script: cmake && make
+script: cd ./build && cmake && make
