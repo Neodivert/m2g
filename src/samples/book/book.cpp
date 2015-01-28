@@ -46,8 +46,11 @@ int main(){
     m2g::Book book( &textRenderer, document.FirstChildElement( "book" ), fontIndex );
     book.moveTo( ( WINDOW_WIDTH - book.getWidth() ) >> 1,
                  ( WINDOW_HEIGHT - book.getHeight() ) >> 1 );
+
+    /*
     book.addPage( "This is\nthe first\npage");
     book.addPage( "This is\nthe second\npage");
+    */
 
     do{
         if( SDL_PollEvent( &event ) ){

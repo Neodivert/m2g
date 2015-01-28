@@ -31,8 +31,30 @@ BookPage::BookPage( const TextRenderer *textRenderer,
 {}
 
 
+BookPage::BookPage( const TextRenderer *textRenderer,
+                    const Rect &textArea,
+                    tinyxml2::XMLElement* xmlElement,
+                    const unsigned int fontIndex ) :
+    Drawable( textRenderer->renderer() ),
+    textRenderer_( textRenderer ),
+    textArea_( textArea, "", textRenderer, fontIndex, {0, 0, 0, 255 } )
+{
+    textArea_.setText( TextRenderer::processControlCharacters( xmlElement->GetText() ) );
+}
+
+
 /***
- * 2. Drawable interface
+ * 2. Setters
+ ***/
+
+void BookPage::setTextArea( const Rect &textArea )
+{
+    textArea_.setArea( textArea );
+}
+
+
+/***
+ * 3. Drawable interface
  ***/
 
 void BookPage::translate( int tx, int ty )

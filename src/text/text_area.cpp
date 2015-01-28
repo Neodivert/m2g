@@ -81,15 +81,7 @@ void TextArea::loadFromXML( tinyxml2::XMLElement *xmlElement )
         text_ = "";
         const char* text = xmlElement->FirstChildElement( "text" )->GetText();
 
-        while( *text ){
-            if( *text == '\\' && *(text+1) == 'n' ){
-                text_ += '\n';
-                text += 2;
-            }else{
-                text_ += *text;
-                text++;
-            }
-        }
+        text_ = TextRenderer::processControlCharacters( text );
     }
 }
 
@@ -151,6 +143,24 @@ void TextArea::setArea( const Rect &rect )
 {
     rect_ = rect;
     renderTextToTexture();
+}
+
+
+void TextArea::translate(int tx, int ty)
+{
+    rect_.x += tx;
+    rect_.y += ty;
+
+    Drawable::translate( tx, ty );
+}
+
+
+void TextArea::moveTo(int x, int y)
+{
+    rect_.x = x;
+    rect_.y = y;
+
+    Drawable::moveTo( x, y );
 }
 
 

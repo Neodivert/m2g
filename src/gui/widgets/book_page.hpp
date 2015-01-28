@@ -23,6 +23,7 @@
 #include "../../drawables/drawable.hpp"
 #include "../../text/text_renderer.hpp"
 #include "../../text/text_area.hpp"
+#include <tinyxml2.h>
 
 namespace m2g {
 
@@ -39,10 +40,20 @@ class BookPage : public Drawable
                   const Rect& textArea,
                   const std::string& text,
                   const unsigned int fontIndex = 0 );
+        BookPage( const TextRenderer* textRenderer,
+                  const Rect& textArea,
+                  tinyxml2::XMLElement* xmlElement,
+                  const unsigned int fontIndex = 0 );
 
 
         /***
-         * 2. Drawable interface
+         * 2. Setters
+         ***/
+        void setTextArea( const Rect& textArea );
+
+
+        /***
+         * 3. Drawable interface
          ***/
         virtual void translate( int tx, int ty );
         virtual void moveTo( int x, int y );

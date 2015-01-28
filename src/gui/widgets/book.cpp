@@ -65,6 +65,13 @@ Book::Book( const TextRenderer *textRenderer,
         throw std::runtime_error( "No \"background\" node in XML" );
     }
     setBackground( xmlElement->GetText() );
+
+    xmlElement = xmlElement->NextSiblingElement( "page" );
+    while( xmlElement ){
+        addPage( BookPage( textRenderer, textArea_, xmlElement ) );
+
+        xmlElement = xmlElement->NextSiblingElement( "page" );
+    }
 }
 
 
@@ -88,6 +95,12 @@ void Book::setBackground( const char *backgroundPath )
     }
 
     bookNavigationText_.setArea( boundaryBox );
+    textArea_ = {
+        boundaryBox.x,
+        boundaryBox.y,
+        boundaryBox.width,
+        boundaryBox.height - bookNavigationText_.getHeight()
+    };
 
     SDL_FreeSurface( bgSurface );
 }
@@ -99,18 +112,13 @@ void Book::setBackground( const char *backgroundPath )
 
 void Book::addPage( const std::string& text )
 {
-    const Rect textArea = {
-        boundaryBox.x,
-        boundaryBox.y,
-        boundaryBox.width,
-        boundaryBox.height - bookNavigationText_.area().height
-    };
-    BookPage newPage( textRenderer_, textArea, text );
+    BookPage newPage( textRenderer_, textArea_, text );
     addPage( newPage );
 }
 
 void Book::addPage( BookPage page )
 {
+    page.setTextArea( textArea_ ); // TODO: Create a method BookPage::resize() or Widget::resize().
     pages_.push_back( page );
 
     if( currentPage_ == pages_.end() ){
@@ -168,6 +176,12 @@ bool Book::handleEvent( const SDL_Event &event )
 void Book::translate( int tx, int ty )
 {
     bookNavigationText_.translate( tx, ty );
+    textArea_.x += tx;
+    textArea_.y += ty;
+
+    for( BookPage& page : pages_ ){
+        page.translate( tx, ty );
+    }
 
     Drawable::translate( tx, ty );
 }
@@ -179,6 +193,12 @@ void Book::moveTo( int x, int y )
     const int yRel = y - boundaryBox.y;
 
     bookNavigationText_.translate( xRel, yRel );
+    textArea_.x += xRel;
+    textArea_.y += yRel;
+
+    for( BookPage& page : pages_ ){
+        page.translate( yRel, yRel );
+    }
 
     Drawable::moveTo( x, y );
 }

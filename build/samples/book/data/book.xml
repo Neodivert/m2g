@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <book>
 	<background>./data/book_background.png</background>
+	<page>This is\nthe first\npage</page>
+	<page>This is the second page</page>
+	<page>This is the third\nand\nlast\npage</page>
 </book>

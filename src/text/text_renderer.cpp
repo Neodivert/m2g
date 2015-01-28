@@ -255,6 +255,24 @@ SDL_Renderer *TextRenderer::renderer() const
 }
 
 
+std::string TextRenderer::processControlCharacters(const char* srcStr )
+{
+    std::string dstStr;
+
+    while( *srcStr ){
+        if( *srcStr == '\\' && *(srcStr+1) == 'n' ){
+            dstStr += '\n';
+            srcStr += 2;
+        }else{
+            dstStr += *srcStr;
+            srcStr++;
+        }
+    }
+
+    return dstStr;
+}
+
+
 /***
  * 4. Auxiliar methods
  ***/
