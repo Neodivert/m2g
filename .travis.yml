@@ -10,8 +10,17 @@ before_script:
   - sudo apt-get update -q
   - sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
-# Dependencies (tinyxml2)
+# Dependencies (gcc 4.8)
+before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
+
 install:
+  - sudo apt-get install -qq gcc-4.8 g++-4.8 
+  # We want to compile with g++ 4.8 when rather than the default g++
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+
+# Dependencies (tinyxml2)
   - wget https://github.com/leethomason/tinyxml2/archive/2.2.0.tar.gz
   - tar -xzvf 2.2.0.tar.gz
   - cd tinyxml2-2.2.0 && cmake . && make && sudo make install && cd ..
