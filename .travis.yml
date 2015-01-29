@@ -16,5 +16,10 @@ install:
   - tar -xzvf 2.2.0.tar.gz
   - cd tinyxml2-2.2.0 && cmake . && make && sudo make install && cd ..
 
+# Dependencies (glm)
+  - wget https://github.com/g-truc/glm/archive/0.9.6.1.tar.gz
+  - tar -xzvf 0.9.6.1.tar.gz
+  - cd glm-0.9.6.1 && cmake . && make && sudo make install && cd ..
+
 # Building
 script: cd build && cmake . && make
