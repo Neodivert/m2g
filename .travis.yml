@@ -17,4 +17,4 @@ install:
   - cd tinyxml2-2.2.0 && cmake . && make && sudo make install
 
 # Building
-script: cd ./build && cmake . && make
+script: cd ./m2g/build && cmake . && make
