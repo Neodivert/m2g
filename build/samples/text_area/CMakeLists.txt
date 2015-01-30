@@ -9,5 +9,5 @@ add_executable(
 add_dependencies( text_area_sample ${LIBRARY_NAME} )
 target_link_libraries(
     "text_area_sample"
-    ${PROJECT_SOURCE_DIR}/lib/libm2g.so
+    ${PROJECT_SOURCE_DIR}/lib/libm2g.so;${LIBRARIES}
 )
