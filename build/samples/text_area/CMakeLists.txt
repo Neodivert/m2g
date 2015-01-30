@@ -6,7 +6,8 @@ add_executable(
     "text_area_sample"
     "${SAMPLES_SOURCE_DIR}/text/text_area_sample.cpp"
 )
+add_dependencies( text_area_sample ${LIBRARY_NAME} )
 target_link_libraries(
     "text_area_sample"
-    "${PROJECT_SOURCE_DIR}/lib/libm2g.so;${LIBRARIES}"
+    ${PROJECT_SOURCE_DIR}/lib/libm2g.so
 )
