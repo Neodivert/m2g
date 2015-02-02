@@ -4,4 +4,4 @@ include_directories( ${TESTS_SOURCE_DIR} )
 
 # TODO: Create a function that lists all the source files in
 # ${TESTS_SOURCE_DIR} and pass it to add_executable.
-add_executable( samples "${TESTS_SOURCE_DIR}/m2g.cpp" )
+add_executable( samples "${TESTS_SOURCE_DIR}/m2g.cpp" "${TESTS_SOURCE_DIR}/testing.hpp" )
