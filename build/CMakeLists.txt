@@ -23,6 +23,7 @@ set( LIBRARIES "${LIBRARIES};tinyxml2" )
 
 add_subdirectory( lib )
 add_subdirectory( samples )
+add_subdirectory( tests )
 
 # TODO: Build samples' dependencies automatically.
 
