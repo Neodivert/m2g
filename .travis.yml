@@ -33,5 +33,7 @@ install:
   - tar -xzvf 0.9.6.1.tar.gz
   - cd glm-0.9.6.1 && cmake . && make && sudo make install && cd ..
 
-# Building
-script: cd build && cmake . && make
+# Building and automatic testing
+script: 
+  - cd build && cmake . && make
+  - ./tests/samples
