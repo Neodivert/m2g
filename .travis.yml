@@ -19,6 +19,10 @@ install:
   # We want to compile with g++ 4.8 when rather than the default g++
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
 
+# Dependencies (CATCH)
+  - wget https://raw.github.com/philsquared/Catch/master/single_include/catch.hpp
+  - sudo mv catch.hpp /usr/include
+
 # Dependencies (tinyxml2)
   - wget https://github.com/leethomason/tinyxml2/archive/2.2.0.tar.gz
   - tar -xzvf 2.2.0.tar.gz
