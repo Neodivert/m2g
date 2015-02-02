@@ -36,4 +36,4 @@ install:
 # Building and automatic testing
 script: 
   - cd build && cmake . && make
-  - ./tests/samples
+  - ./tests/tests
