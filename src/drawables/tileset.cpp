@@ -230,6 +230,21 @@ const std::vector<Rect> &Tileset::collisionRects( unsigned int tile ) const
 }
 
 
+sf::IntRect Tileset::tileRect( unsigned int tile ) const
+{
+    sf::IntRect tileRect_;
+    const unsigned int row = tile / nTiles_;
+    const unsigned int column = tile % nTiles_;
+
+    tileRect_.left = column * tileWidth;
+    tileRect_.top = row * tileHeight;
+    tileRect_.width = tileWidth;
+    tileRect_.height = tileHeight;
+
+    return tileRect_;
+}
+
+
 /***
  * 5. Drawing
  ***/

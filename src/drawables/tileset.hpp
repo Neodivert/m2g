@@ -60,6 +60,7 @@ class Tileset : public sf::Texture
         unsigned int nTiles() const;
         glm::ivec2 tileDimensions() const;
         const std::vector< Rect >& collisionRects( unsigned int tile ) const;
+        sf::IntRect tileRect( unsigned int tile ) const;
 
 
         /***
