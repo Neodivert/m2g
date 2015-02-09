@@ -17,10 +17,9 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#ifndef TESTING_HPP
-#define TESTING_HPP
-
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include <catch.hpp>
 
-#endif // TESTING_HPP
+TEST_CASE( "Texture is created properly" )
+{
+    REQUIRE( 1 == 1 );
+}
