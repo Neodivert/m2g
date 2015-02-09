@@ -32,7 +32,8 @@ install:
   - wget http://www.sfml-dev.org/files/SFML-2.2-linux-gcc-64-bit.tar.gz
   - tar -xzvf SFML-2.2-linux-gcc-64-bit.tar.gz
   - sudo mv SFML-2.2/include/SFML /usr/include/
-  - sudo mv SFML-2.2/lib/* /usr/lib/
+  - sudo mv SFML-2.2/lib/libsfml-* /usr/lib/
+  - sudo mv SFML-2.2/lib/pkgconfig/sfml-* /usr/lib/pkgconfig/
   - sudo mv SFML-2.2/SFML/share/SFML /usr/share/
 
 # Dependencies (glm)
