@@ -24,10 +24,11 @@
 #include <memory>
 #include <vector>
 #include <tinyxml2.h>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace m2g {
 
-class Tileset
+class Tileset : public sf::Texture
 {
     public:
         /***
