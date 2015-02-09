@@ -20,7 +20,6 @@
 #include "m2g.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 
 namespace m2g {
 
@@ -35,11 +34,6 @@ void init()
     // TODO: Move to a new "m2g_init()" function?
     if( IMG_Init( IMG_INIT_PNG ) != IMG_INIT_PNG ){
         throw std::runtime_error( IMG_GetError() );
-    }
-
-    // Initialize SDL_ttf
-    if( TTF_Init() < 0 ){
-        throw std::runtime_error( TTF_GetError() );
     }
 }
 

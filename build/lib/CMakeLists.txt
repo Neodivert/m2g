@@ -13,10 +13,6 @@ set(
     "${SOURCE_DIR}/drawables/animation.cpp"
     "${SOURCE_DIR}/graphics_library.cpp"
     "${SOURCE_DIR}/m2g.cpp"
-    "${SOURCE_DIR}/text/text_surface.cpp"
-    "${SOURCE_DIR}/text/text_texture.cpp"
-    "${SOURCE_DIR}/text/text_area.cpp"
-    "${SOURCE_DIR}/text/text_renderer.cpp"
 )
 set(
     HEADER_FILES
@@ -31,10 +27,6 @@ set(
     "${SOURCE_DIR}/drawables/animation.hpp"
     "${SOURCE_DIR}/graphics_library.hpp"
     "${SOURCE_DIR}/m2g.hpp"
-    "${SOURCE_DIR}/text/text_surface.hpp"
-    "${SOURCE_DIR}/text/text_texture.hpp"
-    "${SOURCE_DIR}/text/text_area.hpp"
-    "${SOURCE_DIR}/text/text_renderer.hpp"
 )
 
 # Build shared library.

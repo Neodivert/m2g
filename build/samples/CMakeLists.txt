@@ -8,6 +8,4 @@ function( create_sample executable sources )
 	target_link_libraries( ${executable} ${LIBRARY_PATH};${LIBRARIES} )
 endfunction()
 
-add_subdirectory( text_area )
-
 # TODO: Install samples (where?).

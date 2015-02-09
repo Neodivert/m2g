@@ -25,6 +25,5 @@ TEST_CASE( "m2g is initialized properly" )
     m2g::init();
 
     REQUIRE( ( SDL_WasInit( SDL_INIT_VIDEO ) & SDL_INIT_VIDEO ) != 0 );
-    REQUIRE( TTF_WasInit() == 1 );
     // TODO: Can't test if SDL_image was init?
 }
