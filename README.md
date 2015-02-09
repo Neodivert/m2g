@@ -13,7 +13,7 @@ Active. This project is being developed (branch "experimental") along with the [
 1. Install the required dependencies 
 
 ```
-sudo apt-get install libtinyxml2-dev libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libglm-dev catch
+sudo apt-get install libtinyxml2-dev libsdl2-dev libsdl2-image-dev libglm-dev catch
 ```
 
 2. Clone this repository in local.
