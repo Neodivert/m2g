@@ -13,15 +13,10 @@ set(
     "${SOURCE_DIR}/drawables/animation.cpp"
     "${SOURCE_DIR}/graphics_library.cpp"
     "${SOURCE_DIR}/m2g.cpp"
-    "${SOURCE_DIR}/gui/widgets/widget.cpp"
     "${SOURCE_DIR}/text/text_surface.cpp"
     "${SOURCE_DIR}/text/text_texture.cpp"
     "${SOURCE_DIR}/text/text_area.cpp"
     "${SOURCE_DIR}/text/text_renderer.cpp"
-    "${SOURCE_DIR}/gui/widgets/text_button.cpp"
-    "${SOURCE_DIR}/gui/widgets/book.cpp"
-    "${SOURCE_DIR}/gui/widgets/book_page.cpp"
-    "${SOURCE_DIR}/gui/gui.cpp"
 )
 set(
     HEADER_FILES
@@ -40,12 +35,6 @@ set(
     "${SOURCE_DIR}/text/text_texture.hpp"
     "${SOURCE_DIR}/text/text_area.hpp"
     "${SOURCE_DIR}/text/text_renderer.hpp"
-    "${SOURCE_DIR}/gui/interfaces/event_listener.hpp"
-    "${SOURCE_DIR}/gui/widgets/widget.hpp"
-    "${SOURCE_DIR}/gui/widgets/text_button.hpp"
-    "${SOURCE_DIR}/gui/widgets/book.hpp"
-    "${SOURCE_DIR}/gui/widgets/book_page.hpp"
-    "${SOURCE_DIR}/gui/gui.hpp"
 )
 
 # Build shared library.

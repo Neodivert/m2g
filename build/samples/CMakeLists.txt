@@ -9,6 +9,5 @@ function( create_sample executable sources )
 endfunction()
 
 add_subdirectory( text_area )
-add_subdirectory( book )
 
 # TODO: Install samples (where?).
