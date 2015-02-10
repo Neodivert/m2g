@@ -20,10 +20,7 @@
 #ifndef TILESET_HPP
 #define TILESET_HPP
 
-#include "drawable.hpp"
 #include <memory>
-#include <vector>
-#include <tinyxml2.h>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace m2g {
@@ -34,60 +31,7 @@ class Tileset : public sf::Texture
         /***
          * 1. Initialization and destruction.
          ***/
-        Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder );
-        Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
         Tileset( const std::string& imagePath, unsigned int tileWidth, unsigned int tileHeight );
-        ~Tileset();
-
-
-        /***
-         * 2. Loading
-         ***/
-        void load( const tinyxml2::XMLNode* xmlNode, const char* folder );
-        void load( SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
-
-
-        /***
-         * 3. Collision rects management
-         ***/
-        void addCollisionRect( unsigned int tile,
-                               const Rect& rect );
-
-
-        /***
-         * 4. Getters
-         ***/
-        std::string name() const;
-        unsigned int nTiles() const;
-        glm::ivec2 tileDimensions() const;
-        const std::vector< Rect >& collisionRects( unsigned int tile ) const;
-        sf::IntRect tileRect( unsigned int tile ) const;
-
-
-        /***
-         * 5. Drawing
-         ***/
-        void drawTile( unsigned int tile, int x, int y ) const;
-
-
-    private:
-        // Tile dimensions.
-        unsigned int tileWidth;
-        unsigned int tileHeight;
-
-        // Tileset number of elements.
-        unsigned int nRows;
-        unsigned int nColumns;
-        unsigned int nTiles_;
-
-        // Name of the tileset's base image.
-        std::string name_;
-
-        // We keep a vector of collision rects for each tile in the tileset.
-        std::vector< std::vector< Rect > > collisionRects_;
-
-        SDL_Renderer* renderer_;
-        SDL_Texture* texture_;
 };
 
 typedef std::shared_ptr< const Tileset > TilesetPtr;
