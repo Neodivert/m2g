@@ -37,10 +37,10 @@ TEST_CASE( "Tileset gives right image dimensions (different components)" )
 {
     m2g::Tileset tileset( "./data/test_tileset.png" , 32, 64 );
 
-    const sf::Vector2u tileDimensions = tileset.dimensions();
+    const sf::Vector2u dimensions = tileset.dimensions();
 
-    REQUIRE( tileDimensions.x == 256 );
-    REQUIRE( tileDimensions.y == 128 );
+    REQUIRE( dimensions.x == 256 );
+    REQUIRE( dimensions.y == 128 );
 }
 
 
@@ -48,10 +48,10 @@ TEST_CASE( "Tileset gives right image dimensions (same components)" )
 {
     m2g::Tileset tileset( "./data/tileset_w64_h64.png" , 32, 64 );
 
-    const sf::Vector2u tileDimensions = tileset.dimensions();
+    const sf::Vector2u dimensions = tileset.dimensions();
 
-    REQUIRE( tileDimensions.x == 64 );
-    REQUIRE( tileDimensions.y == 64 );
+    REQUIRE( dimensions.x == 64 );
+    REQUIRE( dimensions.y == 64 );
 }
 
 
