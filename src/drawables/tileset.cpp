@@ -19,6 +19,7 @@
 
 #include "tileset.hpp"
 #include <SDL2/SDL_image.h>
+#include <fstream>
 
 namespace m2g {
 
@@ -30,7 +31,11 @@ namespace m2g {
 Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned int tileHeight ) :
     tileDimensions_( tileWidth, tileHeight )
 {
-    (void)( imagePath );
+    std::ifstream file( imagePath.c_str() );
+    if( !file.is_open() ){
+        throw std::runtime_error( "File not found" );
+    }
+    file.close();
 }
 
 

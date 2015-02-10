@@ -23,13 +23,19 @@
 
 TEST_CASE( "Tileset is created properly" )
 {
-    REQUIRE_NOTHROW( m2g::Tileset( ".data/tileset_w32_h64.png" , 32, 64 ); );
+    REQUIRE_NOTHROW( m2g::Tileset( "./data/test_tileset.png" , 32, 64 ); );
+}
+
+
+TEST_CASE( "Tileset is not found on disk" )
+{
+    REQUIRE_THROWS( m2g::Tileset( "./data/not_found.png" , 32, 32 ); );
 }
 
 
 TEST_CASE( "Tileset gives right tile dimensions (different components)" )
 {
-    m2g::Tileset tileset( ".data/test_tileset.png", 32, 64 );
+    m2g::Tileset tileset( "./data/test_tileset.png", 32, 64 );
 
     const sf::Vector2u tileDimensions = tileset.tileDimensions();
 
@@ -40,7 +46,7 @@ TEST_CASE( "Tileset gives right tile dimensions (different components)" )
 
 TEST_CASE( "Tileset gives right tile dimensions (equal components)" )
 {
-    m2g::Tileset tileset( ".data/test_tileset.png", 32, 32 );
+    m2g::Tileset tileset( "./data/test_tileset.png", 32, 32 );
 
     const sf::Vector2u tileDimensions = tileset.tileDimensions();
 
