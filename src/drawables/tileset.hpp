@@ -32,6 +32,16 @@ class Tileset : public sf::Texture
          * 1. Initialization and destruction.
          ***/
         Tileset( const std::string& imagePath, unsigned int tileWidth, unsigned int tileHeight );
+
+
+        /***
+         * 2. Getters
+         ***/
+        sf::Vector2u tileDimensions() const;
+
+
+    private:
+        sf::Vector2u tileDimensions_;
 };
 
 typedef std::shared_ptr< const Tileset > TilesetPtr;

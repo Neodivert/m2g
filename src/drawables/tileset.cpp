@@ -27,11 +27,20 @@ namespace m2g {
  * 1. Initialization and destruction.
  ***/
 
-Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned int tileHeight )
+Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned int tileHeight ) :
+    tileDimensions_( tileWidth, tileHeight )
 {
     (void)( imagePath );
-    (void)( tileWidth );
-    (void)( tileHeight );
+}
+
+
+/***
+ * 2. Getters
+ ***/
+
+sf::Vector2u Tileset::tileDimensions() const
+{
+    return tileDimensions_;
 }
 
 

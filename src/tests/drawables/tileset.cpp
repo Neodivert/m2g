@@ -27,3 +27,12 @@ TEST_CASE( "Tileset is created properly" )
 }
 
 
+TEST_CASE( "Tileset gives right tile dimensions" )
+{
+    m2g::Tileset tileset( ".data/tileset_w32_h64.png", 32, 64 );
+
+    const sf::Vector2u tileDimensions = tileset.tileDimensions();
+
+    REQUIRE( tileDimensions.x == 32 );
+    REQUIRE( tileDimensions.y == 64 );
+}
