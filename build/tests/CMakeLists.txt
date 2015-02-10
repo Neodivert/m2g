@@ -4,6 +4,6 @@ include_directories( ${TESTS_SOURCE_DIR} )
 
 # TODO: Create a function that lists all the source files in
 # ${TESTS_SOURCE_DIR} and pass it to add_executable.
-add_executable( tests "${TESTS_SOURCE_DIR}/m2g.cpp" "${TESTS_SOURCE_DIR}/drawables/tileset.cpp" )
+add_executable( tests "${TESTS_SOURCE_DIR}/drawables/tileset.cpp" )
 add_dependencies( tests ${LIBRARY_NAME} )
 target_link_libraries( tests ${LIBRARY_PATH};${LIBRARIES} )

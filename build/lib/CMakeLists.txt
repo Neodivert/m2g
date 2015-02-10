@@ -2,31 +2,31 @@ set( SOURCE_DIR "${PROJECT_SOURCE_DIR}/../src" )
 
 set(
     SOURCE_FILES
-    "${SOURCE_DIR}/utilities/alignment.cpp"
-    "${SOURCE_DIR}/utilities/rect.cpp"
-    "${SOURCE_DIR}/drawables/drawable.cpp"
-    "${SOURCE_DIR}/drawables/drawables_set.cpp"
+    #"${SOURCE_DIR}/utilities/alignment.cpp"
+    #"${SOURCE_DIR}/utilities/rect.cpp"
+    #"${SOURCE_DIR}/drawables/drawable.cpp"
+    #"${SOURCE_DIR}/drawables/drawables_set.cpp"
     "${SOURCE_DIR}/drawables/tileset.cpp"
-    "${SOURCE_DIR}/drawables/collidable.cpp"
-    "${SOURCE_DIR}/drawables/sprite.cpp"
-    "${SOURCE_DIR}/drawables/animation_data.cpp"
-    "${SOURCE_DIR}/drawables/animation.cpp"
-    "${SOURCE_DIR}/graphics_library.cpp"
-    "${SOURCE_DIR}/m2g.cpp"
+    #"${SOURCE_DIR}/drawables/collidable.cpp"
+    #"${SOURCE_DIR}/drawables/sprite.cpp"
+    #"${SOURCE_DIR}/drawables/animation_data.cpp"
+    #"${SOURCE_DIR}/drawables/animation.cpp"
+    #"${SOURCE_DIR}/graphics_library.cpp"
+    #"${SOURCE_DIR}/m2g.cpp"
 )
 set(
     HEADER_FILES
-    "${SOURCE_DIR}/utilities/alignment.hpp"
-    "${SOURCE_DIR}/utilities/rect.hpp"
-    "${SOURCE_DIR}/drawables/drawable.hpp"
-    "${SOURCE_DIR}/drawables/drawables_set.hpp"
+    #"${SOURCE_DIR}/utilities/alignment.hpp"
+    #"${SOURCE_DIR}/utilities/rect.hpp"
+    #"${SOURCE_DIR}/drawables/drawable.hpp"
+    #"${SOURCE_DIR}/drawables/drawables_set.hpp"
     "${SOURCE_DIR}/drawables/tileset.hpp"
-    "${SOURCE_DIR}/drawables/collidable.hpp"
-    "${SOURCE_DIR}/drawables/sprite.hpp"
-    "${SOURCE_DIR}/drawables/animation_data.hpp"
-    "${SOURCE_DIR}/drawables/animation.hpp"
-    "${SOURCE_DIR}/graphics_library.hpp"
-    "${SOURCE_DIR}/m2g.hpp"
+    #"${SOURCE_DIR}/drawables/collidable.hpp"
+    #"${SOURCE_DIR}/drawables/sprite.hpp"
+    #"${SOURCE_DIR}/drawables/animation_data.hpp"
+    #"${SOURCE_DIR}/drawables/animation.hpp"
+    #"${SOURCE_DIR}/graphics_library.hpp"
+    #"${SOURCE_DIR}/m2g.hpp"
 )
 
 # Build shared library.
