@@ -47,6 +47,14 @@ Tileset::Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int til
 }
 
 
+Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned int tileHeight )
+{
+    (void)( imagePath );
+    (void)( tileWidth );
+    (void)( tileHeight );
+}
+
+
 Tileset::~Tileset()
 {
     // Free the texture.

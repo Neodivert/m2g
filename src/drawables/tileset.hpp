@@ -36,6 +36,7 @@ class Tileset : public sf::Texture
          ***/
         Tileset( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder );
         Tileset( SDL_Renderer* renderer, SDL_Surface* surface, unsigned int tileWidth, unsigned int tileHeight );
+        Tileset( const std::string& imagePath, unsigned int tileWidth, unsigned int tileHeight );
         ~Tileset();
 
 

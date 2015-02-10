@@ -19,8 +19,11 @@
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include <catch.hpp>
+#include "../../drawables/tileset.hpp"
 
-TEST_CASE( "Texture is created properly" )
+TEST_CASE( "Tileset is created properly" )
 {
-    REQUIRE( 1 == 1 );
+    REQUIRE_NOTHROW( m2g::Tileset( ".data/tileset_w32_h64.png" , 32, 64 ); );
 }
+
+
