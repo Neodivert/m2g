@@ -33,6 +33,28 @@ TEST_CASE( "Tileset is not found on disk" )
 }
 
 
+TEST_CASE( "Tileset gives right image dimensions (different components)" )
+{
+    m2g::Tileset tileset( "./data/test_tileset.png" , 32, 64 );
+
+    const sf::Vector2u tileDimensions = tileset.dimensions();
+
+    REQUIRE( tileDimensions.x == 256 );
+    REQUIRE( tileDimensions.y == 128 );
+}
+
+
+TEST_CASE( "Tileset gives right image dimensions (same components)" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png" , 32, 64 );
+
+    const sf::Vector2u tileDimensions = tileset.dimensions();
+
+    REQUIRE( tileDimensions.x == 64 );
+    REQUIRE( tileDimensions.y == 64 );
+}
+
+
 TEST_CASE( "Tileset gives right tile dimensions (different components)" )
 {
     m2g::Tileset tileset( "./data/test_tileset.png", 32, 64 );

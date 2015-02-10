@@ -36,6 +36,7 @@ Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned
         throw std::runtime_error( "File not found" );
     }
     file.close();
+    this->loadFromFile( imagePath );
 }
 
 
@@ -46,6 +47,12 @@ Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned
 sf::Vector2u Tileset::tileDimensions() const
 {
     return tileDimensions_;
+}
+
+
+sf::Vector2u Tileset::dimensions() const
+{
+    return this->getSize();
 }
 
 

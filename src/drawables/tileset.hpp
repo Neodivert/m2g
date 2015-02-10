@@ -38,6 +38,7 @@ class Tileset : public sf::Texture
          * 2. Getters
          ***/
         sf::Vector2u tileDimensions() const;
+        sf::Vector2u dimensions() const;
 
 
     private:
