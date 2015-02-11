@@ -21,6 +21,16 @@
 #include <catch.hpp>
 #include "../../drawables/tileset.hpp"
 
+/*
+ * TODO: Add tests
+ * - Loading a tileset with width > MAX_WIDTH must throw
+ * - Loading a tileset with height > MAX_HEIGHT must throw
+ * - Loading a tileset with tileWidth > texture's width must throw
+ * - Loading a tileset with tileHeight > texture's must throw
+ * - Loading a tileset with texture's width % tileWidth must throw
+ * - Loading a tileset with texture's height % tileHeight must throw
+ */
+
 TEST_CASE( "Tileset is created properly" )
 {
     REQUIRE_NOTHROW( m2g::Tileset( "./data/test_tileset.png" , 32, 64 ); );
