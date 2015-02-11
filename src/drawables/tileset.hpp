@@ -25,7 +25,7 @@
 
 namespace m2g {
 
-class Tileset : public sf::Texture
+class Tileset
 {
     public:
         /***
@@ -43,6 +43,7 @@ class Tileset : public sf::Texture
 
 
     private:
+        sf::Texture texture_;
         sf::Vector2u tileDimensions_;
 };
 

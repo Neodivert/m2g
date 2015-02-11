@@ -36,7 +36,7 @@ Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned
         throw std::runtime_error( "File not found" );
     }
     file.close();
-    this->loadFromFile( imagePath );
+    texture_.loadFromFile( imagePath );
 }
 
 
@@ -52,14 +52,14 @@ sf::Vector2u Tileset::tileDimensions() const
 
 sf::Vector2u Tileset::dimensions() const
 {
-    return this->getSize();
+    return texture_.getSize();
 }
 
 
 sf::IntRect Tileset::tileRect( unsigned int tile ) const
 {
-    const unsigned int nRows = getSize().y / tileDimensions_.y;
-    const unsigned int nColumns = getSize().x / tileDimensions_.x;
+    const unsigned int nRows = texture_.getSize().y / tileDimensions_.y;
+    const unsigned int nColumns = texture_.getSize().x / tileDimensions_.x;
 
     if( tile >= nRows * nColumns ){
         throw std::out_of_range( "tile " +
