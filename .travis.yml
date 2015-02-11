@@ -38,7 +38,7 @@ install:
   - sudo mv SFML-2.2/share/SFML /usr/share/
 
 # Dependencies (glm)
-  - wget https://github.com/g-truc/glm/archive/0.9.6.1.tar.gz
+  - wget --retry-connrefused https://github.com/g-truc/glm/archive/0.9.6.1.tar.gz
   - tar -xzvf 0.9.6.1.tar.gz
   - cd glm-0.9.6.1 && cmake . && make && sudo make install && cd ..
 
