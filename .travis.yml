@@ -30,7 +30,7 @@ install:
 
 # Dependencies (glew)
   - wget --retry-connrefused http://security.ubuntu.com/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
-  - sudo apt-get install ./libglew1.10_1.10.0-3_amd64.deb
+  - sudo dpkg -i ./libglew1.10_1.10.0-3_amd64.deb
 
 # Dependencies (sfml)
   - sudo apt-get install libgl1-mesa-dev libx11-xcb-dev x11-xserver-utils libfreetype6-dev libjpeg-dev sndfile-tools libopenal-dev
