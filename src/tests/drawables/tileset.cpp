@@ -33,6 +33,32 @@ TEST_CASE( "Tileset is not found on disk" )
 }
 
 
+TEST_CASE( "Tileset gives correct tile rect" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png" , 32, 32 );
+
+    sf::IntRect tileRect = tileset.tileRect( 0 );
+    REQUIRE( tileRect == sf::IntRect( 0, 0, 32, 32 ) );
+
+    tileRect = tileset.tileRect( 1 );
+    REQUIRE( tileRect == sf::IntRect( 32, 0, 32, 32 ) );
+
+    tileRect = tileset.tileRect( 2 );
+    REQUIRE( tileRect == sf::IntRect( 0, 32, 32, 32 ) );
+
+    tileRect = tileset.tileRect( 3 );
+    REQUIRE( tileRect == sf::IntRect( 32, 32, 32, 32 ) );
+}
+
+
+TEST_CASE( "Tileset throws when a invalid tile index is fetched" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png" , 32, 32 );
+
+    REQUIRE_THROWS_AS( tileset.tileRect( 5 ), std::out_of_range );
+}
+
+
 TEST_CASE( "Tileset gives right image dimensions (different components)" )
 {
     m2g::Tileset tileset( "./data/test_tileset.png" , 32, 64 );

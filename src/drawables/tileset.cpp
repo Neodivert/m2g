@@ -56,4 +56,27 @@ sf::Vector2u Tileset::dimensions() const
 }
 
 
+sf::IntRect Tileset::tileRect( unsigned int tile ) const
+{
+    const unsigned int nRows = getSize().y / tileDimensions_.y;
+    const unsigned int nColumns = getSize().x / tileDimensions_.x;
+
+    if( tile >= nRows * nColumns ){
+        throw std::out_of_range( "tile " +
+                                 std::to_string( tile ) +
+                                 ") out of bounds (" +
+                                 std::to_string( nRows * nColumns )
+                                 + ")" );
+    }
+
+    const unsigned int row = tile / nRows;
+    const unsigned int column = tile % nRows;
+
+    return sf::IntRect( column * tileDimensions_.x,
+                        row * tileDimensions_.y,
+                        tileDimensions_.x,
+                        tileDimensions_.y );
+}
+
+
 } // Namespace m2g

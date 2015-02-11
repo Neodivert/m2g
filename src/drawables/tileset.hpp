@@ -39,6 +39,7 @@ class Tileset : public sf::Texture
          ***/
         sf::Vector2u tileDimensions() const;
         sf::Vector2u dimensions() const;
+        sf::IntRect tileRect( unsigned int tile ) const;
 
 
     private:
