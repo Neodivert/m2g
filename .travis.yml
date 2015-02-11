@@ -29,7 +29,7 @@ install:
   - cd tinyxml2-2.2.0 && cmake . && make && sudo make install && cd ..
 
 # Dependencies (glew)
-  - http://security.ubuntu.com/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
+  - wget --retry-connrefused http://security.ubuntu.com/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
   - sudo apt-get install libglew1.10_1.10.0-3_amd64.deb
 
 # Dependencies (sfml)
