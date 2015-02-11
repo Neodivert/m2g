@@ -33,7 +33,7 @@ install:
   - sudo dpkg -i ./libglew1.10_1.10.0-3_amd64.deb
 
 # Dependencies (sfml)
-  - sudo apt-get install libgl1-mesa-dev libx11-xcb-dev x11-xserver-utils libfreetype6-dev libjpeg-dev sndfile-tools libopenal-dev
+  - sudo apt-get install libgl1-mesa-dev libudev-dev libx11-xcb-dev x11-xserver-utils libfreetype6-dev libjpeg-dev sndfile-tools libopenal-dev
   - wget http://www.sfml-dev.org/files/SFML-2.2-linux-gcc-64-bit.tar.gz
   - tar -xzvf SFML-2.2-linux-gcc-64-bit.tar.gz
   - sudo mv SFML-2.2/include/SFML /usr/include/
