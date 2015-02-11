@@ -28,8 +28,12 @@ install:
   - tar -xzvf 2.2.0.tar.gz
   - cd tinyxml2-2.2.0 && cmake . && make && sudo make install && cd ..
 
+# Dependencies (glew)
+  - http://security.ubuntu.com/ubuntu/pool/main/g/glew/libglew1.10_1.10.0-3_amd64.deb
+  - sudo apt-get install libglew1.10_1.10.0-3_amd64.deb
+
 # Dependencies (sfml)
-  - sudo apt-get install libgl1-mesa-dev libx11-xcb-dev x11-xserver-utils libfreetype6-dev libglew-dev libjpeg-dev sndfile-tools libopenal-dev
+  - sudo apt-get install libgl1-mesa-dev libx11-xcb-dev x11-xserver-utils libfreetype6-dev libjpeg-dev sndfile-tools libopenal-dev
   - wget http://www.sfml-dev.org/files/SFML-2.2-linux-gcc-64-bit.tar.gz
   - tar -xzvf SFML-2.2-linux-gcc-64-bit.tar.gz
   - sudo mv SFML-2.2/include/SFML /usr/include/
