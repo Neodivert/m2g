@@ -46,6 +46,10 @@ install:
   - tar -xzvf 0.9.6.1.tar.gz
   - cd glm-0.9.6.1 && cmake . && make && sudo make install && cd ..
 
+# Dependencies (udev)
+  - wget --retry-connrefused http://es.archive.ubuntu.com/ubuntu/pool/main/s/systemd/libudev1_204-5ubuntu20_amd64.deb
+  - sudo dpkg -i libudev1_204-5ubuntu20_amd64.deb
+
 # Building and automatic testing
 script: 
   - cd build && cmake . && make
