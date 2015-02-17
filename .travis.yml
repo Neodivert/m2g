@@ -24,7 +24,7 @@ install:
   - sudo mv catch.hpp /usr/include
 
 # Dependencies (tinyxml2)
-  - wget https://github.com/leethomason/tinyxml2/archive/2.2.0.tar.gz
+  - wget --retry-connrefused https://github.com/leethomason/tinyxml2/archive/2.2.0.tar.gz
   - tar -xzvf 2.2.0.tar.gz
   - cd tinyxml2-2.2.0 && cmake . && make && sudo make install && cd ..
 
