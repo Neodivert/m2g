@@ -79,4 +79,10 @@ sf::IntRect Tileset::tileRect( unsigned int tile ) const
 }
 
 
+const sf::Texture &Tileset::texture() const
+{
+   return texture_;
+}
+
+
 } // Namespace m2g
