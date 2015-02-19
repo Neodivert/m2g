@@ -37,6 +37,13 @@ Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned
     }
     file.close();
     texture_.loadFromFile( imagePath );
+
+    if( tileWidth > texture_.getSize().x ){
+        throw std::invalid_argument( "Tileset constructor - tile width can't be greater thant tileset width" );
+    }
+    if( tileHeight > texture_.getSize().y ){
+        throw std::invalid_argument( "Tileset constructor - tile height can't be greater thant tileset height" );
+    }
 }
 
 

@@ -25,8 +25,6 @@
  * TODO: Add tests
  * - Loading a tileset with width > MAX_WIDTH must throw
  * - Loading a tileset with height > MAX_HEIGHT must throw
- * - Loading a tileset with tileWidth > texture's width must throw
- * - Loading a tileset with tileHeight > texture's must throw
  * - Loading a tileset with texture's width % tileWidth must throw
  * - Loading a tileset with texture's height % tileHeight must throw
  */
@@ -40,6 +38,18 @@ TEST_CASE( "Tileset is created properly" )
 TEST_CASE( "Tileset is not found on disk" )
 {
     REQUIRE_THROWS( m2g::Tileset( "./data/not_found.png" , 32, 32 ); );
+}
+
+
+TEST_CASE( "Loading a tileset with tileWidth > texture's width must throw" )
+{
+    REQUIRE_THROWS_AS( m2g::Tileset( "./data/tileset_w64_h64.png", 65, 64 ), std::invalid_argument );
+}
+
+
+TEST_CASE( "Loading a tileset with tileHeight > texture's must throw" )
+{
+    REQUIRE_THROWS_AS( m2g::Tileset( "./data/tileset_w64_h64.png", 64, 65 ), std::invalid_argument );
 }
 
 
