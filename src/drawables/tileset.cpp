@@ -41,8 +41,14 @@ Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned
     if( tileWidth > texture_.getSize().x ){
         throw std::invalid_argument( "Tileset constructor - tile width can't be greater thant tileset width" );
     }
+    if( texture_.getSize().x % tileWidth ){
+        throw std::invalid_argument( "Tileset constructor - tileset width must be dividable by tile width" );
+    }
     if( tileHeight > texture_.getSize().y ){
         throw std::invalid_argument( "Tileset constructor - tile height can't be greater thant tileset height" );
+    }
+    if( texture_.getSize().y % tileHeight ){
+        throw std::invalid_argument( "Tileset constructor - tileset height must be dividable by tile height" );
     }
 }
 
