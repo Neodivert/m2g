@@ -27,6 +27,8 @@
  * - Loading a tileset with height > MAX_HEIGHT must throw
  */
 
+// TODO: Check exception's messages.
+
 TEST_CASE( "Tileset is created properly" )
 {
     REQUIRE_NOTHROW( m2g::Tileset( "./data/test_tileset.png" , 32, 64 ); );
