@@ -6,6 +6,7 @@ include_directories( ${TESTS_SOURCE_DIR} )
 # ${TESTS_SOURCE_DIR} and pass it to add_executable.
 add_executable(
     tests
+    "${TESTS_SOURCE_DIR}/main.cpp"
     "${TESTS_SOURCE_DIR}/drawables/tileset.cpp"
     "${TESTS_SOURCE_DIR}/drawables/tile_sprite.cpp" )
 add_dependencies( tests ${LIBRARY_NAME} )
