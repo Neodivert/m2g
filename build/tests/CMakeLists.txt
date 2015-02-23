@@ -10,4 +10,4 @@ add_executable(
     "${TESTS_SOURCE_DIR}/drawables/tileset.cpp"
     "${TESTS_SOURCE_DIR}/drawables/tile_sprite.cpp" )
 add_dependencies( tests ${LIBRARY_NAME} )
-target_link_libraries( tests ${LIBRARY_PATH};${LIBRARIES} )
+target_link_libraries( tests ${LIBRARY_PATH};-lgmock;-pthread;${LIBRARIES} )

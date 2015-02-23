@@ -19,10 +19,15 @@
 
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
+#include <gmock/gmock.h>
 
-int main( int argc, char* const argv[] )
+int main( int argc, char* argv[] )
 {
-  int testsResult = Catch::Session().run( argc, argv );
+    // Initialize Google Mock.
+    ::testing::GTEST_FLAG( throw_on_failure ) = true;
+    ::testing::InitGoogleMock( &argc, argv );
 
-  return testsResult;
+    // Run Catch unit testing.
+    int testsResult = Catch::Session().run( argc, argv );
+    return testsResult;
 }
