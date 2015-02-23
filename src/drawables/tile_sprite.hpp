@@ -21,10 +21,11 @@
 #define TILE_SPRITE
 
 #include "tileset.hpp"
+#include <SFML/Graphics/Sprite.hpp>
 
 namespace m2g {
 
-class TileSprite
+class TileSprite : public sf::Sprite
 {
     public:
         /***
@@ -37,6 +38,12 @@ class TileSprite
          * 2. Getters
          ***/
         const Tileset& tileset() const;
+
+
+        /***
+         * 3. Setters
+         ***/
+        void setTile( unsigned int tile );
 
 
     private:

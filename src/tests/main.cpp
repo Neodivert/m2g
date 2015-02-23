@@ -29,5 +29,6 @@ int main( int argc, char* argv[] )
 
     // Run Catch unit testing.
     int testsResult = Catch::Session().run( argc, argv );
+
     return testsResult;
 }

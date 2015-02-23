@@ -18,7 +18,9 @@
 ***/
 
 #include <catch.hpp>
+#include "mocks/mock_tileset.hpp"
 #include "../drawables/tile_sprite.hpp"
+using ::testing::AtLeast;
 
 
 TEST_CASE( "Tile sprite returns associated tileset" )
@@ -27,4 +29,14 @@ TEST_CASE( "Tile sprite returns associated tileset" )
     m2g::TileSprite sprite( tileset );
 
     REQUIRE( &( sprite.tileset() ) == &tileset );
+}
+
+
+TEST_CASE( "Calling Tileset::setTile() references the given tile in the associated tile" )
+{
+    MockTileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    EXPECT_CALL( tileset, tileRect( 0 ) ).WillOnce( testing::Return( sf::IntRect() ) );
+
+    m2g::TileSprite sprite( tileset );
+    sprite.setTile( 0 );
 }

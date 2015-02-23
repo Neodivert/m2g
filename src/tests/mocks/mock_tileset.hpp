@@ -25,8 +25,12 @@
 
 class MockTileset : public m2g::Tileset
 {
-    MOCK_CONST_METHOD1( tileRect, sf::IntRect( unsigned int tile ) );
-    MOCK_CONST_METHOD0( texture, sf::Texture&() );
+    public:
+        MockTileset( const std::string &imagePath, unsigned int tileWidth, unsigned int tileHeight ) :
+            Tileset( imagePath, tileWidth, tileHeight ){}
+
+        MOCK_CONST_METHOD1( tileRect, sf::IntRect( unsigned int tile ) );
+        MOCK_CONST_METHOD0( texture, sf::Texture&() );
 };
 
 #endif // MOCK_TILESET

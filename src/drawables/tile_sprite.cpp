@@ -39,4 +39,14 @@ const m2g::Tileset &m2g::TileSprite::tileset() const
     return *tileset_;
 }
 
+
+/***
+ * 3. Setters
+ ***/
+
+void TileSprite::setTile( unsigned int tile )
+{
+    this->setTextureRect( tileset_->tileRect( tile ) );
+}
+
 } // namespace m2g

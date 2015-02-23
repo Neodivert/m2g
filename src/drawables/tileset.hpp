@@ -39,8 +39,8 @@ class Tileset
          ***/
         sf::Vector2u tileDimensions() const;
         sf::Vector2u dimensions() const;
-        sf::IntRect tileRect( unsigned int tile ) const;
-        const sf::Texture& texture() const;
+        virtual sf::IntRect tileRect( unsigned int tile ) const;
+        virtual const sf::Texture& texture() const;
 
 
     private:
