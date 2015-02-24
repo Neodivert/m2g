@@ -20,6 +20,7 @@
 #include <catch.hpp>
 #include "mocks/mock_tileset.hpp"
 #include "../drawables/tile_sprite.hpp"
+#include <stdexcept>
 using ::testing::AtLeast;
 
 
@@ -45,4 +46,13 @@ TEST_CASE( "Calling Tileset::setTile() references the given tile in the associat
     sprite.setTile( 1 );
     sprite.setTile( 2 );
     sprite.setTile( 3 );
+}
+
+
+TEST_CASE( "Calling Tileset::setTile() with a invalid tile throws std::out_of_range" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    m2g::TileSprite sprite( tileset );
+
+    REQUIRE_THROWS_AS( sprite.setTile( 5 ), std::out_of_range );
 }
