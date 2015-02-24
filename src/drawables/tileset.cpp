@@ -94,8 +94,43 @@ sf::IntRect Tileset::tileRect( unsigned int tile ) const
 
 const sf::Texture &Tileset::texture() const
 {
-   return texture_;
+    return texture_;
 }
 
+
+std::list<sf::IntRect> Tileset::collisionRects( unsigned int tile ) const
+{
+    std::list<sf::IntRect> collisionRects;
+
+    for( const TilesetCollisionRect& colRect : collisionRects_ ){
+        if( tile >= colRect.firstTile && tile <= colRect.lastTile ){
+            collisionRects.push_back( colRect.rect );
+        }
+    }
+
+    return collisionRects;
+}
+
+
+/***
+ * 3. Collision rects
+ ***/
+
+void Tileset::addCollisionRect( const sf::IntRect &rect )
+{
+    const unsigned int nRows = texture_.getSize().y / tileDimensions_.y;
+    const unsigned int nColumns = texture_.getSize().x / tileDimensions_.x;
+
+    addCollisionRect( rect, 0, nRows * nColumns );
+}
+
+
+void Tileset::addCollisionRect( const sf::IntRect &rect,
+                                unsigned int firstTile,
+                                unsigned int lastTile )
+{
+    TilesetCollisionRect colRect = { rect, firstTile, lastTile };
+    collisionRects_.push_back( colRect );
+}
 
 } // Namespace m2g

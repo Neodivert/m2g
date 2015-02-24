@@ -22,8 +22,17 @@
 
 #include <memory>
 #include <SFML/Graphics/Texture.hpp>
+#include <list>
 
 namespace m2g {
+
+struct TilesetCollisionRect
+{
+    sf::IntRect rect;
+    unsigned int firstTile;
+    unsigned int lastTile;
+};
+
 
 class Tileset
 {
@@ -41,11 +50,22 @@ class Tileset
         sf::Vector2u dimensions() const;
         virtual sf::IntRect tileRect( unsigned int tile ) const;
         virtual const sf::Texture& texture() const;
+        std::list< sf::IntRect > collisionRects( unsigned int tile ) const;
+
+
+        /***
+         * 3. Collision rects
+         ***/
+        void addCollisionRect( const sf::IntRect& rect );
+        void addCollisionRect( const sf::IntRect& rect,
+                               unsigned int firstTile,
+                               unsigned int lastTile );
 
 
     private:
         sf::Texture texture_;
         sf::Vector2u tileDimensions_;
+        std::list< TilesetCollisionRect > collisionRects_;
 };
 
 typedef std::shared_ptr< const Tileset > TilesetPtr;

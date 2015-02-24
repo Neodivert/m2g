@@ -132,3 +132,52 @@ TEST_CASE( "Tileset gives right tile dimensions (equal components)" )
     REQUIRE( tileDimensions.x == 32 );
     REQUIRE( tileDimensions.y == 32 );
 }
+
+
+TEST_CASE( "Tileset::collisionRects() returns an empty list when called on a new Tileset" )
+{
+    m2g::Tileset tileset( "./data/test_tileset.png", 32, 32 );
+
+    for( unsigned int i = 0; i < 4; i++ ){
+        std::list< sf::IntRect > rects = tileset.collisionRects( i );
+
+        REQUIRE( rects.size() == 0 );
+    }
+}
+
+
+TEST_CASE( "Tileset::collisionRects() returns the collision rects added to a tileset" )
+{
+    m2g::Tileset tileset( "./data/test_tileset.png", 32, 32 );
+    std::list< sf::IntRect > rects;
+    rects.push_back( { 1, 0, 24, 15 } );
+    rects.push_back( { 3, 0, 15, 17 } );
+    rects.push_back( { 3, 6, 5, 9 } );
+
+    for( const sf::IntRect& rect : rects ){
+        tileset.addCollisionRect( rect );
+    }
+
+    for( unsigned int i = 0; i < 4; i++ ){
+        REQUIRE( tileset.collisionRects( i ) == rects );
+    }
+}
+
+
+TEST_CASE( "Tileset::collisionRects() returns the collision rects added to a range of tiles" )
+{
+    m2g::Tileset tileset( "./data/test_tileset.png", 32, 32 );
+    std::list< sf::IntRect > rects;
+    rects.push_back( { 1, 0, 24, 15 } );
+    rects.push_back( { 3, 0, 15, 17 } );
+    rects.push_back( { 3, 6, 5, 9 } );
+
+    for( const sf::IntRect& rect : rects ){
+        tileset.addCollisionRect( rect, 1, 2 );
+    }
+
+    REQUIRE( tileset.collisionRects( 0 ).size() == 0 );
+    REQUIRE( tileset.collisionRects( 1 ) == rects );
+    REQUIRE( tileset.collisionRects( 2 ) == rects );
+    REQUIRE( tileset.collisionRects( 3 ).size() == 0 );
+}
