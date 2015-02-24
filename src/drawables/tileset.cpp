@@ -50,6 +50,9 @@ Tileset::Tileset( const std::string &imagePath, unsigned int tileWidth, unsigned
     if( texture_.getSize().y % tileHeight ){
         throw std::invalid_argument( "Tileset constructor - tileset height must be dividable by tile height" );
     }
+
+    nRows_ = texture_.getSize().y / tileDimensions_.y;
+    nColumns_ = texture_.getSize().x / tileDimensions_.x;
 }
 
 
@@ -71,19 +74,16 @@ sf::Vector2u Tileset::dimensions() const
 
 sf::IntRect Tileset::tileRect( unsigned int tile ) const
 {
-    const unsigned int nRows = texture_.getSize().y / tileDimensions_.y;
-    const unsigned int nColumns = texture_.getSize().x / tileDimensions_.x;
-
-    if( tile >= nRows * nColumns ){
+    if( tile >= nRows_ * nColumns_ ){
         throw std::out_of_range( "tile " +
                                  std::to_string( tile ) +
                                  ") out of bounds (" +
-                                 std::to_string( nRows * nColumns )
+                                 std::to_string( nRows_ * nColumns_ )
                                  + ")" );
     }
 
-    const unsigned int row = tile / nRows;
-    const unsigned int column = tile % nRows;
+    const unsigned int row = tile / nRows_;
+    const unsigned int column = tile % nRows_;
 
     return sf::IntRect( column * tileDimensions_.x,
                         row * tileDimensions_.y,
@@ -118,10 +118,7 @@ std::list<sf::IntRect> Tileset::collisionRects( unsigned int tile ) const
 
 void Tileset::addCollisionRect( const sf::IntRect &rect )
 {
-    const unsigned int nRows = texture_.getSize().y / tileDimensions_.y;
-    const unsigned int nColumns = texture_.getSize().x / tileDimensions_.x;
-
-    addCollisionRect( rect, 0, nRows * nColumns );
+    addCollisionRect( rect, 0, nRows_ * nColumns_ );
 }
 
 

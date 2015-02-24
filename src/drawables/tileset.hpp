@@ -66,6 +66,8 @@ class Tileset
         sf::Texture texture_;
         sf::Vector2u tileDimensions_;
         std::list< TilesetCollisionRect > collisionRects_;
+        unsigned int nRows_;
+        unsigned int nColumns_;
 };
 
 typedef std::shared_ptr< const Tileset > TilesetPtr;
