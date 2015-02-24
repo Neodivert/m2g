@@ -36,7 +36,13 @@ TEST_CASE( "Calling Tileset::setTile() references the given tile in the associat
 {
     MockTileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
     EXPECT_CALL( tileset, tileRect( 0 ) ).WillOnce( testing::Return( sf::IntRect() ) );
+    EXPECT_CALL( tileset, tileRect( 1 ) ).WillOnce( testing::Return( sf::IntRect() ) );
+    EXPECT_CALL( tileset, tileRect( 2 ) ).WillOnce( testing::Return( sf::IntRect() ) );
+    EXPECT_CALL( tileset, tileRect( 3 ) ).WillOnce( testing::Return( sf::IntRect() ) );
 
     m2g::TileSprite sprite( tileset );
     sprite.setTile( 0 );
+    sprite.setTile( 1 );
+    sprite.setTile( 2 );
+    sprite.setTile( 3 );
 }
