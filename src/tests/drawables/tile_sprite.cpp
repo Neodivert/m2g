@@ -33,7 +33,7 @@ TEST_CASE( "Tile sprite returns associated tileset" )
 }
 
 
-TEST_CASE( "Calling Tileset::setTile() references the given tile in the associated tile" )
+TEST_CASE( "Calling TileSprite::setTile() references the given tile in the associated tile" )
 {
     MockTileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
     EXPECT_CALL( tileset, tileRect( 0 ) ).WillOnce( testing::Return( sf::IntRect() ) );
@@ -49,7 +49,7 @@ TEST_CASE( "Calling Tileset::setTile() references the given tile in the associat
 }
 
 
-TEST_CASE( "Calling Tileset::setTile() with a invalid tile throws std::out_of_range" )
+TEST_CASE( "Calling TileSprite::setTile() with a invalid tile throws std::out_of_range" )
 {
     m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
     m2g::TileSprite sprite( tileset );
