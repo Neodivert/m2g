@@ -38,6 +38,7 @@ class TileSprite : public sf::Sprite
          * 2. Getters
          ***/
         const Tileset& tileset() const;
+        std::list< sf::FloatRect > collisionRects() const;
 
 
         /***
@@ -46,8 +47,15 @@ class TileSprite : public sf::Sprite
         void setTile( unsigned int tile );
 
 
+        /***
+         * 4. Collision detection
+         ***/
+        bool collide( const TileSprite& sprite );
+
+
     private:
         const Tileset* tileset_;
+        unsigned int currentTile_;
 };
 
 } // namespace m2g

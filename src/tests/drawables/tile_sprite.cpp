@@ -56,3 +56,42 @@ TEST_CASE( "Calling TileSprite::setTile() with a invalid tile throws std::out_of
 
     REQUIRE_THROWS_AS( sprite.setTile( 5 ), std::out_of_range );
 }
+
+
+TEST_CASE( "Two unmoved sprites sharing the same tileset must collide" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    tileset.addCollisionRect( sf::IntRect( 0, 0, 15, 20 ) );
+
+    m2g::TileSprite sprite1( tileset );
+    m2g::TileSprite sprite2( tileset );
+
+    REQUIRE( sprite1.collide( sprite2 ) == true );
+}
+
+
+TEST_CASE( "Two unmoved sprites with different tile collision rects must's collide" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    tileset.addCollisionRect( sf::IntRect( 0, 0, 15, 20 ), 0, 0 );
+
+    m2g::TileSprite sprite1( tileset );
+    sprite1.setTile( 1 );
+    m2g::TileSprite sprite2( tileset );
+
+    REQUIRE( sprite1.collide( sprite2 ) == false );
+}
+
+
+TEST_CASE( "Moving a sprite far from another prevents collision between them" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    tileset.addCollisionRect( sf::IntRect( 0, 0, 15, 20 ) );
+
+    m2g::TileSprite sprite1( tileset );
+    m2g::TileSprite sprite2( tileset );
+
+    sprite1.move( 15, 20 );
+
+    REQUIRE( sprite1.collide( sprite2 ) == false );
+}

@@ -26,7 +26,8 @@ namespace m2g {
  ***/
 
 TileSprite::TileSprite( const m2g::Tileset &tileset ) :
-    tileset_( &tileset )
+    tileset_( &tileset ),
+    currentTile_( 0 )
 {}
 
 
@@ -40,13 +41,57 @@ const m2g::Tileset &m2g::TileSprite::tileset() const
 }
 
 
+std::list<sf::FloatRect> TileSprite::collisionRects() const
+{
+    const std::list< sf::IntRect > tileCollisionRects =
+            tileset_->collisionRects( currentTile_ );
+    std::list< sf::FloatRect > collisionRects;
+
+    for( const sf::IntRect& tileColRect : tileCollisionRects ){
+        sf::FloatRect floatRect;
+        floatRect.left = tileColRect.left;
+        floatRect.top = tileColRect.top;
+        floatRect.height = tileColRect.height;
+        floatRect.width = tileColRect.width;
+
+        collisionRects.push_back( getTransform().transformRect( floatRect ) );
+    }
+
+    return collisionRects;
+}
+
+
 /***
  * 3. Setters
  ***/
 
 void TileSprite::setTile( unsigned int tile )
 {
-    this->setTextureRect( tileset_->tileRect( tile ) );
+    currentTile_ = tile;
+    this->setTextureRect( tileset_->tileRect( currentTile_ ) );
+}
+
+
+/***
+ * 4. Collision detection
+ ***/
+
+bool TileSprite::collide( const TileSprite &sprite )
+{
+    std::list< sf::FloatRect > rectsA, rectsB;
+
+    rectsA = collisionRects();
+    rectsB = sprite.collisionRects();
+
+    for( sf::FloatRect& rectA : rectsA ){
+        for( sf::FloatRect& rectB : rectsB ){
+            if( rectA.intersects( rectB ) ){
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 } // namespace m2g
