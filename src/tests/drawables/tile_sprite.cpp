@@ -21,6 +21,7 @@
 #include "mocks/mock_tileset.hpp"
 #include "../drawables/tile_sprite.hpp"
 #include <stdexcept>
+#include <SFML/Graphics/RenderTexture.hpp>
 using ::testing::AtLeast;
 
 
@@ -42,7 +43,6 @@ TEST_CASE( "Calling TileSprite::setTile() references the given tile in the assoc
     EXPECT_CALL( tileset, tileRect( 3 ) ).WillOnce( testing::Return( sf::IntRect() ) );
 
     m2g::TileSprite sprite( tileset );
-    sprite.setTile( 0 );
     sprite.setTile( 1 );
     sprite.setTile( 2 );
     sprite.setTile( 3 );
@@ -120,4 +120,40 @@ TEST_CASE( "Rotating one sprite next to another makes them both collide" )
     sprite2.rotate( -45 );
     REQUIRE( sprite1.collide( sprite2 ) == false );
     REQUIRE( sprite2.collide( sprite1 ) == false );
+}
+
+
+TEST_CASE( "Moving sprite rendering" )
+{
+    const sf::Vector2u SPRITE_POS( 8, 16 );
+    const sf::Vector2u SPRITE_SIZE( 32, 32 );
+    const sf::Vector2u TEXTURE_SIZE( 64, 64 );
+
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", SPRITE_SIZE.x, SPRITE_SIZE.y );
+    m2g::TileSprite sprite( tileset );
+    sprite.setPosition( SPRITE_POS.x, SPRITE_POS.y );
+
+    sf::RenderTexture renderTexture;
+    renderTexture.create( TEXTURE_SIZE.x, TEXTURE_SIZE.y );
+    renderTexture.clear();
+    renderTexture.draw( sprite );
+    renderTexture.display();
+
+    sf::Image image = renderTexture.getTexture().copyToImage();
+
+    REQUIRE( image.getSize() == TEXTURE_SIZE );
+
+    sf::Vector2u pixelPos;
+    for( pixelPos.x = 0; pixelPos.x < TEXTURE_SIZE.x; pixelPos.x++ ){
+        for( pixelPos.y = 0; pixelPos.y < TEXTURE_SIZE.y; pixelPos.y++ ){
+            if( ( pixelPos.y >= SPRITE_POS.y ) &&
+                    ( pixelPos.x >= SPRITE_POS.x ) &&
+                    ( pixelPos.x < SPRITE_POS.x + SPRITE_SIZE.x ) &&
+                    ( pixelPos.y < SPRITE_POS.y + SPRITE_SIZE.y ) ){
+                REQUIRE( image.getPixel( pixelPos.x, pixelPos.y ) == sf::Color( 255, 0, 0, 255 ) );
+            }else{
+                REQUIRE( image.getPixel( pixelPos.x, pixelPos.y ) == sf::Color( 0, 0, 0, 255 ) );
+            }
+        }
+    }
 }

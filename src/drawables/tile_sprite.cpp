@@ -27,9 +27,11 @@ namespace m2g {
  ***/
 
 TileSprite::TileSprite( const m2g::Tileset &tileset ) :
-    tileset_( &tileset ),
-    currentTile_( 0 )
-{}
+    tileset_( &tileset )
+{
+    sprite_.setTexture( tileset.texture() );
+    setTile( 0 );
+}
 
 
 /***
@@ -102,8 +104,8 @@ bool TileSprite::collide( const TileSprite &sprite )
 
 void TileSprite::draw( sf::RenderTarget &target, sf::RenderStates states ) const
 {
-    states.transform.combine( getTransform() );
-    target.draw( sprite_ );
+    states.transform = getTransform();
+    target.draw( sprite_, states );
 }
 
 } // namespace m2g

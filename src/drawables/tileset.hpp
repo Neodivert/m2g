@@ -41,6 +41,7 @@ class Tileset
          * 1. Initialization and destruction.
          ***/
         Tileset( const std::string& imagePath, unsigned int tileWidth, unsigned int tileHeight );
+        virtual ~Tileset() = default;
 
 
         /***
