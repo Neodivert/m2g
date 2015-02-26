@@ -25,7 +25,7 @@
 
 namespace m2g {
 
-class TileSprite : public sf::Sprite
+class TileSprite : public sf::Drawable, public sf::Transformable
 {
     public:
         /***
@@ -53,7 +53,14 @@ class TileSprite : public sf::Sprite
         bool collide( const TileSprite& sprite );
 
 
+        /***
+         * 5. Drawing
+         ***/
+        virtual void draw( sf::RenderTarget &target, sf::RenderStates states ) const;
+
+
     private:
+        sf::Sprite sprite_;
         const Tileset* tileset_;
         unsigned int currentTile_;
 };

@@ -18,6 +18,7 @@
 ***/
 
 #include "tile_sprite.hpp"
+#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace m2g {
 
@@ -68,7 +69,7 @@ std::list<sf::FloatRect> TileSprite::collisionRects() const
 void TileSprite::setTile( unsigned int tile )
 {
     currentTile_ = tile;
-    this->setTextureRect( tileset_->tileRect( currentTile_ ) );
+    sprite_.setTextureRect( tileset_->tileRect( currentTile_ ) );
 }
 
 
@@ -92,6 +93,17 @@ bool TileSprite::collide( const TileSprite &sprite )
     }
 
     return false;
+}
+
+
+/***
+ * 5. Drawing
+ ***/
+
+void TileSprite::draw( sf::RenderTarget &target, sf::RenderStates states ) const
+{
+    states.transform.combine( getTransform() );
+    target.draw( sprite_ );
 }
 
 } // namespace m2g
