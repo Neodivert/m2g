@@ -95,3 +95,29 @@ TEST_CASE( "Moving a sprite far from another prevents collision between them" )
 
     REQUIRE( sprite1.collide( sprite2 ) == false );
 }
+
+
+TEST_CASE( "Rotating one sprite next to another makes them both collide" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    tileset.addCollisionRect( sf::IntRect( 8, 0, 16, 32 ) );
+
+    m2g::TileSprite sprite1( tileset );
+    m2g::TileSprite sprite2( tileset );
+
+    // Put sprite2 next to sprite1 without colliding.
+    sprite2.move( 24, 0 );
+    REQUIRE( sprite1.collide( sprite2 ) == false );
+    REQUIRE( sprite2.collide( sprite1 ) == false );
+
+    // Rotating sprite2 towards sprite1 makes them collide.
+    sprite2.rotate( 45 );
+    REQUIRE( sprite1.collide( sprite2 ) == true );
+    REQUIRE( sprite2.collide( sprite1 ) == true );
+
+    // Rotating sprite2 back to its original orientation prevents
+    // sprites from colliding.
+    sprite2.rotate( -45 );
+    REQUIRE( sprite1.collide( sprite2 ) == false );
+    REQUIRE( sprite2.collide( sprite1 ) == false );
+}
