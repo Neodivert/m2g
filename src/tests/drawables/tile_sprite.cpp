@@ -27,16 +27,23 @@ using ::testing::AtLeast;
 
 TEST_CASE( "Tile sprite returns associated tileset" )
 {
-    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
-    m2g::TileSprite sprite( tileset );
+    sf::Texture texture;
+    texture.loadFromFile( "./data/tileset_w64_h64.png" );
+    ::testing::NiceMock< MockTileset > tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    EXPECT_CALL( tileset, texture() ).WillOnce( testing::ReturnRef( texture ) );
+    EXPECT_CALL( tileset, tileRect( 0 ) ).WillOnce( testing::Return( sf::IntRect() ) );
 
+    m2g::TileSprite sprite( tileset );
     REQUIRE( &( sprite.tileset() ) == &tileset );
 }
 
 
 TEST_CASE( "Calling TileSprite::setTile() references the given tile in the associated tile" )
 {
-    MockTileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    sf::Texture texture;
+    texture.loadFromFile( "./data/tileset_w64_h64.png" );
+    ::testing::NiceMock< MockTileset > tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    ON_CALL( tileset, texture() ).WillByDefault( testing::ReturnRef( texture ) );
     EXPECT_CALL( tileset, tileRect( 0 ) ).WillOnce( testing::Return( sf::IntRect() ) );
     EXPECT_CALL( tileset, tileRect( 1 ) ).WillOnce( testing::Return( sf::IntRect() ) );
     EXPECT_CALL( tileset, tileRect( 2 ) ).WillOnce( testing::Return( sf::IntRect() ) );
