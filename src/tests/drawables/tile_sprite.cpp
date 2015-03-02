@@ -25,14 +25,22 @@
 using ::testing::AtLeast;
 
 
-TEST_CASE( "Tile sprite returns associated tileset" )
+TEST_CASE( "Tile sprite constructor calls Tileset's convenient getters" )
 {
     sf::Texture texture;
     texture.loadFromFile( "./data/tileset_w64_h64.png" );
-    ::testing::NiceMock< MockTileset > tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    MockTileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+
     EXPECT_CALL( tileset, texture() ).WillOnce( testing::ReturnRef( texture ) );
     EXPECT_CALL( tileset, tileRect( 0 ) ).WillOnce( testing::Return( sf::IntRect() ) );
 
+    m2g::TileSprite sprite( tileset );
+}
+
+
+TEST_CASE( "Tile sprite returns associated tileset" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
     m2g::TileSprite sprite( tileset );
     REQUIRE( &( sprite.tileset() ) == &tileset );
 }
