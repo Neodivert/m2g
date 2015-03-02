@@ -25,7 +25,7 @@
 using ::testing::AtLeast;
 
 
-TEST_CASE( "Tile sprite constructor calls Tileset's convenient getters" )
+TEST_CASE( "TileSprite's constructor calls Tileset's convenient getters" )
 {
     sf::Texture texture;
     texture.loadFromFile( "./data/tileset_w64_h64.png" );
