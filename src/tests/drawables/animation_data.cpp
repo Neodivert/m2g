@@ -23,15 +23,25 @@
 
 namespace m2g {
 
-TEST_CASE( "We can retrieve AnimationState added to an AnimationData" )
+TEST_CASE( "We can retrieve multiple AnimationState added to an AnimationData" )
 {
+    std::vector< AnimationState > animStates =
+    {
+        { 0, 1, 0 },
+        { 2, 2, 1 },
+        { 1, 2, 2 }
+    };
     Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
     AnimationData animData( tileset );
     AnimationState animState( 0, 1, 0 );
 
-    animData.addState( animState );
+    for( const AnimationState& animState : animStates ){
+        animData.addState( animState );
+    }
 
-    REQUIRE( animData.state( 0 ) == animState );
+    for( unsigned int i = 0; i < animStates.size(); i++ ){
+        REQUIRE( animData.state( i ) == animStates[i] );
+    }
 }
 
 } // namespace m2g
