@@ -23,24 +23,33 @@
 
 namespace m2g {
 
-TEST_CASE( "We can retrieve multiple AnimationState added to an AnimationData" )
+TEST_CASE( "Animation states management" )
 {
-    std::vector< AnimationState > animStates =
-    {
-        { 0, 1, 0 },
-        { 2, 2, 1 },
-        { 1, 2, 2 }
-    };
     Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
     AnimationData animData( tileset );
-    AnimationState animState( 0, 1, 0 );
 
-    for( const AnimationState& animState : animStates ){
-        animData.addState( animState );
+    SECTION( "AnimationState addition to AnimationData" ){
+        std::vector< AnimationState > animStates =
+        {
+            { 0, 1, 0 },
+            { 2, 2, 1 },
+            { 1, 2, 2 }
+        };
+
+        for( const AnimationState& animState : animStates ){
+            animData.addState( animState );
+        }
+
+        for( unsigned int i = 0; i < animStates.size(); i++ ){
+            REQUIRE( animData.state( i ) == animStates[i] );
+        }
     }
 
-    for( unsigned int i = 0; i < animStates.size(); i++ ){
-        REQUIRE( animData.state( i ) == animStates[i] );
+
+    SECTION( "AnimationState with an out-of-range lastFrame can't be added to an AnimationData" )
+    {
+        AnimationState animState( 0, 5 );
+        REQUIRE_THROWS_AS( animData.addState( animState ), std::out_of_range );
     }
 }
 

@@ -46,6 +46,9 @@ AnimationState AnimationData::state( unsigned int index ) const
 
 void AnimationData::addState( const AnimationState &newState )
 {
+    if( newState.lastFrame >= tileset_->nTiles() ){
+        throw std::out_of_range( "lastFrame" );
+    }
     states_.push_back( newState );
 }
 

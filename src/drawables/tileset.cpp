@@ -112,6 +112,12 @@ std::list<sf::IntRect> Tileset::collisionRects( unsigned int tile ) const
 }
 
 
+unsigned int Tileset::nTiles() const
+{
+    return nRows_ * nColumns_;
+}
+
+
 /***
  * 3. Collision rects
  ***/

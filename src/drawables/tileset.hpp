@@ -52,6 +52,7 @@ class Tileset
         virtual sf::IntRect tileRect( unsigned int tile ) const;
         virtual const sf::Texture& texture() const;
         std::list< sf::IntRect > collisionRects( unsigned int tile ) const;
+        unsigned int nTiles() const;
 
 
         /***
