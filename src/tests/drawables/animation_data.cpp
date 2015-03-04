@@ -72,6 +72,18 @@ TEST_CASE( "Animation states management" )
         AnimationState animState( 0, 5 );
         REQUIRE_THROWS_AS( animData.addState( animState ), std::out_of_range );
     }
+
+
+    SECTION( "Attemp to retrieve an out-of-range state must throw" )
+    {
+        AnimationState animState( 0, 1 );
+
+        REQUIRE_THROWS_AS( animData.state( 0 ), std::out_of_range );
+
+        animData.addState( animState );
+        REQUIRE_NOTHROW( animData.state( 0 ) );
+        REQUIRE_THROWS_AS( animData.state( 1 ), std::out_of_range );
+    }
 }
 
 
