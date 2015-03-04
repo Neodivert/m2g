@@ -17,10 +17,39 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include <catch.hpp>
+#ifndef ANIMATION_STATE_HPP
+#define ANIMATION_STATE_HPP
 
 namespace m2g {
 
+struct AnimationState {
+    public:
+        /***
+         * 1. Construction
+         ***/
+        AnimationState();
+        AnimationState( unsigned int firstFrame,
+                        unsigned int lastFrame );
+        AnimationState( unsigned int firstFrame,
+                        unsigned int lastFrame,
+                        unsigned int backFrame );
 
+
+        /***
+         * Attributes
+         ***/
+        const unsigned int firstFrame;
+        const unsigned int lastFrame;
+        const unsigned int backFrame;
+
+
+    private:
+        /***
+         * 2. Checking methods
+         ***/
+        void throwIfLastFrameGreaterThanFirstFrame() const;
+};
 
 } // namespace m2g
+
+#endif // ANIMATION_STATE_HPP
