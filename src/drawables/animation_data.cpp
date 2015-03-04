@@ -22,72 +22,31 @@
 namespace m2g {
 
 /***
- * 1. Initialization and destruction
+ * 1. Construction
  ***/
 
-AnimationData::AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder )
-{
-    load( renderer, xmlNode, folder );
-}
-
-
-/***
- * 2. Loading
- ***/
-
-void AnimationData::load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder )
-{
-    std::array< int, 3 > animationState;
-    unsigned int fps;
-
-    const tinyxml2::XMLNode* tilesetNode = xmlNode->FirstChildElement( "tileset" );
-    const tinyxml2::XMLNode* animationStatesNode = tilesetNode->NextSiblingElement( "animation_states" );
-    const tinyxml2::XMLElement* animationStateNode = nullptr;
-
-    // Load the tileset info.
-    tileset_ = std::shared_ptr< Tileset >( new Tileset( renderer, tilesetNode, folder ) );
-
-    // Load the fps and compute the refresh rate.
-    fps = ( dynamic_cast< const tinyxml2::XMLElement* >( xmlNode ) )->IntAttribute( "fps" );
-    refreshRate_ = 1.0f / (float)fps * 1000;
-
-    // Access the XML node with the animation states info.
-    animationStateNode = animationStatesNode->FirstChildElement();
-
-    while( animationStateNode ){
-        // Composite the new animation state.
-        animationState[FIRST_FRAME] = animationStateNode->IntAttribute( "firstFrame" );
-        animationState[LAST_FRAME] = animationStateNode->IntAttribute( "lastFrame" );
-        animationState[BACK_FRAME] = animationStateNode->IntAttribute( "backFrame" );
-
-        // Insert the new animation state in the vector.
-        states_.push_back( animationState );
-
-        // Go to next node.
-        animationStateNode = animationStateNode->NextSiblingElement();
-    }
-}
+AnimationData::AnimationData( const Tileset& tileset ) :
+    tileset_( &tileset )
+{}
 
 
 /***
  * 3. Getters
  ***/
 
-TilesetPtr AnimationData::tileset() const
+AnimationState AnimationData::state( unsigned int index ) const
 {
-    return tileset_;
+    return states_.at( index );
 }
 
 
-unsigned int AnimationData::refreshRate() const
-{
-    return refreshRate_;
-}
+/***
+ * 4. States management
+ ***/
 
-
-std::array< int, 3 > AnimationData::state( unsigned int index ) const
+void AnimationData::addState( const AnimationState &newState )
 {
-    return states_[ index ];
+    states_.push_back( newState );
 }
 
 } // namespace m2g

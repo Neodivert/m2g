@@ -22,7 +22,7 @@
 
 namespace m2g {
 
-struct AnimationState {
+class AnimationState {
     public:
         /***
          * 1. Construction
@@ -36,6 +36,12 @@ struct AnimationState {
 
 
         /***
+         * 2. Operators
+         ***/
+        bool operator == ( const AnimationState& b ) const;
+
+
+        /***
          * Attributes
          ***/
         const unsigned int firstFrame;
@@ -43,9 +49,12 @@ struct AnimationState {
         const unsigned int backFrame;
 
 
+
+
+
     private:
         /***
-         * 2. Checking methods
+         * 3. Checking methods
          ***/
         void throwIfLastFrameGreaterThanFirstFrame() const;
 };

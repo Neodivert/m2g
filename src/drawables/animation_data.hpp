@@ -21,51 +21,41 @@
 #define ANIMATION_DATA_HPP
 
 #include "tileset.hpp"
-#include <vector>
-#include <array>
-#include <tinyxml2.h>
+#include "animation_state.hpp"
 
 namespace m2g {
-
-const unsigned int FIRST_FRAME = 0;
-const unsigned int LAST_FRAME = 1;
-const unsigned int BACK_FRAME = 2;
 
 class AnimationData
 {
     public:
         /***
-         * 1. Initialization and destruction
+         * 1. Construction
          ***/
-        AnimationData( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+        AnimationData( const Tileset& tileset );
 
 
         /***
-         * 2. Loading
+         * 2. Destruction
          ***/
-        void load( SDL_Renderer* renderer, const tinyxml2::XMLNode* xmlNode, const char* folder = nullptr );
+        virtual ~AnimationData() = default;
 
 
         /***
          * 3. Getters
          ***/
-        TilesetPtr tileset() const;
-        unsigned int refreshRate() const;
-        std::array< int, 3 > state( unsigned int index ) const;
+        AnimationState state( unsigned int index ) const;
+
+
+        /***
+         * 4. States management
+         ***/
+        void addState( const AnimationState& newState );
+
 
     private:
-        // Tileset associated with this animation.
-        TilesetPtr tileset_;
-
-         // Refresh rate (ms).
-        unsigned int refreshRate_;
-
-        // Each state is a tuple (firstFrame, lastFrame, backFrame).
-        // TODO: Create a new struct AnimationState and make a vector of them.
-        std::vector< std::array< int, 3 > >  states_;
+        const Tileset* tileset_;
+        std::vector< AnimationState > states_;
 };
-
-typedef std::shared_ptr< const AnimationData > AnimationDataPtr;
 
 } // namespace m2g.
 

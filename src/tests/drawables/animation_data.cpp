@@ -18,9 +18,20 @@
 ***/
 
 #include <catch.hpp>
+#include "../../drawables/animation_data.hpp"
+#include <vector>
 
 namespace m2g {
 
+TEST_CASE( "We can retrieve AnimationState added to an AnimationData" )
+{
+    Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    AnimationState animState( 0, 1, 0 );
 
+    animData.addState( animState );
+
+    REQUIRE( animData.state( 0 ) == animState );
+}
 
 } // namespace m2g

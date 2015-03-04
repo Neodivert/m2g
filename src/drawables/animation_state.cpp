@@ -59,7 +59,19 @@ AnimationState::AnimationState( unsigned int firstFrame,
 
 
 /***
- * 2. Checking methods
+ * 2. Operators
+ ***/
+
+bool AnimationState::operator ==(const AnimationState &b) const
+{
+    return ( firstFrame == b.firstFrame &&
+             lastFrame == b.lastFrame &&
+             backFrame == b.backFrame );
+}
+
+
+/***
+ * 3. Checking methods
  ***/
 
 void AnimationState::throwIfLastFrameGreaterThanFirstFrame() const
