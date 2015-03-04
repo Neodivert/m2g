@@ -75,4 +75,20 @@ TEST_CASE( "AnimationState's three-argument constructor must throw if backFrame 
     REQUIRE_THROWS_AS( AnimationState animState( 2, 4, 5 ), std::invalid_argument );
 }
 
+
+TEST_CASE( "Equality tests" )
+{
+    AnimationState animStateA1( 3, 7, 5 );
+    AnimationState animStateA2( 3, 7, 5 );
+    AnimationState animStateB( 1, 7, 5 );
+    AnimationState animStateC( 3, 15, 5 );
+    AnimationState animStateD( 3, 7, 6 );
+
+    REQUIRE( animStateA1 == animStateA1 );
+    REQUIRE( animStateA1 == animStateA2 );
+    REQUIRE( !( animStateA1 == animStateB ) );
+    REQUIRE( !( animStateA1 == animStateC ) );
+    REQUIRE( !( animStateA1 == animStateD ) );
+}
+
 } // namespace m2g
