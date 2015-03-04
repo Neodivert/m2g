@@ -86,7 +86,4 @@ TEST_CASE( "Animation states management" )
     }
 }
 
-
-
-
 } // namespace m2g
