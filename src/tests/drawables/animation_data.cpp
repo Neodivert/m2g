@@ -46,11 +46,35 @@ TEST_CASE( "Animation states management" )
     }
 
 
+    SECTION( "AnimationState returns its number of states" )
+    {
+        std::vector< AnimationState > animStates =
+        {
+            { 0, 1, 0 },
+            { 2, 2, 1 },
+            { 1, 2, 2 }
+        };
+
+        unsigned int nExpectedStates = 0;
+        REQUIRE( animData.nStates() == nExpectedStates );
+
+        for( const AnimationState& animState : animStates ){
+            animData.addState( animState );
+            nExpectedStates++;
+
+            REQUIRE( animData.nStates() == nExpectedStates );
+        }
+    }
+
+
     SECTION( "AnimationState with an out-of-range lastFrame can't be added to an AnimationData" )
     {
         AnimationState animState( 0, 5 );
         REQUIRE_THROWS_AS( animData.addState( animState ), std::out_of_range );
     }
 }
+
+
+
 
 } // namespace m2g

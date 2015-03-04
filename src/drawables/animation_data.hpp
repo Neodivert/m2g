@@ -44,6 +44,7 @@ class AnimationData
          * 3. Getters
          ***/
         AnimationState state( unsigned int index ) const;
+        unsigned int nStates() const;
 
 
         /***

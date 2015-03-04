@@ -40,6 +40,12 @@ AnimationState AnimationData::state( unsigned int index ) const
 }
 
 
+unsigned int AnimationData::nStates() const
+{
+    return states_.size();
+}
+
+
 /***
  * 4. States management
  ***/
