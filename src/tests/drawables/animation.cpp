@@ -105,4 +105,16 @@ TEST_CASE( "Trying to change to an non-existent state throws out_of_range" )
     }
 }
 
+
+TEST_CASE( "A different refresh rate can be specified when constructing an animation" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    const AnimationState animState( 2, 3, 0 );
+    animData.addState( animState );
+
+    Animation animation( animData, 3 );
+    REQUIRE( animation.refreshRate() == 3 );
+}
+
 } // namespace m2g

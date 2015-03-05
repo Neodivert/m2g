@@ -32,7 +32,8 @@ class Animation
         /***
          * 1. Construction
          ***/
-        Animation( const AnimationData& animData );
+        Animation( const AnimationData& animData,
+                   unsigned int refreshRate = DEFAULT_ANIMATION_REFRESH_RATE );
 
 
         /***
@@ -55,10 +56,12 @@ class Animation
         void setState( unsigned int newState );
 
 
+
     private:
         const AnimationData* animData_;
         unsigned int currentState_;
         unsigned int currentFrame_;
+        unsigned int refreshRate_;
 };
 
 } // namespace m2g

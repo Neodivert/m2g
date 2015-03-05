@@ -25,8 +25,10 @@ namespace m2g {
  * 1. Construction
  ***/
 
-Animation::Animation( const AnimationData &animData ) :
-    animData_( &animData )
+Animation::Animation( const AnimationData &animData,
+                      unsigned int refreshRate ) :
+    animData_( &animData ),
+    refreshRate_( refreshRate * 1000 )
 {
     if( animData.nStates() == 0 ){
         throw std::invalid_argument( "animData can't be empty (0 states)" );
@@ -53,7 +55,7 @@ unsigned int Animation::currentFrame() const
 
 unsigned int Animation::refreshRate() const
 {
-    return DEFAULT_ANIMATION_REFRESH_RATE;
+    return refreshRate_ / 1000;
 }
 
 
