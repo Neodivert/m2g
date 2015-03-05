@@ -24,6 +24,7 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 using ::testing::AtLeast;
 
+namespace m2g {
 
 TEST_CASE( "TileSprite's constructor calls Tileset's convenient getters" )
 {
@@ -172,3 +173,5 @@ TEST_CASE( "Moving sprite rendering" )
         }
     }
 }
+
+} // namespace m2g

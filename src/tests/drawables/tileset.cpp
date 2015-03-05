@@ -20,6 +20,7 @@
 #include <catch.hpp>
 #include "../../drawables/tileset.hpp"
 
+namespace m2g {
 /*
  * TODO: Add tests
  * - Loading a tileset with width > MAX_WIDTH must throw
@@ -182,3 +183,5 @@ TEST_CASE( "Tileset::collisionRects() returns the collision rects added to a ran
     REQUIRE( tileset.collisionRects( 2 ) == rects );
     REQUIRE( tileset.collisionRects( 3 ).size() == 0 );
 }
+
+} // namespace m2g
