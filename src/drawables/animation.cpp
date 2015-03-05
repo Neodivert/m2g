@@ -25,11 +25,13 @@ namespace m2g {
  * 1. Construction
  ***/
 
-Animation::Animation( const AnimationData &animData )
+Animation::Animation( const AnimationData &animData ) :
+    animData_( &animData )
 {
     if( animData.nStates() == 0 ){
         throw std::invalid_argument( "animData can't be empty (0 states)" );
     }
+    setState( 0 );
 }
 
 
@@ -39,19 +41,30 @@ Animation::Animation( const AnimationData &animData )
 
 unsigned int Animation::currentState() const
 {
-    return 0;
+    return currentState_;
 }
 
 
 unsigned int Animation::currentFrame() const
 {
-    return 1;
+    return currentFrame_;
 }
 
 
 unsigned int Animation::refreshRate() const
 {
     return DEFAULT_ANIMATION_REFRESH_RATE;
+}
+
+
+/***
+ * 4. Setters
+ ***/
+
+void Animation::setState( unsigned int newState )
+{
+    currentState_ = newState;
+    currentFrame_ = animData_->state( currentState_ ).firstFrame;
 }
 
 } // namespace m2g

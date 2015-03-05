@@ -20,6 +20,7 @@
 #include <catch.hpp>
 #include "../../drawables/animation.hpp"
 #include <cstring>
+#include <vector>
 
 namespace m2g {
 
@@ -52,6 +53,56 @@ TEST_CASE( "Unless otherwise specified, an animation is initialized with state 0
     REQUIRE( animation.currentState() == 0 );
     REQUIRE( animation.currentFrame() == animState.firstFrame );
     REQUIRE( animation.refreshRate() == DEFAULT_ANIMATION_REFRESH_RATE );
+}
+
+
+TEST_CASE( "The current animation state can be changed" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    std::vector< AnimationState > animStates =
+    {
+        { 0, 3 },
+        { 0, 1 },
+        { 2, 2 },
+        { 3, 3 }
+    };
+
+    for( const AnimationState& animState : animStates ){
+        animData.addState( animState );
+    }
+
+    Animation animation( animData );
+    for( unsigned int i = 0; i < animStates.size(); i++ ){
+        animation.setState( i );
+        REQUIRE( animation.currentState() == i );
+        REQUIRE( animation.currentFrame() == animStates[i].firstFrame );
+    }
+}
+
+
+TEST_CASE( "Trying to change to an non-existent state throws out_of_range" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    std::vector< AnimationState > animStates =
+    {
+        { 0, 3 },
+        { 0, 1 },
+        { 2, 2 },
+        { 3, 3 }
+    };
+
+    animData.addState( animStates[0] );
+    Animation animation( animData );
+
+    for( unsigned int i = 1; i < animStates.size(); i++ ){
+        REQUIRE_THROWS_AS( animation.setState( i ), std::out_of_range );
+
+        animData.addState( animStates.at( i ) );
+
+        REQUIRE_NOTHROW( animation.setState( i ) );
+    }
 }
 
 } // namespace m2g

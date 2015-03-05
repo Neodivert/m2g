@@ -47,6 +47,18 @@ class Animation
         unsigned int currentState() const;
         unsigned int currentFrame() const;
         unsigned int refreshRate() const;
+
+
+        /***
+         * 4. Setters
+         ***/
+        void setState( unsigned int newState );
+
+
+    private:
+        const AnimationData* animData_;
+        unsigned int currentState_;
+        unsigned int currentFrame_;
 };
 
 } // namespace m2g
