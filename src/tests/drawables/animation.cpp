@@ -18,7 +18,40 @@
 ***/
 
 #include <catch.hpp>
+#include "../../drawables/animation.hpp"
+#include <cstring>
 
 namespace m2g {
+
+TEST_CASE( "An animation can't have no states" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    const AnimationData emptyAnimData( tileset );
+
+    try{
+        Animation animation( emptyAnimData );
+        REQUIRE( false );
+    }catch( std::invalid_argument& ex ){
+        const std::string expectedMsgPrefix = "animData";
+        REQUIRE( !strncmp( ex.what(),
+                           expectedMsgPrefix.c_str(),
+                           expectedMsgPrefix.size() ) );
+    }
+}
+
+
+TEST_CASE( "Unless otherwise specified, an animation is initialized with state 0" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    const AnimationState animState( 1, 1 );
+    animData.addState( animState );
+
+    Animation animation( animData );
+
+    REQUIRE( animation.currentState() == 0 );
+    REQUIRE( animation.currentFrame() == animState.firstFrame );
+    REQUIRE( animation.refreshRate() == DEFAULT_ANIMATION_REFRESH_RATE );
+}
 
 } // namespace m2g

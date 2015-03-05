@@ -21,47 +21,32 @@
 #define ANIMATION_HPP
 
 #include "animation_data.hpp"
-#include "sprite.hpp"
 
 namespace m2g {
 
-class Animation : public Sprite
+const unsigned int DEFAULT_ANIMATION_REFRESH_RATE = 25;
+
+class Animation
 {
-    private:
-        AnimationDataPtr animationData;
-        int currentState;
-
-        Uint32 lastFrameTick_;
-
-        bool animationFinished_;
-
     public:
         /***
-         * 1. Initialization and destruction
+         * 1. Construction
          ***/
-        Animation( SDL_Renderer* renderer, AnimationDataPtr animationData );
+        Animation( const AnimationData& animData );
 
 
         /***
-         * 2. Getters
-         ***/        
-        int getAnimationState() const ;
-        unsigned int getFrame() const ;
-        bool finished() const;
+         * 2. Destruction
+         ***/
+        virtual ~Animation() = default;
 
 
         /***
-         * 3. Setters
+         * 3. Getters
          ***/
-        // TODO: Overload Sprite setters.
-        virtual void setAnimationData( AnimationDataPtr animationData );
-        virtual void setAnimationState( int newState );
-
-
-        /***
-         * 4. Updating
-         ***/
-        virtual void update();
+        unsigned int currentState() const;
+        unsigned int currentFrame() const;
+        unsigned int refreshRate() const;
 };
 
 } // namespace m2g

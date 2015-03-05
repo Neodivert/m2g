@@ -21,102 +21,37 @@
 
 namespace m2g {
 
-
 /***
- * 1. Initialization and destruction
+ * 1. Construction
  ***/
 
-Animation::Animation( SDL_Renderer* renderer, AnimationDataPtr animationData ) :
-    Drawable( renderer ),
-    Sprite( renderer, animationData->tileset() ),
-    lastFrameTick_( 0 )
+Animation::Animation( const AnimationData &animData )
 {
-    setAnimationData( animationData );
-}
-
-
-/***
- * 2. Getters
- ***/
-
-int Animation::getAnimationState() const
-{
-    return currentState;
-}
-
-
-unsigned int Animation::getFrame() const
-{
-    return getCurrentTile();
-}
-
-
-bool Animation::finished() const
-{
-    return animationFinished_;
-}
-
-
-/***
- * 3. Setters
- ***/
-
-void Animation::setAnimationData( AnimationDataPtr animationData )
-{
-    // Set static data.
-    setTileset( animationData->tileset() );
-    this->animationData = animationData;
-
-    // Reset current state.
-    setAnimationState( 0 );
-}
-
-
-void Animation::setAnimationState( int newState )
-{
-    // Get the new animation state's info.
-    std::array< int, 3 > state = animationData->state( newState );
-
-    // Update the current animation state.
-    currentState = newState;
-
-    // Update the current tile / frame so it is now the first of the
-    // new state.
-    setTile( state[FIRST_FRAME] );
-
-    animationFinished_ = false;
-}
-
-
-/***
- * 4. Updating
- ***/
-
-void Animation::update()
-{
-    Uint32 t = SDL_GetTicks();
-
-    if( ( t - lastFrameTick_ ) > animationData->refreshRate() ){
-        // Get the current animation state's info.
-        std::array< int, 3 > state = animationData->state( currentState );
-
-        // Get the current tile / frame.
-        unsigned int currentTile = getCurrentTile();
-
-        // Get the next tile / frame.
-        if( currentTile < static_cast< unsigned int >( state[LAST_FRAME] ) ){
-            currentTile++;
-        }else{
-            animationFinished_ = ( state[LAST_FRAME] == state[BACK_FRAME] );
-            currentTile = state[BACK_FRAME];
-        }
-
-        // Update the current tile / frame.
-        setTile( currentTile );
-
-        lastFrameTick_ = t;
+    if( animData.nStates() == 0 ){
+        throw std::invalid_argument( "animData can't be empty (0 states)" );
     }
 }
 
+
+/***
+ * 3. Getters
+ ***/
+
+unsigned int Animation::currentState() const
+{
+    return 0;
+}
+
+
+unsigned int Animation::currentFrame() const
+{
+    return 1;
+}
+
+
+unsigned int Animation::refreshRate() const
+{
+    return DEFAULT_ANIMATION_REFRESH_RATE;
+}
 
 } // namespace m2g

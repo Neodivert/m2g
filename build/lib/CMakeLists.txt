@@ -11,7 +11,7 @@ set(
     "${SOURCE_DIR}/drawables/tile_sprite.cpp"
     "${SOURCE_DIR}/drawables/animation_state.cpp"
     "${SOURCE_DIR}/drawables/animation_data.cpp"
-    #"${SOURCE_DIR}/drawables/animation.cpp"
+    "${SOURCE_DIR}/drawables/animation.cpp"
     #"${SOURCE_DIR}/graphics_library.cpp"
     #"${SOURCE_DIR}/m2g.cpp"
 )
@@ -26,7 +26,7 @@ set(
     "${SOURCE_DIR}/drawables/tile_sprite.hpp"
     "${SOURCE_DIR}/drawables/animation_state.hpp"
     "${SOURCE_DIR}/drawables/animation_data.hpp"
-    #"${SOURCE_DIR}/drawables/animation.hpp"
+    "${SOURCE_DIR}/drawables/animation.hpp"
     #"${SOURCE_DIR}/graphics_library.hpp"
     #"${SOURCE_DIR}/m2g.hpp"
 )
