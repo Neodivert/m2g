@@ -44,7 +44,7 @@ class TileSprite : public sf::Drawable, public sf::Transformable
         /***
          * 3. Setters
          ***/
-        void setTile( unsigned int tile );
+        virtual void setTile( unsigned int tile );
 
 
         /***

@@ -30,7 +30,7 @@ TileSprite::TileSprite( const m2g::Tileset &tileset ) :
     tileset_( &tileset )
 {
     sprite_.setTexture( tileset.texture() );
-    setTile( 0 );
+    TileSprite::setTile( 0 );
 }
 
 
