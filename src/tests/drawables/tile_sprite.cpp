@@ -21,6 +21,7 @@
 #include "mocks/mock_tileset.hpp"
 #include "../drawables/tile_sprite.hpp"
 #include <stdexcept>
+#include <array>
 #include <SFML/Graphics/RenderTexture.hpp>
 using ::testing::AtLeast;
 
@@ -145,30 +146,42 @@ TEST_CASE( "Moving sprite rendering" )
     const sf::Vector2u SPRITE_SIZE( 32, 32 );
     const sf::Vector2u TEXTURE_SIZE( 64, 64 );
 
+    const std::array< sf::Color, 4 > expectedColors =
+    {
+        sf::Color( 255, 0, 0, 255 ),
+        sf::Color( 0, 255, 0, 255 ),
+        sf::Color( 0, 0, 255, 255 ),
+        sf::Color( 255, 255, 255, 255 )
+    };
+
     m2g::Tileset tileset( "./data/tileset_w64_h64.png", SPRITE_SIZE.x, SPRITE_SIZE.y );
     m2g::TileSprite sprite( tileset );
     sprite.setPosition( SPRITE_POS.x, SPRITE_POS.y );
 
     sf::RenderTexture renderTexture;
     renderTexture.create( TEXTURE_SIZE.x, TEXTURE_SIZE.y );
-    renderTexture.clear();
-    renderTexture.draw( sprite );
-    renderTexture.display();
 
-    sf::Image image = renderTexture.getTexture().copyToImage();
+    for( unsigned int i = 0; i < expectedColors.size(); i++ ){
+        sprite.setTile( i );
 
-    REQUIRE( image.getSize() == TEXTURE_SIZE );
+        renderTexture.clear();
+        renderTexture.draw( sprite );
+        renderTexture.display();
 
-    sf::Vector2u pixelPos;
-    for( pixelPos.x = 0; pixelPos.x < TEXTURE_SIZE.x; pixelPos.x++ ){
-        for( pixelPos.y = 0; pixelPos.y < TEXTURE_SIZE.y; pixelPos.y++ ){
-            if( ( pixelPos.y >= SPRITE_POS.y ) &&
-                    ( pixelPos.x >= SPRITE_POS.x ) &&
-                    ( pixelPos.x < SPRITE_POS.x + SPRITE_SIZE.x ) &&
-                    ( pixelPos.y < SPRITE_POS.y + SPRITE_SIZE.y ) ){
-                REQUIRE( image.getPixel( pixelPos.x, pixelPos.y ) == sf::Color( 255, 0, 0, 255 ) );
-            }else{
-                REQUIRE( image.getPixel( pixelPos.x, pixelPos.y ) == sf::Color( 0, 0, 0, 255 ) );
+        const sf::Image image = renderTexture.getTexture().copyToImage();
+        REQUIRE( image.getSize() == TEXTURE_SIZE );
+
+        sf::Vector2u pixelPos;
+        for( pixelPos.x = 0; pixelPos.x < TEXTURE_SIZE.x; pixelPos.x++ ){
+            for( pixelPos.y = 0; pixelPos.y < TEXTURE_SIZE.y; pixelPos.y++ ){
+                if( ( pixelPos.y >= SPRITE_POS.y ) &&
+                        ( pixelPos.x >= SPRITE_POS.x ) &&
+                        ( pixelPos.x < SPRITE_POS.x + SPRITE_SIZE.x ) &&
+                        ( pixelPos.y < SPRITE_POS.y + SPRITE_SIZE.y ) ){
+                    REQUIRE( image.getPixel( pixelPos.x, pixelPos.y ) == expectedColors.at( i ) );
+                }else{
+                    REQUIRE( image.getPixel( pixelPos.x, pixelPos.y ) == sf::Color( 0, 0, 0, 255 ) );
+                }
             }
         }
     }
