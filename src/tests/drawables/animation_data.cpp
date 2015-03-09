@@ -23,6 +23,15 @@
 
 namespace m2g {
 
+TEST_CASE( "Animation references its tileset" )
+{
+    Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+
+    REQUIRE( &( animData.tileset() ) == &tileset );
+}
+
+
 TEST_CASE( "Animation states management" )
 {
     Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );

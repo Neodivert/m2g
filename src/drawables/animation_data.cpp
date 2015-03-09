@@ -46,6 +46,12 @@ unsigned int AnimationData::nStates() const
 }
 
 
+const Tileset &AnimationData::tileset() const
+{
+    return *tileset_;
+}
+
+
 /***
  * 4. States management
  ***/

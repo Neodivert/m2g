@@ -27,6 +27,7 @@ namespace m2g {
 
 Animation::Animation( const AnimationData &animData,
                       unsigned int refreshRate ) :
+    TileSprite( animData.tileset() ),
     animData_( &animData ),
     refreshRate_( refreshRate * 1000 )
 {
@@ -67,6 +68,17 @@ void Animation::setState( unsigned int newState )
 {
     currentState_ = newState;
     currentFrame_ = animData_->state( currentState_ ).firstFrame;
+}
+
+
+void Animation::setTile( unsigned int tile )
+{
+    if( ( tile < animData_->state( currentState_ ).backFrame ) ||
+        ( tile > animData_->state( currentState_ ).lastFrame ) ){
+        throw std::out_of_range( "tile" );
+    }
+    TileSprite::setTile( tile );
+    currentFrame_ = tile;
 }
 
 } // namespace m2g

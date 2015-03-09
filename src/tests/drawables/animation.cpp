@@ -117,4 +117,43 @@ TEST_CASE( "A different refresh rate can be specified when constructing an anima
     REQUIRE( animation.refreshRate() == 3 );
 }
 
+
+TEST_CASE( "User can change the current frame using TileSprite::setTile()" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    const AnimationState animState( 2, 3, 1 );
+    animData.addState( animState );
+
+    Animation animation( animData );
+
+    REQUIRE( animation.currentFrame() == 2 );
+
+    animation.setTile( 1 );
+    REQUIRE( animation.currentFrame() == 1 );
+
+    animation.setTile( 2 );
+    REQUIRE( animation.currentFrame() == 2 );
+
+    animation.setTile( 3 );
+    REQUIRE( animation.currentFrame() == 3 );
+}
+
+
+TEST_CASE( "An attempt to set a frame outside of the current state must throw" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    const AnimationState animState( 2, 2, 1 );
+    animData.addState( animState );
+
+    Animation animation( animData );
+
+    REQUIRE_THROWS_AS( animation.setTile( 0 ), std::out_of_range );
+    REQUIRE( animation.currentFrame() == 2 );
+
+    REQUIRE_THROWS_AS( animation.setTile( 3 ), std::out_of_range );
+    REQUIRE( animation.currentFrame() == 2 );
+}
+
 } // namespace m2g

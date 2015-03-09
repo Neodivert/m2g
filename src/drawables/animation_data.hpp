@@ -45,6 +45,7 @@ class AnimationData
          ***/
         AnimationState state( unsigned int index ) const;
         unsigned int nStates() const;
+        const Tileset& tileset() const;
 
 
         /***

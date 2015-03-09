@@ -21,12 +21,13 @@
 #define ANIMATION_HPP
 
 #include "animation_data.hpp"
+#include "tile_sprite.hpp"
 
 namespace m2g {
 
 const unsigned int DEFAULT_ANIMATION_REFRESH_RATE = 25;
 
-class Animation
+class Animation : public TileSprite
 {
     public:
         /***
@@ -54,7 +55,7 @@ class Animation
          * 4. Setters
          ***/
         void setState( unsigned int newState );
-
+        virtual void setTile( unsigned int tile );
 
 
     private:
