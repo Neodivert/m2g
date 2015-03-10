@@ -39,6 +39,11 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
                 graphicsLibrary.tileset( "Tileset64x64 - tile64x16" );
         REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
         REQUIRE( tileset.tileDimensions() == sf::Vector2u( 64, 16 ) );
+        const std::list< sf::IntRect > collisionRects0 = { { 15, 5, 25, 10 } };
+        const std::list< sf::IntRect > collisionRects1 = { { 32, 0, 1, 3 } };
+
+        REQUIRE( tileset.collisionRects( 0 ) == collisionRects0 );
+        REQUIRE( tileset.collisionRects( 1 ) == collisionRects1 );
     }
 }
 

@@ -48,7 +48,11 @@ void GraphicsLibrary::load( const std::string& libraryPath )
         const unsigned int height =
                 dimensionsElement->UnsignedAttribute( "height" );
 
-        tilesets_[std::string( name )] = std::unique_ptr< Tileset >( new Tileset( path, width, height ) );
+        std::unique_ptr< Tileset > newTileset( new Tileset( path, width, height ) );
+
+        loadCollisionRects( *newTileset, xmlElement->FirstChildElement( "collision_rects" ) );
+
+        tilesets_[std::string( name )] = std::move( newTileset );
 
         xmlElement = xmlElement->NextSiblingElement( "tileset" );
     }
@@ -62,6 +66,30 @@ void GraphicsLibrary::load( const std::string& libraryPath )
 const Tileset &GraphicsLibrary::tileset( const std::string& name ) const
 {
     return *( tilesets_.at( name ) );
+}
+
+
+/***
+ * 3. Auxiliar loading methods
+ ***/
+
+void GraphicsLibrary::loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement *xmlElement )
+{
+    if( xmlElement ){
+        xmlElement = xmlElement->FirstChildElement( "collision_rect" );
+        while( xmlElement ){
+            const unsigned int tile = xmlElement->UnsignedAttribute( "tiles" );
+            sf::IntRect rect;
+            rect.left = xmlElement->UnsignedAttribute( "x" );
+            rect.top = xmlElement->UnsignedAttribute( "y" );
+            rect.width = xmlElement->UnsignedAttribute( "width" );
+            rect.height = xmlElement->UnsignedAttribute( "height" );
+
+            tileset.addCollisionRect( rect, tile, tile );
+
+            xmlElement = xmlElement->NextSiblingElement( "collision_rect" );
+        }
+    }
 }
 
 } // namespace m2g

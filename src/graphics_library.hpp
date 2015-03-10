@@ -43,6 +43,15 @@ class GraphicsLibrary
 
 
     private:
+        /***
+         * 3. Auxiliar loading methods
+         ***/
+        void loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement* xmlElement );
+
+
+        /***
+         * Attributes
+         ***/
         std::map< std::string, std::unique_ptr< Tileset > > tilesets_;
 };
 
