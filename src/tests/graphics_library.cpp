@@ -28,17 +28,29 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
 
     graphicsLibrary.load( "data/test_library_1_tileset.xml" );
 
+    SECTION( "Tileset dimensions are loaded correctly" )
     {
-        const m2g::Tileset& tileset =
-                graphicsLibrary.tileset( "Tileset64x64 - tile32x32" );
-        REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
-        REQUIRE( tileset.tileDimensions() == sf::Vector2u( 32, 32 ) );
+        {
+            const m2g::Tileset& tileset =
+                    graphicsLibrary.tileset( "Tileset64x64 - tile32x32" );
+            REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
+            REQUIRE( tileset.tileDimensions() == sf::Vector2u( 32, 32 ) );
+        }
+        {
+            const m2g::Tileset& tileset =
+                    graphicsLibrary.tileset( "Tileset64x64 - tile64x16" );
+            REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
+            REQUIRE( tileset.tileDimensions() == sf::Vector2u( 64, 16 ) );
+
+        }
     }
+
+
+    SECTION( "Tileset collision rects are loaded correctly" )
     {
         const m2g::Tileset& tileset =
                 graphicsLibrary.tileset( "Tileset64x64 - tile64x16" );
-        REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
-        REQUIRE( tileset.tileDimensions() == sf::Vector2u( 64, 16 ) );
+
         const std::list< sf::IntRect > collisionRects0 = { { 15, 5, 25, 10 } };
         const std::list< sf::IntRect > collisionRects1 = { { 32, 0, 1, 3 } };
 
