@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<library>
+	<!-- Tilesets -->
+	<tileset>
+		<name>Tileset64x64 - tile32x32</name>
+		<src>./data/tileset_w64_h64.png</src>
+		<tile_dimensions width="32" height="32"/>
+	</tileset>
+	<tileset>
+		<name>Tileset64x64 - tile64x16</name>
+		<src>./data/tileset_w64_h64.png</src>
+		<tile_dimensions width="64" height="16"/>
+		<collision_rects>
+			<collision_rect tiles="all" x="14" y="7" width="5" height="10" />
+			<collision_rect tiles="0" x="15" y="5" width="25" height="10" />
+			<collision_rect tiles="1" x="32" y="0" width="1" height="3" />
+			<collision_rect tiles="2-3" x="13" y="5" width="2" height="5" />
+		</collision_rects>
+	</tileset>
+</library>
