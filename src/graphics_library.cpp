@@ -36,10 +36,8 @@ void GraphicsLibrary::load( const std::string& libraryPath )
             rootElement->FirstChildElement( "tileset" );
 
     while( xmlElement != nullptr ){
-        const char* name =
-                xmlElement->FirstChildElement( "name" )->GetText();
-        const char* path =
-                xmlElement->FirstChildElement( "src" )->GetText();
+        std::string name, path;
+        loadNameAndPath( xmlElement, name, path );
 
         const tinyxml2::XMLElement* dimensionsElement =
                 xmlElement->FirstChildElement( "tile_dimensions" );
@@ -72,6 +70,26 @@ const Tileset &GraphicsLibrary::tileset( const std::string& name ) const
 /***
  * 3. Auxiliar loading methods
  ***/
+
+void GraphicsLibrary::loadNameAndPath( tinyxml2::XMLElement *tileSetXML,
+                                       std::string &name,
+                                       std::string &path )
+{
+    path = tileSetXML->FirstChildElement( "src" )->GetText();
+
+    if( tileSetXML->FirstChildElement( "name" ) != nullptr ){
+        name = tileSetXML->FirstChildElement( "name" )->GetText();
+    }else{
+        // name = filename
+        size_t slashPos = path.find_last_of( '/' );
+        if( slashPos != std::string::npos ){
+            name = path.substr( slashPos + 1, path.size() );
+        }else{
+            name = path;
+        }
+    }
+}
+
 
 void GraphicsLibrary::loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement *xmlElement )
 {

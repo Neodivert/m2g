@@ -46,6 +46,9 @@ class GraphicsLibrary
         /***
          * 3. Auxiliar loading methods
          ***/
+        void loadNameAndPath( tinyxml2::XMLElement* tileSetXML,
+                              std::string& name,
+                              std::string& path );
         void loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement* xmlElement );
 
 

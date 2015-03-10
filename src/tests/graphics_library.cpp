@@ -81,4 +81,13 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
     }
 }
 
+
+TEST_CASE( "Tileset without <name> is saved with name = <filename>" )
+{
+    GraphicsLibrary graphicsLibrary;
+    graphicsLibrary.load( "data/library_with_unnamed_tileset.xml" );
+
+    REQUIRE_NOTHROW( graphicsLibrary.tileset( "tileset_w64_h64.png" ) );
+}
+
 } // namespace m2g

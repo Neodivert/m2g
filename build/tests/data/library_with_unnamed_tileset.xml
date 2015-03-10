@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<library>
+	<tileset>
+		<src>./data/tileset_w64_h64.png</src>
+		<tile_dimensions width="32" height="32"/>
+	</tileset>
+</library>
