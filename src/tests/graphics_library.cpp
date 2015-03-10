@@ -1,4 +1,4 @@
-/***
+﻿/***
  * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
@@ -17,35 +17,29 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#ifndef GRAPHICS_LIBRARY_HPP
-#define GRAPHICS_LIBRARY_HPP
-
-#include <tinyxml2.h>
-#include <string>
-#include <map>
-#include "drawables/tileset.hpp"
+#include <catch.hpp>
+#include "../graphics_library.hpp"
 
 namespace m2g {
 
-class GraphicsLibrary
+TEST_CASE( "Tileset dimensions are loaded correctly" )
 {
-    public:
-        /***
-         * 1. Loading
-         ***/
-        void load( const std::string& libraryPath );
+    GraphicsLibrary graphicsLibrary;
 
+    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
 
-        /***
-         * 2. Getters
-         ***/
-        const Tileset& tileset( const std::string& name ) const;
-
-
-    private:
-        std::map< std::string, std::unique_ptr< Tileset > > tilesets_;
-};
+    {
+        const m2g::Tileset& tileset =
+                graphicsLibrary.tileset( "Tileset64x64 - tile32x32" );
+        REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
+        REQUIRE( tileset.tileDimensions() == sf::Vector2u( 32, 32 ) );
+    }
+    {
+        const m2g::Tileset& tileset =
+                graphicsLibrary.tileset( "Tileset64x64 - tile64x16" );
+        REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
+        REQUIRE( tileset.tileDimensions() == sf::Vector2u( 64, 16 ) );
+    }
+}
 
 } // namespace m2g
-
-#endif // GRAPHICS_LIBRARY_HPP

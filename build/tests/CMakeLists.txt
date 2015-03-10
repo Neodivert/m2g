@@ -13,6 +13,7 @@ add_executable(
     "${TESTS_SOURCE_DIR}/drawables/animation_state.cpp"
     "${TESTS_SOURCE_DIR}/drawables/animation_data.cpp"
     "${TESTS_SOURCE_DIR}/drawables/animation.cpp"
+    "${TESTS_SOURCE_DIR}/graphics_library.cpp"
     "${MOCKS_FILES}" )
 add_dependencies( tests ${LIBRARY_NAME} )
 target_link_libraries( tests ${LIBRARY_PATH};-lgmock;-pthread;${LIBRARIES} )
