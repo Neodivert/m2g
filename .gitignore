@@ -2,3 +2,10 @@
 *~
 *.user
 *Makefile
+libm2g*so*
+CMakeCache.txt
+CMakeLists.txt.user*
+*.cmake
+*CMakeFiles*
+install_manifest.txt
+build/tests/tests
