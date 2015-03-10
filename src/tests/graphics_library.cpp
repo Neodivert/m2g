@@ -1,4 +1,4 @@
-﻿/***
+/***
  * Copyright 2013 - 2015 Moises J. Bonilla Caraballo (Neodivert)
  *
  * This file is part of M2G.
@@ -18,6 +18,7 @@
 ***/
 
 #include <catch.hpp>
+#include <array>
 #include "../graphics_library.hpp"
 
 namespace m2g {
@@ -51,11 +52,32 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
         const m2g::Tileset& tileset =
                 graphicsLibrary.tileset( "Tileset64x64 - tile64x16" );
 
-        const std::list< sf::IntRect > collisionRects0 = { { 15, 5, 25, 10 } };
-        const std::list< sf::IntRect > collisionRects1 = { { 32, 0, 1, 3 } };
+        const sf::IntRect commonRectForAllTiles( 14, 7, 5, 10 );
+        const sf::IntRect commonRectForTiles2and3( 13, 5, 2, 5 );
 
-        REQUIRE( tileset.collisionRects( 0 ) == collisionRects0 );
-        REQUIRE( tileset.collisionRects( 1 ) == collisionRects1 );
+        std::array< std::list< sf::IntRect >, 4 > collisionRects =
+        {{
+            {
+                 commonRectForAllTiles,
+                 { 15, 5, 25, 10 }
+            },
+            {
+                 commonRectForAllTiles,
+                 { 32, 0, 1, 3 }
+            },
+            {
+                 commonRectForAllTiles,
+                 commonRectForTiles2and3,
+            },
+            {
+                 commonRectForAllTiles,
+                 commonRectForTiles2and3
+            }
+        }};
+
+        for( unsigned int tile = 0; tile < collisionRects.size(); tile++ ){
+            REQUIRE( tileset.collisionRects( tile ) == collisionRects[tile] );
+        }
     }
 }
 

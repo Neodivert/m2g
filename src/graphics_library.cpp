@@ -78,14 +78,30 @@ void GraphicsLibrary::loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement
     if( xmlElement ){
         xmlElement = xmlElement->FirstChildElement( "collision_rect" );
         while( xmlElement ){
-            const unsigned int tile = xmlElement->UnsignedAttribute( "tiles" );
+            unsigned int firstTile, lastTile;
+
+            const std::string tilesStr = xmlElement->Attribute( "tiles" );
+
+            if( tilesStr == "all" ){
+                firstTile = 0;
+                lastTile = tileset.nTiles();
+            }else{
+                std::size_t separatorPos = tilesStr.find( '-' );
+                if( separatorPos != std::string::npos ){
+                    firstTile = atoi( tilesStr.substr( 0, separatorPos ).c_str() );
+                    lastTile = atoi( tilesStr.substr( separatorPos + 1, tilesStr.size() ).c_str() );
+                }else{
+                    firstTile = lastTile = xmlElement->UnsignedAttribute( "tiles" );
+                }
+            }
+
             sf::IntRect rect;
             rect.left = xmlElement->UnsignedAttribute( "x" );
             rect.top = xmlElement->UnsignedAttribute( "y" );
             rect.width = xmlElement->UnsignedAttribute( "width" );
             rect.height = xmlElement->UnsignedAttribute( "height" );
 
-            tileset.addCollisionRect( rect, tile, tile );
+            tileset.addCollisionRect( rect, firstTile, lastTile );
 
             xmlElement = xmlElement->NextSiblingElement( "collision_rect" );
         }
