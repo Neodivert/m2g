@@ -25,16 +25,13 @@
 
 namespace m2g {
 
-const unsigned int DEFAULT_ANIMATION_REFRESH_RATE = 25;
-
 class Animation : public TileSprite
 {
     public:
         /***
          * 1. Construction
          ***/
-        Animation( const AnimationData& animData,
-                   unsigned int refreshRate = DEFAULT_ANIMATION_REFRESH_RATE );
+        Animation( const AnimationData& animData );
 
 
         /***
@@ -48,7 +45,6 @@ class Animation : public TileSprite
          ***/
         unsigned int currentState() const;
         unsigned int currentFrame() const;
-        unsigned int refreshRate() const;
 
 
         /***
@@ -62,7 +58,6 @@ class Animation : public TileSprite
         const AnimationData* animData_;
         unsigned int currentState_;
         unsigned int currentFrame_;
-        unsigned int refreshRate_;
 };
 
 } // namespace m2g

@@ -25,11 +25,9 @@ namespace m2g {
  * 1. Construction
  ***/
 
-Animation::Animation( const AnimationData &animData,
-                      unsigned int refreshRate ) :
+Animation::Animation( const AnimationData &animData ) :
     TileSprite( animData.tileset() ),
-    animData_( &animData ),
-    refreshRate_( refreshRate * 1000 )
+    animData_( &animData )
 {
     if( animData.nStates() == 0 ){
         throw std::invalid_argument( "animData can't be empty (0 states)" );
@@ -51,12 +49,6 @@ unsigned int Animation::currentState() const
 unsigned int Animation::currentFrame() const
 {
     return currentFrame_;
-}
-
-
-unsigned int Animation::refreshRate() const
-{
-    return refreshRate_ / 1000;
 }
 
 
