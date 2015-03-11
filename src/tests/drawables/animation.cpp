@@ -143,4 +143,39 @@ TEST_CASE( "An attempt to set a frame outside of the current state must throw" )
     REQUIRE( animation.currentFrame() == 2 );
 }
 
+
+TEST_CASE( "An animation can be time-updated" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset, 1 );
+    const AnimationState animState( 1, 3, 0 );
+    animData.addState( animState );
+
+    Animation animation( animData );
+
+    REQUIRE( animation.currentFrame() == 1 );
+
+    animation.update( 50 );
+    REQUIRE( animation.currentFrame() == 1 );
+
+    animation.update( 949 );
+    REQUIRE( animation.currentFrame() == 1 );
+
+    animation.update( 1 );
+    REQUIRE( animation.currentFrame() == 2 );
+
+    animation.update( 1000 );
+    REQUIRE( animation.currentFrame() == 3 );
+
+    animation.update( 1000 );
+    REQUIRE( animation.currentFrame() == 0 );
+
+    animation.update( 4000 );
+    REQUIRE( animation.currentFrame() == 0 );
+
+    animation.update( 2000 );
+    REQUIRE( animation.currentFrame() == 2 );
+}
+
+
 } // namespace m2g

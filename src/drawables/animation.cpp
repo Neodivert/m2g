@@ -73,4 +73,29 @@ void Animation::setTile( unsigned int tile )
     currentFrame_ = tile;
 }
 
+
+/***
+ * 5. Updating
+ ***/
+
+void Animation::update( unsigned int ms )
+{
+    static unsigned int frameTime = 0;
+    const unsigned int ELAPSED_SECONDS = ( frameTime + ms ) / 1000;
+    frameTime = ( frameTime + ms ) % 1000;
+
+    const unsigned int N_FRAMES = ELAPSED_SECONDS * animData_->refreshRate();
+
+    unsigned int dstFrame = currentFrame_;
+    for( unsigned int i = 0; i < N_FRAMES; i++ ){
+        if( dstFrame < animData_->state( currentState_ ).lastFrame ){
+            dstFrame++;
+        }else{
+            dstFrame = animData_->state( currentState_ ).backFrame;
+        }
+    }
+    setTile( dstFrame );
+}
+
+
 } // namespace m2g

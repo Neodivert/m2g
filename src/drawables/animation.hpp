@@ -54,6 +54,12 @@ class Animation : public TileSprite
         virtual void setTile( unsigned int tile );
 
 
+        /***
+         * 5. Updating
+         ***/
+        void update( unsigned int ms );
+
+
     private:
         const AnimationData* animData_;
         unsigned int currentState_;
