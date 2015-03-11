@@ -25,6 +25,8 @@
 
 namespace m2g {
 
+const unsigned int DEFAULT_REFRESH_RATE = 25;
+
 class AnimationData
 {
     public:
@@ -46,6 +48,7 @@ class AnimationData
         AnimationState state( unsigned int index ) const;
         unsigned int nStates() const;
         const Tileset& tileset() const;
+        unsigned int refreshRate() const;
 
 
         /***

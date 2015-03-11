@@ -52,6 +52,12 @@ const Tileset &AnimationData::tileset() const
 }
 
 
+unsigned int AnimationData::refreshRate() const
+{
+    return DEFAULT_REFRESH_RATE;
+}
+
+
 /***
  * 4. States management
  ***/
