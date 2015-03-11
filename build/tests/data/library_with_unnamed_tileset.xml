@@ -2,7 +2,7 @@
 
 <library>
 	<tileset>
-		<src>./data/tileset_w64_h64.png</src>
+		<src>tileset_w64_h64.png</src>
 		<tile_dimensions width="32" height="32"/>
 	</tileset>
 </library>

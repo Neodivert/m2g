@@ -50,6 +50,7 @@ class GraphicsLibrary
                               std::string& name,
                               std::string& path );
         void loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement* xmlElement );
+        std::string getDirPath( const std::string& path );
 
 
         /***

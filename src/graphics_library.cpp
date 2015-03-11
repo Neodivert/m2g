@@ -30,6 +30,8 @@ void GraphicsLibrary::load( const std::string& libraryPath )
     tinyxml2::XMLDocument libraryFile;
     libraryFile.LoadFile( libraryPath.c_str() );
 
+    const std::string libraryDirPath = getDirPath( libraryPath );
+
     tinyxml2::XMLElement* rootElement =
             libraryFile.FirstChildElement( "library" );
     tinyxml2::XMLElement* xmlElement =
@@ -38,6 +40,7 @@ void GraphicsLibrary::load( const std::string& libraryPath )
     while( xmlElement != nullptr ){
         std::string name, path;
         loadNameAndPath( xmlElement, name, path );
+        path = libraryDirPath + '/' + path;
 
         const tinyxml2::XMLElement* dimensionsElement =
                 xmlElement->FirstChildElement( "tile_dimensions" );
@@ -123,6 +126,18 @@ void GraphicsLibrary::loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement
 
             xmlElement = xmlElement->NextSiblingElement( "collision_rect" );
         }
+    }
+}
+
+
+std::string GraphicsLibrary::getDirPath( const std::string& path )
+{
+    std::size_t slashPos = path.find_last_of( '/' );
+
+    if( slashPos != std::string::npos ){
+        return path.substr( 0, slashPos );
+    }else{
+        return ".";
     }
 }
 

@@ -4,12 +4,12 @@
 	<!-- Tilesets -->
 	<tileset>
 		<name>Tileset64x64 - tile32x32</name>
-		<src>./data/tileset_w64_h64.png</src>
+		<src>tileset_w64_h64.png</src>
 		<tile_dimensions width="32" height="32"/>
 	</tileset>
 	<tileset>
 		<name>Tileset64x64 - tile64x16</name>
-		<src>./data/tileset_w64_h64.png</src>
+		<src>tileset_w64_h64.png</src>
 		<tile_dimensions width="64" height="16"/>
 		<collision_rects>
 			<collision_rect tiles="all" x="14" y="7" width="5" height="10" />
