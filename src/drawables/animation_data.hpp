@@ -33,7 +33,7 @@ class AnimationData
         /***
          * 1. Construction
          ***/
-        AnimationData( const Tileset& tileset );
+        AnimationData( const Tileset& tileset, unsigned int refreshRate = DEFAULT_REFRESH_RATE );
 
 
         /***
@@ -59,6 +59,7 @@ class AnimationData
 
     private:
         const Tileset* tileset_;
+        unsigned int refreshRate_;
         std::vector< AnimationState > states_;
 };
 

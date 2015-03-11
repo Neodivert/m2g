@@ -25,8 +25,10 @@ namespace m2g {
  * 1. Construction
  ***/
 
-AnimationData::AnimationData( const Tileset& tileset ) :
-    tileset_( &tileset )
+AnimationData::AnimationData( const Tileset& tileset,
+                              unsigned int refreshRate ) :
+    tileset_( &tileset ),
+    refreshRate_( refreshRate )
 {}
 
 
@@ -54,7 +56,7 @@ const Tileset &AnimationData::tileset() const
 
 unsigned int AnimationData::refreshRate() const
 {
-    return DEFAULT_REFRESH_RATE;
+    return refreshRate_;
 }
 
 

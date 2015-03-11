@@ -32,12 +32,21 @@ TEST_CASE( "Animation references its tileset" )
 }
 
 
-TEST_CASE( "AnimationData returns its refresh rate (default value)" )
+TEST_CASE( "AnimationData returns its refresh rate" )
 {
     Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
-    AnimationData animData( tileset );
 
-    REQUIRE( animData.refreshRate() == DEFAULT_REFRESH_RATE );
+    SECTION( "AnimationData returns its refresh rate (default value)" )
+    {
+        AnimationData animData( tileset );
+        REQUIRE( animData.refreshRate() == DEFAULT_REFRESH_RATE );
+    }
+
+    SECTION( "AnimationData returns its refresh rate (given value)" )
+    {
+        AnimationData animData( tileset, 30 );
+        REQUIRE( animData.refreshRate() == 30 );
+    }
 }
 
 
