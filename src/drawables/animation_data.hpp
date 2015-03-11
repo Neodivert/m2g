@@ -25,7 +25,7 @@
 
 namespace m2g {
 
-const unsigned int DEFAULT_REFRESH_RATE = 25;
+const unsigned int DEFAULT_ANIMATION_REFRESH_RATE = 25;
 
 class AnimationData
 {
@@ -33,7 +33,7 @@ class AnimationData
         /***
          * 1. Construction
          ***/
-        AnimationData( const Tileset& tileset, unsigned int refreshRate = DEFAULT_REFRESH_RATE );
+        AnimationData( const Tileset& tileset, unsigned int refreshRate = DEFAULT_ANIMATION_REFRESH_RATE );
 
 
         /***

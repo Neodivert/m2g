@@ -39,7 +39,7 @@ TEST_CASE( "AnimationData returns its refresh rate" )
     SECTION( "AnimationData returns its refresh rate (default value)" )
     {
         AnimationData animData( tileset );
-        REQUIRE( animData.refreshRate() == DEFAULT_REFRESH_RATE );
+        REQUIRE( animData.refreshRate() == DEFAULT_ANIMATION_REFRESH_RATE );
     }
 
     SECTION( "AnimationData returns its refresh rate (given value)" )
