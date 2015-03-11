@@ -9,3 +9,4 @@ CMakeLists.txt.user*
 *CMakeFiles*
 install_manifest.txt
 build/tests/tests
+m2g.cbp
