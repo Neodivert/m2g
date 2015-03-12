@@ -24,6 +24,7 @@
 #include <string>
 #include <map>
 #include "drawables/tileset.hpp"
+#include "drawables/animation_data.hpp"
 
 namespace m2g {
 
@@ -40,6 +41,7 @@ class GraphicsLibrary
          * 2. Getters
          ***/
         const Tileset& tileset( const std::string& name ) const;
+        const AnimationData& getAnimationDataByName( const std::string& name ) const;
 
 
     private:
@@ -51,12 +53,17 @@ class GraphicsLibrary
                               std::string& path );
         void loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement* xmlElement );
         std::string getDirPath( const std::string& path );
+        std::string loadTileset( tinyxml2::XMLElement* tilesetXML,
+                                 const std::string& libraryDirPath );
+        void loadAnimationData( tinyxml2::XMLElement* animationDataXML,
+                                const std::string& libraryDirPath );
 
 
         /***
          * Attributes
          ***/
         std::map< std::string, std::unique_ptr< Tileset > > tilesets_;
+        std::map< std::string, std::unique_ptr< AnimationData > > animData_;
 };
 
 } // namespace m2g

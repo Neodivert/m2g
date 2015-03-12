@@ -90,4 +90,15 @@ TEST_CASE( "Tileset without <name> is saved with name = <filename>" )
     REQUIRE_NOTHROW( graphicsLibrary.tileset( "tileset_w64_h64.png" ) );
 }
 
+
+TEST_CASE( "AnimationData's refresh data is loaded from file" )
+{
+    GraphicsLibrary graphicsLibrary;
+    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
+
+    AnimationData animData =
+            graphicsLibrary.getAnimationDataByName( "Animation 1" );
+    REQUIRE( animData.refreshRate() == 3 );
+}
+
 } // namespace m2g
