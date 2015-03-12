@@ -170,10 +170,35 @@ void GraphicsLibrary::loadAnimationData( tinyxml2::XMLElement *animationDataXML,
                          libraryDirPath );
     const unsigned int REFRESH_RATE = animationDataXML->UnsignedAttribute( "fps" );
 
-    animData_[tilesetName] =
-            std::unique_ptr< AnimationData >(
+    std::unique_ptr< AnimationData > animData(
                 new AnimationData( tileset( tilesetName ),
                                    REFRESH_RATE ) );
+
+    loadAnimationDataStates( *animData,
+                             animationDataXML->FirstChildElement( "animation_states" ) );
+
+    animData_[tilesetName] = std::move( animData );
+}
+
+
+void GraphicsLibrary::loadAnimationDataStates( AnimationData &animData,
+                                               tinyxml2::XMLElement *statesNode )
+{
+    if( statesNode != nullptr ){
+        tinyxml2::XMLElement* stateNode =
+                statesNode->FirstChildElement( "animation_state" );
+
+        while( stateNode != nullptr ){
+            AnimationState animState(
+                        stateNode->UnsignedAttribute( "first_frame" ),
+                        stateNode->UnsignedAttribute( "last_frame" ),
+                        stateNode->UnsignedAttribute( "back_frame" )
+                        );
+            animData.addState( animState );
+
+            stateNode = stateNode->NextSiblingElement( "animation_state" );
+        }
+    }
 }
 
 } // namespace m2g

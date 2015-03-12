@@ -101,4 +101,25 @@ TEST_CASE( "AnimationData's refresh data is loaded from file" )
     REQUIRE( animData.refreshRate() == 3 );
 }
 
+
+TEST_CASE( "AnimationData's states are loaded from file" )
+{
+    GraphicsLibrary graphicsLibrary;
+    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
+
+    std::vector< AnimationState > EXPECTED_ANIM_STATES =
+    {
+        { 0, 3, 1 },
+        { 1, 2, 0 }
+    };
+
+    AnimationData animData =
+            graphicsLibrary.getAnimationDataByName( "Animation 1" );
+
+    REQUIRE( animData.nStates() == EXPECTED_ANIM_STATES.size() );
+    for( unsigned int state = 0; state < EXPECTED_ANIM_STATES.size(); state++ ){
+        REQUIRE( animData.state( state ) == EXPECTED_ANIM_STATES.at( state ) );
+    }
+}
+
 } // namespace m2g

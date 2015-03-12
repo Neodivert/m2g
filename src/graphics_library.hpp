@@ -57,6 +57,8 @@ class GraphicsLibrary
                                  const std::string& libraryDirPath );
         void loadAnimationData( tinyxml2::XMLElement* animationDataXML,
                                 const std::string& libraryDirPath );
+        void loadAnimationDataStates( AnimationData& animData,
+                                      tinyxml2::XMLElement* statesNode );
 
 
         /***
