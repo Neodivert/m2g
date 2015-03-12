@@ -40,7 +40,7 @@ class GraphicsLibrary
         /***
          * 2. Getters
          ***/
-        const Tileset& tileset( const std::string& name ) const;
+        const Tileset& getTilesetByName( const std::string& name ) const;
         const AnimationData& getAnimationDataByName( const std::string& name ) const;
 
 

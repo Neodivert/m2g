@@ -54,7 +54,7 @@ void GraphicsLibrary::load( const std::string& libraryPath )
  * 2. Getters
  ***/
 
-const Tileset &GraphicsLibrary::tileset( const std::string& name ) const
+const Tileset &GraphicsLibrary::getTilesetByName( const std::string& name ) const
 {
     return *( tilesets_.at( name ) );
 }
@@ -171,7 +171,7 @@ void GraphicsLibrary::loadAnimationData( tinyxml2::XMLElement *animationDataXML,
     const unsigned int REFRESH_RATE = animationDataXML->UnsignedAttribute( "fps" );
 
     std::unique_ptr< AnimationData > animData(
-                new AnimationData( tileset( tilesetName ),
+                new AnimationData( getTilesetByName( tilesetName ),
                                    REFRESH_RATE ) );
 
     loadAnimationDataStates( *animData,

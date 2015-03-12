@@ -33,13 +33,13 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
     {
         {
             const m2g::Tileset& tileset =
-                    graphicsLibrary.tileset( "Tileset64x64 - tile32x32" );
+                    graphicsLibrary.getTilesetByName( "Tileset64x64 - tile32x32" );
             REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
             REQUIRE( tileset.tileDimensions() == sf::Vector2u( 32, 32 ) );
         }
         {
             const m2g::Tileset& tileset =
-                    graphicsLibrary.tileset( "Tileset64x64 - tile64x16" );
+                    graphicsLibrary.getTilesetByName( "Tileset64x64 - tile64x16" );
             REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
             REQUIRE( tileset.tileDimensions() == sf::Vector2u( 64, 16 ) );
 
@@ -50,7 +50,7 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
     SECTION( "Tileset collision rects are loaded correctly" )
     {
         const m2g::Tileset& tileset =
-                graphicsLibrary.tileset( "Tileset64x64 - tile64x16" );
+                graphicsLibrary.getTilesetByName( "Tileset64x64 - tile64x16" );
 
         const sf::IntRect commonRectForAllTiles( 14, 7, 5, 10 );
         const sf::IntRect commonRectForTiles2and3( 13, 5, 2, 5 );
@@ -87,7 +87,7 @@ TEST_CASE( "Tileset without <name> is saved with name = <filename>" )
     GraphicsLibrary graphicsLibrary;
     graphicsLibrary.load( "data/library_with_unnamed_tileset.xml" );
 
-    REQUIRE_NOTHROW( graphicsLibrary.tileset( "tileset_w64_h64.png" ) );
+    REQUIRE_NOTHROW( graphicsLibrary.getTilesetByName( "tileset_w64_h64.png" ) );
 }
 
 
