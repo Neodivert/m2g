@@ -91,34 +91,30 @@ TEST_CASE( "Tileset without <name> is saved with name = <filename>" )
 }
 
 
-TEST_CASE( "AnimationData's refresh data is loaded from file" )
+TEST_CASE( "AnimationData is loaded from file" )
 {
     GraphicsLibrary graphicsLibrary;
     graphicsLibrary.load( "data/test_library_1_tileset.xml" );
-
     AnimationData animData =
             graphicsLibrary.getAnimationDataByName( "Animation 1" );
-    REQUIRE( animData.refreshRate() == 3 );
-}
 
-
-TEST_CASE( "AnimationData's states are loaded from file" )
-{
-    GraphicsLibrary graphicsLibrary;
-    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
-
-    std::vector< AnimationState > EXPECTED_ANIM_STATES =
+    SECTION( "AnimationData's refresh data is loaded from file" )
     {
-        { 0, 3, 1 },
-        { 1, 2, 0 }
-    };
+        REQUIRE( animData.refreshRate() == 3 );
+    }
 
-    AnimationData animData =
-            graphicsLibrary.getAnimationDataByName( "Animation 1" );
+    SECTION( "AnimationData's states are loaded from file" )
+    {
+        std::vector< AnimationState > EXPECTED_ANIM_STATES =
+        {
+            { 0, 3, 1 },
+            { 1, 2, 0 }
+        };
 
-    REQUIRE( animData.nStates() == EXPECTED_ANIM_STATES.size() );
-    for( unsigned int state = 0; state < EXPECTED_ANIM_STATES.size(); state++ ){
-        REQUIRE( animData.state( state ) == EXPECTED_ANIM_STATES.at( state ) );
+        REQUIRE( animData.nStates() == EXPECTED_ANIM_STATES.size() );
+        for( unsigned int state = 0; state < EXPECTED_ANIM_STATES.size(); state++ ){
+            REQUIRE( animData.state( state ) == EXPECTED_ANIM_STATES.at( state ) );
+        }
     }
 }
 
