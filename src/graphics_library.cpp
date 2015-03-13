@@ -66,6 +66,21 @@ const AnimationData &GraphicsLibrary::getAnimationDataByName(const std::string &
 }
 
 
+std::list<std::reference_wrapper<const AnimationData> > GraphicsLibrary::getAnimationDataByPrefix(const std::string &namePrefix)
+{
+    std::list<std::reference_wrapper<const AnimationData> > resList;
+
+    for( const auto& animDataPair : animData_ ){
+        const std::string animDataName = animDataPair.first;
+        if( animDataName.substr( 0, namePrefix.size() ) == namePrefix ){
+            resList.push_back( *( animDataPair.second ) );
+        }
+    }
+
+    return resList;
+}
+
+
 /***
  * 3. Auxiliar loading methods
  ***/

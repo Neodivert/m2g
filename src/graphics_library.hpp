@@ -42,7 +42,7 @@ class GraphicsLibrary
          ***/
         const Tileset& getTilesetByName( const std::string& name ) const;
         const AnimationData& getAnimationDataByName( const std::string& name ) const;
-
+        std::list< std::reference_wrapper< const AnimationData > > getAnimationDataByPrefix( const std::string& namePrefix );
 
     private:
         /***

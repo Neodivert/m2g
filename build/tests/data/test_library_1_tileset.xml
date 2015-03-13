@@ -31,4 +31,25 @@
 			<animation_state first_frame="1" last_frame="2" back_frame="0" />
 		</animation_states>
 	</animation>
+	<animation fps="23">
+		<tileset>
+			<name>animation_1</name>
+			<src>tileset_w64_h64.png</src>
+			<tile_dimensions width="32" height="32"/>
+		</tileset>
+		<animation_states>
+			<animation_state first_frame="1" last_frame="2" back_frame="0" />
+			<animation_state first_frame="2" last_frame="3" back_frame="1" />
+		</animation_states>
+	</animation>
+	<animation fps="34">
+		<tileset>
+			<name>animation_2</name>
+			<src>tileset_w64_h64.png</src>
+			<tile_dimensions width="32" height="32"/>
+		</tileset>
+		<animation_states>
+			<animation_state first_frame="0" last_frame="3" back_frame="0" />
+		</animation_states>
+	</animation>
 </library>

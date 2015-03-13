@@ -118,4 +118,50 @@ TEST_CASE( "AnimationData is loaded from file" )
     }
 }
 
+
+TEST_CASE( "AnimationData objects can be loaded from file by prefix" )
+{
+    GraphicsLibrary graphicsLibrary;
+    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
+
+    std::list< std::reference_wrapper< const AnimationData > > animDataList =
+            graphicsLibrary.getAnimationDataByPrefix( "animation_" );
+
+    REQUIRE( animDataList.size() == 2 );
+
+    SECTION( "AnimationData's refresh rates are loaded correctly" )
+    {
+        std::vector< unsigned int > EXPECTED_ANIM_REFRESH_RATES =
+        {
+            23, 34
+        };
+
+        unsigned int i = 0;
+        for( std::reference_wrapper< const AnimationData > animData : animDataList ){
+            REQUIRE( animData.get().refreshRate() == EXPECTED_ANIM_REFRESH_RATES.at( i ) );
+            i++;
+        }
+    }
+
+
+    SECTION( "AnimationData's refresh rates are loaded correctly" )
+    {
+        std::vector< std::vector< AnimationState > > EXPECTED_ANIM_STATES =
+        {
+            { { 1, 2, 0 }, { 2, 3, 1 } },
+            { { 0, 3, 0 } }
+        };
+
+        unsigned int animDataIndex = 0;
+
+        for( std::reference_wrapper< const AnimationData > animData : animDataList ){
+            unsigned int animStateIndex = 0;
+            for( animStateIndex = 0; animStateIndex < EXPECTED_ANIM_STATES.at( animDataIndex ).size(); animStateIndex++ ){
+                REQUIRE( animData.get().state( animStateIndex ) == EXPECTED_ANIM_STATES.at( animDataIndex ).at( animStateIndex ) );
+            }
+            animDataIndex++;
+        }
+    }
+}
+
 } // namespace m2g
