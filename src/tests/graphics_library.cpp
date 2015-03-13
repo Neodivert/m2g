@@ -27,7 +27,7 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
 {
     GraphicsLibrary graphicsLibrary;
 
-    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
+    graphicsLibrary.load( "data/test_graphics_library.xml" );
 
     SECTION( "Tileset dimensions are loaded correctly" )
     {
@@ -94,7 +94,7 @@ TEST_CASE( "Tileset without <name> is saved with name = <filename>" )
 TEST_CASE( "AnimationData is loaded from file" )
 {
     GraphicsLibrary graphicsLibrary;
-    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
+    graphicsLibrary.load( "data/test_graphics_library.xml" );
     AnimationData animData =
             graphicsLibrary.getAnimationDataByName( "Animation 1" );
 
@@ -122,7 +122,7 @@ TEST_CASE( "AnimationData is loaded from file" )
 TEST_CASE( "AnimationData objects can be loaded from file by prefix" )
 {
     GraphicsLibrary graphicsLibrary;
-    graphicsLibrary.load( "data/test_library_1_tileset.xml" );
+    graphicsLibrary.load( "data/test_graphics_library.xml" );
 
     std::list< std::reference_wrapper< const AnimationData > > animDataList =
             graphicsLibrary.getAnimationDataByPrefix( "animation_" );
