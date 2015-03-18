@@ -39,6 +39,7 @@ class TileSprite : public sf::Drawable, public sf::Transformable
          ***/
         const Tileset& tileset() const;
         std::list< sf::FloatRect > collisionRects() const;
+        sf::FloatRect getBoundaryBox() const; // TODO: Test!
 
 
         /***

@@ -64,6 +64,12 @@ std::list<sf::FloatRect> TileSprite::collisionRects() const
 }
 
 
+sf::FloatRect TileSprite::getBoundaryBox() const
+{
+    return sprite_.getGlobalBounds();
+}
+
+
 /***
  * 3. Setters
  ***/
