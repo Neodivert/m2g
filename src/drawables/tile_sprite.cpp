@@ -85,7 +85,7 @@ void TileSprite::setTile( unsigned int tile )
  * 4. Collision detection
  ***/
 
-bool TileSprite::collide( const TileSprite &sprite )
+bool TileSprite::collide( const TileSprite &sprite ) const
 {
     std::list< sf::FloatRect > rectsA, rectsB;
 

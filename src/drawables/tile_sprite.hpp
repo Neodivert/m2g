@@ -51,7 +51,7 @@ class TileSprite : public sf::Drawable, public sf::Transformable
         /***
          * 4. Collision detection
          ***/
-        bool collide( const TileSprite& sprite );
+        bool collide( const TileSprite& sprite ) const;
 
 
         /***
@@ -65,6 +65,8 @@ class TileSprite : public sf::Drawable, public sf::Transformable
         const Tileset* tileset_;
         unsigned int currentTile_;
 };
+
+typedef std::unique_ptr< TileSprite > TileSpritePtr;
 
 } // namespace m2g
 

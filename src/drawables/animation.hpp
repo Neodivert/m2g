@@ -45,11 +45,13 @@ class Animation : public TileSprite
          ***/
         unsigned int currentState() const;
         unsigned int currentFrame() const;
+        bool finished() const; // TODO: Test!
 
 
         /***
          * 4. Setters
          ***/
+        void setAnimationData( const AnimationData& animData ); // TODO: Test!
         void setState( unsigned int newState );
         virtual void setTile( unsigned int tile );
 
@@ -61,10 +63,12 @@ class Animation : public TileSprite
 
 
     private:
-        const AnimationData* animData_;
+        AnimationData const* animData_;
         unsigned int currentState_;
         unsigned int currentFrame_;
 };
+
+typedef std::unique_ptr< Animation > AnimationPtr;
 
 } // namespace m2g
 
