@@ -29,14 +29,14 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
 
     {
         TilesetPtr tileset =
-                graphicsLibrary.loadTilesetByName( "Tileset64x64 - tile32x32" );
+                graphicsLibrary.getTilesetByName( "Tileset64x64 - tile32x32" );
 
         REQUIRE( tileset->dimensions() == sf::Vector2u( 64, 64 ) );
         REQUIRE( tileset->tileDimensions() == sf::Vector2u( 32, 32 ) );
     }
     {
         TilesetPtr tileset =
-                graphicsLibrary.loadTilesetByName( "Tileset64x64 - tile64x16" );
+                graphicsLibrary.getTilesetByName( "Tileset64x64 - tile64x16" );
 
         REQUIRE( tileset->dimensions() == sf::Vector2u( 64, 64 ) );
         REQUIRE( tileset->tileDimensions() == sf::Vector2u( 64, 16 ) );
@@ -46,7 +46,7 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
     SECTION( "Tileset collision rects are loaded correctly" )
     {
         TilesetPtr tileset =
-                graphicsLibrary.loadTilesetByName( "Tileset64x64 - tile64x16" );
+                graphicsLibrary.getTilesetByName( "Tileset64x64 - tile64x16" );
 
         const sf::IntRect commonRectForAllTiles( 14, 7, 5, 10 );
         const sf::IntRect commonRectForTiles2and3( 13, 5, 2, 5 );
@@ -82,7 +82,7 @@ TEST_CASE( "Tileset without <name> is saved with name = <filename>" )
 {
     GraphicsLibrary graphicsLibrary( "data/library_with_unnamed_tileset.xml" );
 
-    REQUIRE( graphicsLibrary.loadTilesetByName( "tileset_w64_h64.png" ) != nullptr );
+    REQUIRE( graphicsLibrary.getTilesetByName( "tileset_w64_h64.png" ) != nullptr );
 }
 
 
@@ -90,7 +90,7 @@ TEST_CASE( "AnimationData is loaded from file" )
 {
     GraphicsLibrary graphicsLibrary( "data/test_graphics_library.xml" );
     AnimationDataPtr animData =
-            graphicsLibrary.loadAnimationDataByName( "Animation 1" );
+            graphicsLibrary.getAnimationDataByName( "Animation 1" );
 
     SECTION( "AnimationData's refresh data is loaded from file" )
     {
@@ -118,7 +118,7 @@ TEST_CASE( "AnimationData objects can be loaded from file by prefix" )
     GraphicsLibrary graphicsLibrary( "data/test_graphics_library.xml" );
 
     AnimationDataList animDataList =
-            graphicsLibrary.loadAnimationDataByPrefix( "animation_" );
+            graphicsLibrary.getAnimationDataByPrefix( "animation_" );
 
     REQUIRE( animDataList.size() == 2 );
 

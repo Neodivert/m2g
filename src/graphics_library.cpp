@@ -36,7 +36,7 @@ GraphicsLibrary::GraphicsLibrary( const std::string &libraryPath ) :
  * 2. Loading
  ***/
 
-TilesetPtr GraphicsLibrary::loadTilesetByName( const std::string& tilesetName )
+TilesetPtr GraphicsLibrary::getTilesetByName( const std::string& tilesetName )
 {
     TilesetPtr tileset = nullptr;
     tinyxml2::XMLDocument libraryFile;
@@ -61,7 +61,7 @@ TilesetPtr GraphicsLibrary::loadTilesetByName( const std::string& tilesetName )
 }
 
 
-AnimationDataPtr GraphicsLibrary::loadAnimationDataByName( const std::string& animDataName )
+AnimationDataPtr GraphicsLibrary::getAnimationDataByName( const std::string& animDataName )
 {
     tinyxml2::XMLDocument libraryFile;
     libraryFile.LoadFile( libraryPath_.c_str() );
@@ -85,7 +85,7 @@ AnimationDataPtr GraphicsLibrary::loadAnimationDataByName( const std::string& an
 }
 
 
-AnimationDataList GraphicsLibrary::loadAnimationDataByPrefix( const std::string &animDataName )
+AnimationDataList GraphicsLibrary::getAnimationDataByPrefix( const std::string &animDataName )
 {
     AnimationDataList animDataList;
 

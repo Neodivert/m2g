@@ -42,9 +42,9 @@ class GraphicsLibrary
         /***
          * 2. Loading
          ***/
-        TilesetPtr loadTilesetByName( const std::string& tilesetName );
-        AnimationDataPtr loadAnimationDataByName( const std::string& animDataName );
-        AnimationDataList loadAnimationDataByPrefix( const std::string& animDataName );
+        TilesetPtr getTilesetByName( const std::string& tilesetName );
+        AnimationDataPtr getAnimationDataByName( const std::string& animDataName );
+        AnimationDataList getAnimationDataByPrefix( const std::string& animDataName );
 
 
     private:
