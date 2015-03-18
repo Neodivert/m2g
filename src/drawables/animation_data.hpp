@@ -63,6 +63,8 @@ class AnimationData
         std::vector< AnimationState > states_;
 };
 
+typedef std::unique_ptr< AnimationData > AnimationDataPtr;
+
 } // namespace m2g.
 
 #endif // ANIMATION_DATA_HPP

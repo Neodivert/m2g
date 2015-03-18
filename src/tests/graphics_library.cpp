@@ -25,32 +25,28 @@ namespace m2g {
 
 TEST_CASE( "Tileset dimensions are loaded correctly" )
 {
-    GraphicsLibrary graphicsLibrary;
+    GraphicsLibrary graphicsLibrary( "data/test_graphics_library.xml" );
 
-    graphicsLibrary.load( "data/test_graphics_library.xml" );
-
-    SECTION( "Tileset dimensions are loaded correctly" )
     {
-        {
-            const m2g::Tileset& tileset =
-                    graphicsLibrary.getTilesetByName( "Tileset64x64 - tile32x32" );
-            REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
-            REQUIRE( tileset.tileDimensions() == sf::Vector2u( 32, 32 ) );
-        }
-        {
-            const m2g::Tileset& tileset =
-                    graphicsLibrary.getTilesetByName( "Tileset64x64 - tile64x16" );
-            REQUIRE( tileset.dimensions() == sf::Vector2u( 64, 64 ) );
-            REQUIRE( tileset.tileDimensions() == sf::Vector2u( 64, 16 ) );
+        TilesetPtr tileset =
+                graphicsLibrary.loadTilesetByName( "Tileset64x64 - tile32x32" );
 
-        }
+        REQUIRE( tileset->dimensions() == sf::Vector2u( 64, 64 ) );
+        REQUIRE( tileset->tileDimensions() == sf::Vector2u( 32, 32 ) );
+    }
+    {
+        TilesetPtr tileset =
+                graphicsLibrary.loadTilesetByName( "Tileset64x64 - tile64x16" );
+
+        REQUIRE( tileset->dimensions() == sf::Vector2u( 64, 64 ) );
+        REQUIRE( tileset->tileDimensions() == sf::Vector2u( 64, 16 ) );
     }
 
 
     SECTION( "Tileset collision rects are loaded correctly" )
     {
-        const m2g::Tileset& tileset =
-                graphicsLibrary.getTilesetByName( "Tileset64x64 - tile64x16" );
+        TilesetPtr tileset =
+                graphicsLibrary.loadTilesetByName( "Tileset64x64 - tile64x16" );
 
         const sf::IntRect commonRectForAllTiles( 14, 7, 5, 10 );
         const sf::IntRect commonRectForTiles2and3( 13, 5, 2, 5 );
@@ -76,7 +72,7 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
         }};
 
         for( unsigned int tile = 0; tile < collisionRects.size(); tile++ ){
-            REQUIRE( tileset.collisionRects( tile ) == collisionRects[tile] );
+            REQUIRE( tileset->collisionRects( tile ) == collisionRects[tile] );
         }
     }
 }
@@ -84,23 +80,21 @@ TEST_CASE( "Tileset dimensions are loaded correctly" )
 
 TEST_CASE( "Tileset without <name> is saved with name = <filename>" )
 {
-    GraphicsLibrary graphicsLibrary;
-    graphicsLibrary.load( "data/library_with_unnamed_tileset.xml" );
+    GraphicsLibrary graphicsLibrary( "data/library_with_unnamed_tileset.xml" );
 
-    REQUIRE_NOTHROW( graphicsLibrary.getTilesetByName( "tileset_w64_h64.png" ) );
+    REQUIRE( graphicsLibrary.loadTilesetByName( "tileset_w64_h64.png" ) != nullptr );
 }
 
 
 TEST_CASE( "AnimationData is loaded from file" )
 {
-    GraphicsLibrary graphicsLibrary;
-    graphicsLibrary.load( "data/test_graphics_library.xml" );
-    AnimationData animData =
-            graphicsLibrary.getAnimationDataByName( "Animation 1" );
+    GraphicsLibrary graphicsLibrary( "data/test_graphics_library.xml" );
+    AnimationDataPtr animData =
+            graphicsLibrary.loadAnimationDataByName( "Animation 1" );
 
     SECTION( "AnimationData's refresh data is loaded from file" )
     {
-        REQUIRE( animData.refreshRate() == 3 );
+        REQUIRE( animData->refreshRate() == 3 );
     }
 
     SECTION( "AnimationData's states are loaded from file" )
@@ -111,9 +105,9 @@ TEST_CASE( "AnimationData is loaded from file" )
             { 1, 2, 0 }
         };
 
-        REQUIRE( animData.nStates() == EXPECTED_ANIM_STATES.size() );
+        REQUIRE( animData->nStates() == EXPECTED_ANIM_STATES.size() );
         for( unsigned int state = 0; state < EXPECTED_ANIM_STATES.size(); state++ ){
-            REQUIRE( animData.state( state ) == EXPECTED_ANIM_STATES.at( state ) );
+            REQUIRE( animData->state( state ) == EXPECTED_ANIM_STATES.at( state ) );
         }
     }
 }
@@ -121,11 +115,10 @@ TEST_CASE( "AnimationData is loaded from file" )
 
 TEST_CASE( "AnimationData objects can be loaded from file by prefix" )
 {
-    GraphicsLibrary graphicsLibrary;
-    graphicsLibrary.load( "data/test_graphics_library.xml" );
+    GraphicsLibrary graphicsLibrary( "data/test_graphics_library.xml" );
 
-    std::list< std::reference_wrapper< const AnimationData > > animDataList =
-            graphicsLibrary.getAnimationDataByPrefix( "animation_" );
+    AnimationDataList animDataList =
+            graphicsLibrary.loadAnimationDataByPrefix( "animation_" );
 
     REQUIRE( animDataList.size() == 2 );
 
@@ -137,8 +130,8 @@ TEST_CASE( "AnimationData objects can be loaded from file by prefix" )
         };
 
         unsigned int i = 0;
-        for( std::reference_wrapper< const AnimationData > animData : animDataList ){
-            REQUIRE( animData.get().refreshRate() == EXPECTED_ANIM_REFRESH_RATES.at( i ) );
+        for( AnimationDataPtr& animData : animDataList ){
+            REQUIRE( animData->refreshRate() == EXPECTED_ANIM_REFRESH_RATES.at( i ) );
             i++;
         }
     }
@@ -154,10 +147,10 @@ TEST_CASE( "AnimationData objects can be loaded from file by prefix" )
 
         unsigned int animDataIndex = 0;
 
-        for( std::reference_wrapper< const AnimationData > animData : animDataList ){
+        for( AnimationDataPtr& animData : animDataList ){
             unsigned int animStateIndex = 0;
             for( animStateIndex = 0; animStateIndex < EXPECTED_ANIM_STATES.at( animDataIndex ).size(); animStateIndex++ ){
-                REQUIRE( animData.get().state( animStateIndex ) == EXPECTED_ANIM_STATES.at( animDataIndex ).at( animStateIndex ) );
+                REQUIRE( animData->state( animStateIndex ) == EXPECTED_ANIM_STATES.at( animDataIndex ).at( animStateIndex ) );
             }
             animDataIndex++;
         }

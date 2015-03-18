@@ -28,21 +28,24 @@
 
 namespace m2g {
 
+typedef std::list< AnimationDataPtr > AnimationDataList;
+
 class GraphicsLibrary
 {
     public:
         /***
-         * 1. Loading
+         * 1. Construction
          ***/
-        void load( const std::string& libraryPath );
+        GraphicsLibrary( const std::string& libraryPath );
 
 
         /***
-         * 2. Getters
+         * 2. Loading
          ***/
-        const Tileset& getTilesetByName( const std::string& name ) const;
-        const AnimationData& getAnimationDataByName( const std::string& name ) const;
-        std::list< std::reference_wrapper< const AnimationData > > getAnimationDataByPrefix( const std::string& namePrefix );
+        TilesetPtr loadTilesetByName( const std::string& tilesetName );
+        AnimationDataPtr loadAnimationDataByName( const std::string& animDataName );
+        AnimationDataList loadAnimationDataByPrefix( const std::string& animDataName );
+
 
     private:
         /***
@@ -51,12 +54,11 @@ class GraphicsLibrary
         void loadNameAndPath( tinyxml2::XMLElement* tileSetXML,
                               std::string& name,
                               std::string& path );
+        TilesetPtr loadTilesetFromXML( tinyxml2::XMLElement* tilesetXML );
+        AnimationDataPtr loadAnimationDataFromXML( tinyxml2::XMLElement* animDataXML );
+
         void loadCollisionRects( Tileset& tileset, tinyxml2::XMLElement* xmlElement );
         std::string getDirPath( const std::string& path );
-        std::string loadTileset( tinyxml2::XMLElement* tilesetXML,
-                                 const std::string& libraryDirPath );
-        void loadAnimationData( tinyxml2::XMLElement* animationDataXML,
-                                const std::string& libraryDirPath );
         void loadAnimationDataStates( AnimationData& animData,
                                       tinyxml2::XMLElement* statesNode );
 
@@ -66,6 +68,8 @@ class GraphicsLibrary
          ***/
         std::map< std::string, std::unique_ptr< Tileset > > tilesets_;
         std::map< std::string, std::unique_ptr< AnimationData > > animData_;
+        std::vector< TilesetPtr > auxiliarTilesets_; // TODO: Remove this!
+        std::string libraryPath_;
 };
 
 } // namespace m2g

@@ -21,16 +21,26 @@
 
 namespace m2g {
 
+// TODO: Remove duplicated code in loading methods.
+
 /***
- * 1. Loading
+ * 1. Construction
  ***/
 
-void GraphicsLibrary::load( const std::string& libraryPath )
-{
-    tinyxml2::XMLDocument libraryFile;
-    libraryFile.LoadFile( libraryPath.c_str() );
+GraphicsLibrary::GraphicsLibrary( const std::string &libraryPath ) :
+    libraryPath_( libraryPath )
+{}
 
-    const std::string libraryDirPath = getDirPath( libraryPath );
+
+/***
+ * 2. Loading
+ ***/
+
+TilesetPtr GraphicsLibrary::loadTilesetByName( const std::string& tilesetName )
+{
+    TilesetPtr tileset = nullptr;
+    tinyxml2::XMLDocument libraryFile;
+    libraryFile.LoadFile( libraryPath_.c_str() );
 
     tinyxml2::XMLElement* rootElement =
             libraryFile.FirstChildElement( "library" );
@@ -38,46 +48,66 @@ void GraphicsLibrary::load( const std::string& libraryPath )
             rootElement->FirstChildElement( "tileset" );
 
     while( xmlElement != nullptr ){
-        const std::string XML_NAME = xmlElement->Name();
-        if( XML_NAME == "tileset" ){
-            loadTileset( xmlElement, libraryDirPath );
-        }else{
-            loadAnimationData( xmlElement, libraryDirPath );
+        std::string name, path;
+        loadNameAndPath( xmlElement, name, path ); // TODO: Don't use path.
+
+        if( name == tilesetName ){
+            return loadTilesetFromXML( xmlElement );
         }
-
-        xmlElement = xmlElement->NextSiblingElement();
-    }
-}
-
-
-/***
- * 2. Getters
- ***/
-
-const Tileset &GraphicsLibrary::getTilesetByName( const std::string& name ) const
-{
-    return *( tilesets_.at( name ) );
-}
-
-
-const AnimationData &GraphicsLibrary::getAnimationDataByName(const std::string &name) const
-{
-    return *( animData_.at( name ) );
-}
-
-
-std::list<std::reference_wrapper<const AnimationData> > GraphicsLibrary::getAnimationDataByPrefix(const std::string &namePrefix)
-{
-    std::list<std::reference_wrapper<const AnimationData> > resList;
-
-    for( const auto& animDataPair : animData_ ){
-        const std::string animDataName = animDataPair.first;
-        if( animDataName.substr( 0, namePrefix.size() ) == namePrefix ){
-            resList.push_back( *( animDataPair.second ) );
-        }
+        xmlElement = xmlElement->NextSiblingElement( "tileset" );
     }
 
-    return resList;
+    return tileset;
+}
+
+
+AnimationDataPtr GraphicsLibrary::loadAnimationDataByName( const std::string& animDataName )
+{
+    tinyxml2::XMLDocument libraryFile;
+    libraryFile.LoadFile( libraryPath_.c_str() );
+
+    tinyxml2::XMLElement* rootElement =
+            libraryFile.FirstChildElement( "library" );
+    tinyxml2::XMLElement* xmlElement =
+            rootElement->FirstChildElement( "animation" );
+
+    while( xmlElement != nullptr ){
+        std::string name, path;
+        loadNameAndPath( xmlElement->FirstChildElement( "tileset" ), name, path ); // TODO: Don't use path.
+
+        if( name == animDataName ){
+            return loadAnimationDataFromXML( xmlElement );
+        }
+        xmlElement = xmlElement->NextSiblingElement( "animation" );
+    }
+
+    return nullptr;
+}
+
+
+AnimationDataList GraphicsLibrary::loadAnimationDataByPrefix( const std::string &animDataName )
+{
+    AnimationDataList animDataList;
+
+    tinyxml2::XMLDocument libraryFile;
+    libraryFile.LoadFile( libraryPath_.c_str() );
+
+    tinyxml2::XMLElement* rootElement =
+            libraryFile.FirstChildElement( "library" );
+    tinyxml2::XMLElement* xmlElement =
+            rootElement->FirstChildElement( "animation" );
+
+    while( xmlElement != nullptr ){
+        std::string name, path;
+        loadNameAndPath( xmlElement->FirstChildElement( "tileset" ), name, path ); // TODO: Don't use path.
+
+        if( name.substr( 0, animDataName.size() ) == animDataName ){
+            animDataList.push_back( loadAnimationDataFromXML( xmlElement ) );
+        }
+        xmlElement = xmlElement->NextSiblingElement( "animation" );
+    }
+
+    return animDataList;
 }
 
 
@@ -102,6 +132,43 @@ void GraphicsLibrary::loadNameAndPath( tinyxml2::XMLElement *tileSetXML,
             name = path;
         }
     }
+}
+
+
+TilesetPtr GraphicsLibrary::loadTilesetFromXML( tinyxml2::XMLElement *tilesetXML )
+{
+    std::string name, path;
+    loadNameAndPath( tilesetXML, name, path );
+    const std::string libraryDirPath = getDirPath( libraryPath_ );
+    path = libraryDirPath + '/' + path;
+
+    const tinyxml2::XMLElement* dimensionsElement =
+            tilesetXML->FirstChildElement( "tile_dimensions" );
+    const unsigned int width =
+            dimensionsElement->UnsignedAttribute( "width" );
+    const unsigned int height =
+            dimensionsElement->UnsignedAttribute( "height" );
+
+    TilesetPtr newTileset( new Tileset( path, width, height ) );
+
+    loadCollisionRects( *newTileset, tilesetXML->FirstChildElement( "collision_rects" ) );
+
+    return newTileset;
+}
+
+AnimationDataPtr GraphicsLibrary::loadAnimationDataFromXML( tinyxml2::XMLElement *animDataXML )
+{
+    TilesetPtr tileset =
+            loadTilesetFromXML( animDataXML->FirstChildElement( "tileset" ) );
+    const unsigned int REFRESH_RATE = animDataXML->UnsignedAttribute( "fps" );
+
+    AnimationDataPtr animData( new AnimationData( *tileset, REFRESH_RATE ) );
+    auxiliarTilesets_.push_back( std::move( tileset ) );
+
+    loadAnimationDataStates( *animData,
+                             animDataXML->FirstChildElement( "animation_states" ) );
+
+    return animData;
 }
 
 
@@ -150,49 +217,6 @@ std::string GraphicsLibrary::getDirPath( const std::string& path )
     }else{
         return ".";
     }
-}
-
-
-std::string GraphicsLibrary::loadTileset( tinyxml2::XMLElement *tilesetXML,
-                                          const std::string& libraryDirPath )
-{
-    std::string name, path;
-    loadNameAndPath( tilesetXML, name, path );
-    path = libraryDirPath + '/' + path;
-
-    const tinyxml2::XMLElement* dimensionsElement =
-            tilesetXML->FirstChildElement( "tile_dimensions" );
-    const unsigned int width =
-            dimensionsElement->UnsignedAttribute( "width" );
-    const unsigned int height =
-            dimensionsElement->UnsignedAttribute( "height" );
-
-    std::unique_ptr< Tileset > newTileset( new Tileset( path, width, height ) );
-
-    loadCollisionRects( *newTileset, tilesetXML->FirstChildElement( "collision_rects" ) );
-
-    tilesets_[std::string( name )] = std::move( newTileset );
-
-    return name;
-}
-
-
-void GraphicsLibrary::loadAnimationData( tinyxml2::XMLElement *animationDataXML,
-                                         const std::string& libraryDirPath )
-{
-    const std::string tilesetName =
-            loadTileset( animationDataXML->FirstChildElement( "tileset" ),
-                         libraryDirPath );
-    const unsigned int REFRESH_RATE = animationDataXML->UnsignedAttribute( "fps" );
-
-    std::unique_ptr< AnimationData > animData(
-                new AnimationData( getTilesetByName( tilesetName ),
-                                   REFRESH_RATE ) );
-
-    loadAnimationDataStates( *animData,
-                             animationDataXML->FirstChildElement( "animation_states" ) );
-
-    animData_[tilesetName] = std::move( animData );
 }
 
 

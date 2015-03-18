@@ -72,7 +72,7 @@ class Tileset
         unsigned int nColumns_;
 };
 
-typedef std::shared_ptr< const Tileset > TilesetPtr;
+typedef std::unique_ptr< Tileset > TilesetPtr;
 
 } // Namespace m2g
 
