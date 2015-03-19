@@ -32,6 +32,7 @@ class TileSprite : public sf::Drawable, public sf::Transformable
          * 1. Construction
          ***/
         TileSprite( const Tileset& tileset );
+        TileSprite( TilesetPtr tileset ); // TODO: Test!
 
 
         /***
@@ -62,6 +63,7 @@ class TileSprite : public sf::Drawable, public sf::Transformable
 
     private:
         sf::Sprite sprite_;
+        TilesetPtr ownTileset_;
         const Tileset* tileset_;
         unsigned int currentTile_;
 };

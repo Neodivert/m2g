@@ -34,6 +34,13 @@ TileSprite::TileSprite( const m2g::Tileset &tileset ) :
 }
 
 
+TileSprite::TileSprite( TilesetPtr tileset ) :
+    TileSprite( *tileset )
+{
+    ownTileset_ = std::move( tileset );
+}
+
+
 /***
  * 2. Getters
  ***/
