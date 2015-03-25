@@ -32,6 +32,7 @@ class Animation : public TileSprite
          * 1. Construction
          ***/
         Animation( const AnimationData& animData );
+        Animation( AnimationDataPtr animData ); // TODO: Test!
 
 
         /***
@@ -63,6 +64,7 @@ class Animation : public TileSprite
 
 
     private:
+        AnimationDataPtr ownAnimData_;
         AnimationData const* animData_;
         unsigned int currentState_;
         unsigned int currentFrame_;

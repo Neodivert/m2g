@@ -26,9 +26,17 @@ namespace m2g {
  ***/
 
 Animation::Animation( const AnimationData &animData ) :
-    TileSprite( animData.tileset() )
+    TileSprite( animData.tileset() ),
+    ownAnimData_( nullptr )
 {
     setAnimationData( animData );
+}
+
+
+Animation::Animation( AnimationDataPtr animData ) :
+    Animation( *animData )
+{
+    ownAnimData_ = std::move( animData );
 }
 
 
