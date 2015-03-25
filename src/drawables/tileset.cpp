@@ -82,8 +82,8 @@ sf::IntRect Tileset::tileRect( unsigned int tile ) const
                                  + ")" );
     }
 
-    const unsigned int row = tile / nRows_;
-    const unsigned int column = tile % nRows_;
+    const unsigned int row = tile / nColumns_;
+    const unsigned int column = tile % nColumns_;
 
     return sf::IntRect( column * tileDimensions_.x,
                         row * tileDimensions_.y,
