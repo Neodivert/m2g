@@ -162,8 +162,7 @@ AnimationDataPtr GraphicsLibrary::loadAnimationDataFromXML( tinyxml2::XMLElement
             loadTilesetFromXML( animDataXML->FirstChildElement( "tileset" ) );
     const unsigned int REFRESH_RATE = animDataXML->UnsignedAttribute( "fps" );
 
-    AnimationDataPtr animData( new AnimationData( *tileset, REFRESH_RATE ) );
-    auxiliarTilesets_.push_back( std::move( tileset ) );
+    AnimationDataPtr animData( new AnimationData( std::move( tileset ), REFRESH_RATE ) );
 
     loadAnimationDataStates( *animData,
                              animDataXML->FirstChildElement( "animation_states" ) );

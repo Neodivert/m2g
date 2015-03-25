@@ -27,9 +27,18 @@ namespace m2g {
 
 AnimationData::AnimationData( const Tileset& tileset,
                               unsigned int refreshRate ) :
+    ownTileset_( nullptr ),
     tileset_( &tileset ),
     refreshRate_( refreshRate )
 {}
+
+
+AnimationData::AnimationData( TilesetPtr tileset,
+                              unsigned int refreshRate ) :
+    AnimationData( *tileset, refreshRate )
+{
+    ownTileset_ = std::move( tileset );
+}
 
 
 /***

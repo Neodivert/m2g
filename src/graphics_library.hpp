@@ -68,7 +68,6 @@ class GraphicsLibrary
          ***/
         std::map< std::string, std::unique_ptr< Tileset > > tilesets_;
         std::map< std::string, std::unique_ptr< AnimationData > > animData_;
-        std::vector< TilesetPtr > auxiliarTilesets_; // TODO: Remove this!
         std::string libraryPath_;
 };
 
