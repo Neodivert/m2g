@@ -73,7 +73,7 @@ std::list<sf::FloatRect> TileSprite::collisionRects() const
 
 sf::FloatRect TileSprite::getBoundaryBox() const
 {
-    return sprite_.getGlobalBounds();
+    return getTransform().transformRect( sprite_.getGlobalBounds() );
 }
 
 
