@@ -160,9 +160,12 @@ AnimationDataPtr GraphicsLibrary::loadAnimationDataFromXML( tinyxml2::XMLElement
 {
     TilesetPtr tileset =
             loadTilesetFromXML( animDataXML->FirstChildElement( "tileset" ) );
-    const unsigned int REFRESH_RATE = animDataXML->UnsignedAttribute( "fps" );
+    unsigned int refreshRate = DEFAULT_ANIMATION_REFRESH_RATE;
+    if( animDataXML->Attribute( "fps") != nullptr ){
+        refreshRate = animDataXML->UnsignedAttribute( "fps" );
+    }
 
-    AnimationDataPtr animData( new AnimationData( std::move( tileset ), REFRESH_RATE ) );
+    AnimationDataPtr animData( new AnimationData( std::move( tileset ), refreshRate ) );
 
     loadAnimationDataStates( *animData,
                              animDataXML->FirstChildElement( "animation_states" ) );
