@@ -86,7 +86,8 @@ void Animation::setState( unsigned int newState )
 
 void Animation::setTile( unsigned int tile )
 {
-    if( ( tile < animData_->state( currentState_ ).backFrame ) ||
+    if( ( tile < std::min( animData_->state( currentState_ ).backFrame,
+                           animData_->state( currentState_ ).firstFrame ) ) ||
         ( tile > animData_->state( currentState_ ).lastFrame ) ){
         throw std::out_of_range( "tile" );
     }
