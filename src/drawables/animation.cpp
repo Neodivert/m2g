@@ -64,10 +64,11 @@ bool Animation::finished() const
 
 void Animation::setAnimationData( const AnimationData &animData )
 {
-    animData_ = &animData;
     if( animData.nStates() == 0 ){
         throw std::invalid_argument( "animData can't be empty (0 states)" );
     }
+    animData_ = &animData;
+    TileSprite::setTileset( animData_->tileset() );
     setState( 0 );
 }
 
@@ -101,10 +102,10 @@ void Animation::setTile( unsigned int tile )
 void Animation::update( unsigned int ms )
 {
     static unsigned int frameTime = 0;
-    const unsigned int ELAPSED_SECONDS = ( frameTime + ms ) / 1000;
-    frameTime = ( frameTime + ms ) % 1000;
+    const unsigned int MS_PER_FRAME = (1000 / animData_->refreshRate());
 
-    const unsigned int N_FRAMES = ELAPSED_SECONDS * animData_->refreshRate();
+    const unsigned int N_FRAMES = ( frameTime + ms ) / MS_PER_FRAME;
+    frameTime = ( frameTime + ms ) % MS_PER_FRAME;
 
     unsigned int dstFrame = currentFrame_;
     for( unsigned int i = 0; i < N_FRAMES; i++ ){

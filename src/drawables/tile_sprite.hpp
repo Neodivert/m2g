@@ -47,6 +47,8 @@ class TileSprite : public sf::Drawable, public sf::Transformable
          * 3. Setters
          ***/
         virtual void setTile( unsigned int tile );
+        void setTileset( const Tileset& tileset );  // TODO: Test!
+        void setTileset( TilesetPtr tileset );      // TODO: Test!
 
 
         /***

@@ -26,18 +26,15 @@ namespace m2g {
  * 1. Construction
  ***/
 
-TileSprite::TileSprite( const m2g::Tileset &tileset ) :
-    tileset_( &tileset )
+TileSprite::TileSprite( const m2g::Tileset &tileset )
 {
-    sprite_.setTexture( tileset.texture() );
-    TileSprite::setTile( 0 );
+    setTileset( tileset );
 }
 
 
-TileSprite::TileSprite( TilesetPtr tileset ) :
-    TileSprite( *tileset )
+TileSprite::TileSprite( TilesetPtr tileset )
 {
-    ownTileset_ = std::move( tileset );
+    setTileset( std::move( tileset ) );
 }
 
 
@@ -85,6 +82,21 @@ void TileSprite::setTile( unsigned int tile )
 {
     currentTile_ = tile;
     sprite_.setTextureRect( tileset_->tileRect( currentTile_ ) );
+}
+
+
+void TileSprite::setTileset( const Tileset &tileset )
+{
+    tileset_ = &tileset;
+    sprite_.setTexture( tileset.texture() );
+    TileSprite::setTile( 0 );
+}
+
+
+void TileSprite::setTileset( TilesetPtr tileset )
+{
+    ownTileset_ = std::move( tileset );
+    setTileset( *ownTileset_ );
 }
 
 
