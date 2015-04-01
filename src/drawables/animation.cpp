@@ -58,7 +58,7 @@ unsigned int Animation::currentFrame() const
 
 bool Animation::finished() const
 {
-    return ( currentFrame_ == animData_->state( currentState_ ).backFrame );
+    return ( currentFrame_ == animData_->state( currentState_ ).lastFrame );
 }
 
 
