@@ -47,6 +47,7 @@ class Animation : public TileSprite
         unsigned int currentState() const;
         unsigned int currentFrame() const;
         bool finished() const; // TODO: Test!
+        const AnimationData& animationData() const;
 
 
         /***

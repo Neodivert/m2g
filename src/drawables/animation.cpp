@@ -62,6 +62,12 @@ bool Animation::finished() const
 }
 
 
+const AnimationData& Animation::animationData() const
+{
+    return *animData_;
+}
+
+
 void Animation::setAnimationData( const AnimationData &animData )
 {
     if( animData.nStates() == 0 ){
