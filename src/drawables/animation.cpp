@@ -86,7 +86,7 @@ void Animation::setAnimationData( const AnimationData &animData )
 void Animation::setState( unsigned int newState )
 {
     currentState_ = newState;
-    currentFrame_ = animData_->state( currentState_ ).firstFrame;
+    setTile( animData_->state( currentState_ ).firstFrame );
 }
 
 
