@@ -32,7 +32,7 @@ class Animation : public TileSprite
          * 1. Construction
          ***/
         Animation( const AnimationData& animData );
-        Animation( AnimationDataPtr animData ); // TODO: Test!
+        Animation( AnimationDataPtr animData );
 
 
         /***

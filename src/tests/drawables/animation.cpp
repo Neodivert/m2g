@@ -44,14 +44,52 @@ TEST_CASE( "An animation can't have no states" )
 TEST_CASE( "Unless otherwise specified, an animation is initialized with state 0" )
 {
     const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
-    AnimationData animData( tileset );
+    AnimationDataPtr animData( new AnimationData( tileset ) );
     const AnimationState animState( 1, 1 );
-    animData.addState( animState );
+    animData->addState( animState );
 
-    Animation animation( animData );
+    SECTION( "Animation is constructed using a AnimationData&" )
+    {
+        Animation animation( *animData );
 
-    REQUIRE( animation.currentState() == 0 );
-    REQUIRE( animation.currentFrame() == animState.firstFrame );
+        REQUIRE( &( animation.animationData() ) == animData.get() );
+        REQUIRE( animation.currentState() == 0 );
+        REQUIRE( animation.currentFrame() == animState.firstFrame );
+    }
+
+    SECTION( "Animation is constructed using a AnimationDataPtr" )
+    {
+        AnimationData* rawAnimDataPointer = animData.get();
+        Animation animation( std::move( animData ) );
+
+        REQUIRE( &( animation.animationData() ) == rawAnimDataPointer );
+        REQUIRE( animation.currentState() == 0 );
+        REQUIRE( animation.currentFrame() == animState.firstFrame );
+    }
+}
+
+
+TEST_CASE( "Animation constructed using AnimationData& or AnimationDataPtr returns the same AnimationData" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationDataPtr animData( new AnimationData( tileset ) );
+    AnimationData* rawAnimDataPointer = animData.get();
+    const AnimationState animState( 1, 1 );
+    animData->addState( animState );
+
+    SECTION( "Animation is constructed using a AnimationData&" )
+    {
+        Animation animation( *animData );
+
+        REQUIRE( &( animation.animationData() ) == rawAnimDataPointer );
+    }
+
+    SECTION( "Animation is constructed using a AnimationDataPtr" )
+    {
+        Animation animation( std::move( animData ) );
+
+        REQUIRE( &( animation.animationData() ) == rawAnimDataPointer );
+    }
 }
 
 
