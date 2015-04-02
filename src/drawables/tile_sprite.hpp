@@ -32,7 +32,7 @@ class TileSprite : public sf::Drawable, public sf::Transformable
          * 1. Construction
          ***/
         TileSprite( const Tileset& tileset );
-        TileSprite( TilesetPtr tileset ); // TODO: Test!
+        TileSprite( TilesetPtr tileset );
 
 
         /***

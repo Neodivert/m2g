@@ -42,9 +42,20 @@ TEST_CASE( "TileSprite's constructor calls Tileset's convenient getters" )
 
 TEST_CASE( "Tile sprite returns associated tileset" )
 {
-    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
-    m2g::TileSprite sprite( tileset );
-    REQUIRE( &( sprite.tileset() ) == &tileset );
+    m2g::TilesetPtr tileset( new m2g::Tileset( "./data/tileset_w64_h64.png", 32, 32 ) );
+    Tileset* tilesetRawPtr = tileset.get();
+
+    SECTION( "Tile sprite returns associated tileset (reference)" )
+    {
+        m2g::TileSprite sprite( *tileset );
+        REQUIRE( &( sprite.tileset() ) == tilesetRawPtr );
+    }
+
+    SECTION( "Tile sprite returns associated tileset (ptr)" )
+    {
+        m2g::TileSprite sprite( std::move( tileset ) );
+        REQUIRE( &( sprite.tileset() ) == tilesetRawPtr );
+    }
 }
 
 
