@@ -93,6 +93,62 @@ TEST_CASE( "Animation constructed using AnimationData& or AnimationDataPtr retur
 }
 
 
+TEST_CASE( "Animation::finished() returns true when current state finishes" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    const AnimationState animState( 0, 3, 1 );
+    animData.addState( animState );
+    Animation animation( animData );
+
+    // The animation will be finished at frame 3 (lastFrame).
+    REQUIRE( animation.finished() == false );
+
+    animation.setTile( 1 );
+    REQUIRE( animation.finished() == false );
+
+    animation.setTile( 2 );
+    REQUIRE( animation.finished() == false );
+
+    animation.setTile( 3 );
+    REQUIRE( animation.finished() == true );
+
+    animation.setTile( 0 );
+    REQUIRE( animation.finished() == false );
+}
+
+
+TEST_CASE( "Changing current state sets Animation::finished() to false if new state isn't finished" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    animData.addState( AnimationState( 0, 1, 0 ) );
+    animData.addState( AnimationState( 2, 3, 2 ) );
+    Animation animation( animData );
+
+    animation.setTile( 1 );
+    REQUIRE( animation.finished() == true );
+
+    animation.setState( 1 );
+    REQUIRE( animation.finished() == false );
+}
+
+
+TEST_CASE( "Changing current state sets Animation::finished() to true if new state is finished" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    AnimationData animData( tileset );
+    animData.addState( AnimationState( 0, 1 ) );
+    animData.addState( AnimationState( 2, 2 ) );
+    Animation animation( animData );
+
+    REQUIRE( animation.finished() == false );
+
+    animation.setState( 1 );
+    REQUIRE( animation.finished() == true );
+}
+
+
 TEST_CASE( "The current animation state can be changed" )
 {
     const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
