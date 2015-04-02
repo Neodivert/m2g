@@ -53,7 +53,7 @@ class Animation : public TileSprite
         /***
          * 4. Setters
          ***/
-        void setAnimationData( const AnimationData& animData ); // TODO: Test!
+        void setAnimationData( const AnimationData& animData );
         void setState( unsigned int newState );
         virtual void setTile( unsigned int tile );
 

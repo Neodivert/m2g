@@ -149,6 +149,29 @@ TEST_CASE( "Changing current state sets Animation::finished() to true if new sta
 }
 
 
+TEST_CASE( "Changing the associated animationData changes the current frame and state" )
+{
+    const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+
+    AnimationData srcAnimData( tileset );
+    srcAnimData.addState( AnimationState( 0, 1 ) );
+    srcAnimData.addState( AnimationState( 2, 2 ) );
+
+    AnimationData dstAnimData( tileset );
+    dstAnimData.addState( AnimationState( 1, 3 ) );
+
+    Animation animation( srcAnimData );
+
+    animation.setState( 1 );
+    REQUIRE( animation.currentState() == 1 );
+    REQUIRE( animation.currentFrame() == srcAnimData.state( 1 ).firstFrame );
+
+    animation.setAnimationData( dstAnimData );
+    REQUIRE( animation.currentState() == 0 );
+    REQUIRE( animation.currentFrame() == dstAnimData.state( 0 ).firstFrame );
+}
+
+
 TEST_CASE( "The current animation state can be changed" )
 {
     const Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
