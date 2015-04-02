@@ -1,6 +1,6 @@
 # m2g
 
-A 2D graphic library based on SDL2.
+A 2D graphic library based on SFML2.
 
 
 ## Current status
@@ -10,17 +10,29 @@ Active. This project is being developed (branch "experimental") along with the [
 
 ## Building and installing from source (only tested on Ubuntu 14.04)
 
-1. Install the required dependencies 
+1. Install [SFML](http://www.sfml-dev.org/download.php) (>= v2.2)
 
-```
-sudo apt-get install libtinyxml2-dev libsdl2-dev libsdl2-image-dev libglm-dev catch tinyxml2-dev
-```
+2. Install [Google Mock](https://code.google.com/p/googlemock/)
 
-2. Clone this repository in local.
+3. Install the rest of dependencies
 
-3. Enter in the downloaded directory.
+ ```
+ sudo apt-get install libtinyxml2-dev catch
+ ```
 
-4. Install the library on your system.
+4. Clone this repository in local.
+
+ ```
+ git clone git@github.com:moisesjbc/m2g.git
+ ```
+
+5. Enter in the "build" directory inside the cloned repository.
+
+ ```
+ cd m2g/build
+ ```
+
+6. Install the library on your system.
 
 ```
 cmake .
