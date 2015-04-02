@@ -27,7 +27,8 @@ namespace m2g {
 
 Animation::Animation( const AnimationData &animData ) :
     TileSprite( animData.tileset() ),
-    ownAnimData_( nullptr )
+    ownAnimData_( nullptr ),
+    timeInCurrentFrame_( 0 )
 {
     setAnimationData( animData );
 }
@@ -99,6 +100,7 @@ void Animation::setTile( unsigned int tile )
     }
     TileSprite::setTile( tile );
     currentFrame_ = tile;
+    timeInCurrentFrame_ = 0;
 }
 
 
@@ -108,11 +110,10 @@ void Animation::setTile( unsigned int tile )
 
 void Animation::update( unsigned int ms )
 {
-    static unsigned int frameTime = 0;
     const unsigned int MS_PER_FRAME = (1000 / animData_->refreshRate());
 
-    const unsigned int N_FRAMES = ( frameTime + ms ) / MS_PER_FRAME;
-    frameTime = ( frameTime + ms ) % MS_PER_FRAME;
+    const unsigned int N_FRAMES = ( timeInCurrentFrame_ + ms ) / MS_PER_FRAME;
+    timeInCurrentFrame_ = ( timeInCurrentFrame_ + ms ) % MS_PER_FRAME;
 
     unsigned int dstFrame = currentFrame_;
     for( unsigned int i = 0; i < N_FRAMES; i++ ){
@@ -122,7 +123,9 @@ void Animation::update( unsigned int ms )
             dstFrame = animData_->state( currentState_ ).backFrame;
         }
     }
-    setTile( dstFrame );
+    if( N_FRAMES ){
+        setTile( dstFrame );
+    }
 }
 
 

@@ -69,6 +69,7 @@ class Animation : public TileSprite
         AnimationData const* animData_;
         unsigned int currentState_;
         unsigned int currentFrame_;
+        unsigned int timeInCurrentFrame_;
 };
 
 typedef std::unique_ptr< Animation > AnimationPtr;
