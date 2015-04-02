@@ -49,7 +49,6 @@ foreach( header_file ${HEADER_FILES})
     install( DIRECTORY "${SOURCE_DIR}/" DESTINATION include/m2g FILES_MATCHING PATTERN "${header_filename}" )
 endforeach( header_file )
 install( TARGETS ${LIBRARY_NAME} DESTINATION lib )
-# TODO: Install samples.
 
 # Uninstall target
 # Source: http://www.cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F
