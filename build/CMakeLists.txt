@@ -25,6 +25,9 @@ if(SFML_FOUND)
 endif()
 
 add_subdirectory( lib )
-add_subdirectory( tests )
+
+if( TESTS )
+    add_subdirectory( tests )
+endif()
 
 include_directories( ${SOURCE_DIR} )
