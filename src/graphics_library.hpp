@@ -66,8 +66,6 @@ class GraphicsLibrary
         /***
          * Attributes
          ***/
-        std::map< std::string, std::unique_ptr< Tileset > > tilesets_;
-        std::map< std::string, std::unique_ptr< AnimationData > > animData_;
         std::string libraryPath_;
 };
 
