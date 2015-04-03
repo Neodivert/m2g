@@ -21,14 +21,6 @@
 #include "../../drawables/tileset.hpp"
 
 namespace m2g {
-/*
- * TODO: Add tests
- * - Loading a tileset with width > MAX_WIDTH must throw
- * - Loading a tileset with height > MAX_HEIGHT must throw
- * - Add tests for getter Tileset::nTiles().
- */
-
-// TODO: Check exception's messages.
 
 TEST_CASE( "Tileset is created properly" )
 {

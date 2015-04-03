@@ -21,7 +21,6 @@
 
 namespace m2g {
 
-// TODO: Remove duplicated code in loading methods.
 
 /***
  * 1. Construction
@@ -49,7 +48,7 @@ TilesetPtr GraphicsLibrary::getTilesetByName( const std::string& tilesetName )
 
     while( xmlElement != nullptr ){
         std::string name, path;
-        loadNameAndPath( xmlElement, name, path ); // TODO: Don't use path.
+        loadNameAndPath( xmlElement, name, path );
 
         if( name == tilesetName ){
             return loadTilesetFromXML( xmlElement );
@@ -73,7 +72,7 @@ AnimationDataPtr GraphicsLibrary::getAnimationDataByName( const std::string& ani
 
     while( xmlElement != nullptr ){
         std::string name, path;
-        loadNameAndPath( xmlElement->FirstChildElement( "tileset" ), name, path ); // TODO: Don't use path.
+        loadNameAndPath( xmlElement->FirstChildElement( "tileset" ), name, path );
 
         if( name == animDataName ){
             return loadAnimationDataFromXML( xmlElement );
@@ -99,7 +98,7 @@ AnimationDataList GraphicsLibrary::getAnimationDataByPrefix( const std::string &
 
     while( xmlElement != nullptr ){
         std::string name, path;
-        loadNameAndPath( xmlElement->FirstChildElement( "tileset" ), name, path ); // TODO: Don't use path.
+        loadNameAndPath( xmlElement->FirstChildElement( "tileset" ), name, path );
 
         if( name.substr( 0, animDataName.size() ) == animDataName ){
             animDataList.push_back( loadAnimationDataFromXML( xmlElement ) );
