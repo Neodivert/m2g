@@ -48,6 +48,12 @@ const m2g::Tileset &m2g::TileSprite::tileset() const
 }
 
 
+unsigned int TileSprite::currentTile() const
+{
+    return currentTile_;
+}
+
+
 std::list<sf::FloatRect> TileSprite::collisionRects() const
 {
     const std::list< sf::IntRect > tileCollisionRects =

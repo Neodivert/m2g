@@ -198,4 +198,63 @@ TEST_CASE( "Moving sprite rendering" )
     }
 }
 
+
+TEST_CASE( "TileSprite::setTileset() changes the associated tileset" )
+{
+    m2g::Tileset srcTileset( "./data/tileset_w64_h64.png", 32, 32 );
+    std::unique_ptr< m2g::Tileset > dstTileset(
+                new m2g::Tileset(
+                    "./data/test_tileset.png", 32, 32 ) );
+    m2g::Tileset* TilesetRawPtr = dstTileset.get();
+    m2g::TileSprite sprite( srcTileset );
+
+    SECTION( "The associated tileset is effectively changed" )
+    {
+        REQUIRE( &( sprite.tileset() ) != TilesetRawPtr );
+
+        SECTION( "TileSprite::setTileset( Tileset& )" )
+        {
+            sprite.setTileset( *dstTileset );
+            REQUIRE( &( sprite.tileset() ) == TilesetRawPtr );
+        }
+
+        SECTION( "TileSprite::setTileset( TilesetPtr )" )
+        {
+            sprite.setTileset( std::move( dstTileset ) );
+            REQUIRE( &( sprite.tileset() ) == TilesetRawPtr );
+        }
+    }
+
+    SECTION( "Changing a tileset sets the current tile to zero" )
+    {
+        sprite.setTile( 2 );
+
+        SECTION( "TileSprite::setTileset( Tileset& )" )
+        {
+            sprite.setTileset( *dstTileset );
+            REQUIRE( sprite.currentTile() == 0 );
+        }
+
+        SECTION( "TileSprite::setTileset( TilesetPtr )" )
+        {
+            sprite.setTileset( std::move( dstTileset ) );
+            REQUIRE( sprite.currentTile() == 0 );
+        }
+    }
+}
+
+
+TEST_CASE( "TileSprite::setTile() updates the current tile" )
+{
+    m2g::Tileset tileset( "./data/tileset_w64_h64.png", 32, 32 );
+    m2g::TileSprite sprite( tileset );
+
+    REQUIRE( sprite.currentTile() == 0 );
+
+    for( unsigned int i = 0; i < 4; i++ ){
+        sprite.setTile( i );
+        REQUIRE( sprite.currentTile() == i );
+    }
+}
+
 } // namespace m2g

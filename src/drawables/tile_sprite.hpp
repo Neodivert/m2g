@@ -39,6 +39,7 @@ class TileSprite : public sf::Drawable, public sf::Transformable
          * 2. Getters
          ***/
         const Tileset& tileset() const;
+        unsigned int currentTile() const;
         std::list< sf::FloatRect > collisionRects() const;
         sf::FloatRect getBoundaryBox() const; // TODO: Test!
 
@@ -47,8 +48,8 @@ class TileSprite : public sf::Drawable, public sf::Transformable
          * 3. Setters
          ***/
         virtual void setTile( unsigned int tile );
-        void setTileset( const Tileset& tileset );  // TODO: Test!
-        void setTileset( TilesetPtr tileset );      // TODO: Test!
+        void setTileset( const Tileset& tileset );
+        void setTileset( TilesetPtr tileset );
 
 
         /***
