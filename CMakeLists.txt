@@ -27,4 +27,4 @@ if( TESTS )
     add_subdirectory( tests )
 endif()
 
-include_directories( ${SOURCE_DIR} )
+include_directories( ${SOURCE_DIR}/include )

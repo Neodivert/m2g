@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "tile_sprite.hpp"
+#include <m2g/drawables/tile_sprite.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace m2g {

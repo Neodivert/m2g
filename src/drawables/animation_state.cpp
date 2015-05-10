@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "animation_state.hpp"
+#include <m2g/drawables/animation_state.hpp>
 #include <stdexcept>
 
 namespace m2g {

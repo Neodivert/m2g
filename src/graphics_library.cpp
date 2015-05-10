@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "graphics_library.hpp"
+#include <m2g/graphics_library.hpp>
 
 namespace m2g {
 

@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "tileset.hpp"
+#include <m2g/drawables/tileset.hpp>
 #include <fstream>
 
 namespace m2g {

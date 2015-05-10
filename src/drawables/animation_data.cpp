@@ -17,7 +17,7 @@
  * along with M2G.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "animation_data.hpp"
+#include <m2g/drawables/animation_data.hpp>
 
 namespace m2g {
 
