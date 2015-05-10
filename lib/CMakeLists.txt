@@ -33,6 +33,7 @@ set(
 
 # Build shared library.
 add_library( ${LIBRARY_NAME} SHARED ${SOURCE_FILES} )
+target_link_libraries( ${LIBRARY_NAME} ${LIBRARIES} )
 set_target_properties(
     ${LIBRARY_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION_STRING}
