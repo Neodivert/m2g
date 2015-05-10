@@ -1,4 +1,4 @@
-set( SOURCE_DIR "${PROJECT_SOURCE_DIR}/../src" )
+set( SOURCE_DIR "${PROJECT_SOURCE_DIR}/src" )
 
 set(
     SOURCE_FILES

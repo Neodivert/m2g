@@ -19,7 +19,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 # Common libraries
 include( FindPkgConfig )
 set( LIBRARIES "${LIBRARIES};tinyxml2" )
-set( LIBRARIES "${LIBRARIES};sfml-graphics;sfml-window;sfml-audio;sfml" )
+set( LIBRARIES "${LIBRARIES};sfml-graphics;sfml-window;sfml-audio;sfml-system" )
 
 add_subdirectory( lib )
 
