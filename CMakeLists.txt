@@ -21,10 +21,11 @@ include( FindPkgConfig )
 set( LIBRARIES "${LIBRARIES};tinyxml2" )
 set( LIBRARIES "${LIBRARIES};sfml-graphics;sfml-window;sfml-audio;sfml-system" )
 
+include_directories( ${CMAKE_SOURCE_DIR}/include )
+
 add_subdirectory( lib )
 
 if( TESTS )
     add_subdirectory( tests )
 endif()
 
-include_directories( ${SOURCE_DIR}/include )
