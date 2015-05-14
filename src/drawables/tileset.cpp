@@ -19,6 +19,7 @@
 
 #include <m2g/drawables/tileset.hpp>
 #include <fstream>
+#include <string>
 
 namespace m2g {
 
