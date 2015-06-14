@@ -3,6 +3,9 @@ TODO
 NOTE: Remember to update version number!
 
 - FIXME: Tests aren't passing!.
+- FIXME: Copy constructor won't work on Drawables created using a constructor
+accepting a std::unique_ptr.
+- Remove unused class Collidable.
 - (Class GraphicsLibrary) Create auxiliar method loadName() and use it instead 
 of loadNameAndPath() when possible.
 - (Testing) Add automatic tests to GraphicsLibrary:
