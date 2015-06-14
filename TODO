@@ -1,0 +1,41 @@
+TODO
+-------------------------------------------------------------------------------
+NOTE: Remember to update version number!
+
+- FIXME: Tests aren't passing!.
+- (Class GraphicsLibrary) Create auxiliar method loadName() and use it instead 
+of loadNameAndPath() when possible.
+- (Testing) Add automatic tests to GraphicsLibrary:
+    - Test response to XML errors:
+        - Tileset with empty <name>.
+        - Tileset without <src>.
+        - Tileset with empty <src>.
+        - Tileset with <src> pointing to a non-existent image.
+        - Tileset with no <tile_dimensions>.
+        - Tileset whose <tile_dimensions> has no "width".
+        - Tileset whose <tile_dimensions> has no "height".
+        - Tileset whose <tile_dimensions> has a null width.
+        - Tileset whose <tile_dimensions> has a null height.
+        - Tileset whose <tile_dimensions> has a negative width.
+        - Tileset whose <tile_dimensions> has a negative height.
+        - Two tilesets with the same name.
+        - One animation and one tileset with the same name.
+        - Found XML element other than <tileset> or <animation>.
+    - Test response to invalid calls:
+        - Call to GraphicsLibrary::tileset with a name unused by any tileset 
+        or animation.
+        - Call to GraphicsLibrary::getAnimationDataByPrefix() with a prefix 
+        unused by any tileset or animation.
+- (Testing) Add tests to class TileSprite
+    - Test draw() with different tiles.
+    - Test collisionRects() with different tiles.
+- (Testing) Test error messages when expecting exceptions.
+- (Testing) Add tests to class Tileset.
+    - Loading a tileset with width > MAX_WIDTH must throw
+    - Loading a tileset with height > MAX_HEIGHT must throw
+    - Add tests for getter Tileset::nTiles().
+    - Calling Tileset::addCollisionRect() with lastTile < firstTile.
+- Add continuous integration (CI) on Windows.
+- (CI): Use Virtual machines and test repo building from zero.
+- (GraphicsLibrary) Remove duplicated code from loading methods.
+- Implement GraphicsLibrary::getTilesetsByPrefix().
