@@ -31,8 +31,12 @@ set(
     #"${SOURCE_DIR}/m2g.hpp"
 )
 
-# Build shared library.
-add_library( ${LIBRARY_NAME} SHARED ${SOURCE_FILES} )
+# Build the library.
+if( BUILD_STATIC_M2G )
+    add_library( ${LIBRARY_NAME} STATIC ${SOURCE_FILES} )
+else( BUILD_STATIC_M2G )
+    add_library( ${LIBRARY_NAME} SHARED ${SOURCE_FILES} )
+endif( BUILD_STATIC_M2G )
 set_target_properties(
     ${LIBRARY_NAME} PROPERTIES
     VERSION ${PROJECT_VERSION_STRING}
